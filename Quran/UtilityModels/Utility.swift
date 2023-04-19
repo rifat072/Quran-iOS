@@ -44,3 +44,10 @@ class Transliteration: Decodable{
     let text: String?
 }
 
+class Pagination: Decodable{
+    let per_page: Int?
+    let current_page: Int?
+    let next_page: Int?
+    let total_pages: Int?
+    let total_records: Int?
+}

@@ -12,10 +12,12 @@ class SurahListVC: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!{
         didSet{
-            collectionView.delegate = self
-            collectionView.dataSource = self
-            self.collectionView.register(UINib(nibName: SurahListVC.reuseIdentifier, bundle: .main), forCellWithReuseIdentifier: SurahListVC.reuseIdentifier)
-            
+            Task{
+                self.quran = try await QuranSharedItem.getSharedItem()
+                collectionView.delegate = self
+                collectionView.dataSource = self
+                self.collectionView.register(UINib(nibName: SurahListVC.reuseIdentifier, bundle: .main), forCellWithReuseIdentifier: SurahListVC.reuseIdentifier)
+            }  
         }
     }
     
@@ -23,9 +25,9 @@ class SurahListVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-
+        
     }
+
 
 }
 

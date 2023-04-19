@@ -20,6 +20,7 @@ class Chapter: Decodable {
     
     enum VerseParseError: Error {
         case outOfIndex
+        case isNotLoaded
     }
     
     
@@ -118,5 +119,45 @@ extension Chapter{
         }
         self.verses[idx] = try JSONDecoder().decode(Root.self, from: data).verse
         return self.verses[idx]
+    }
+    
+    func loadAllVerses() async throws{
+        guard let id = self.id,
+              let url = apiRootUrl?.appending(path: "verses").appending(path: "by_chapter").appending(path: "\(id)") else {
+            return
+        }
+        
+        let totalPage = Int(ceil(Double(verses_count!) / 50.0))
+        for pageNumber in 1...totalPage{
+            let curUrl = url.appending(queryItems: [URLQueryItem(name: "words", value: "true"),
+                                             URLQueryItem(name: "page", value: "\(pageNumber)"),
+                                             URLQueryItem(name: "per_page", value: "\(50)"),
+                                            URLQueryItem(name: "word_fields", value: "text_uthmani,text_indopak")])
+            let (data, _) = try await URLSession.shared.data(from: curUrl)
+            struct Root: Decodable{
+                let verses: [Verse]
+                let pagination: Pagination?
+            }
+            let currentVerses = try JSONDecoder().decode(Root.self, from: data).verses
+            for curVerse in currentVerses{
+                if let id = Int(curVerse.verse_key.split(separator: ":")[1]){
+                    self.verses[id] = curVerse
+                }
+            }
+        }
+    }
+    
+    func getVerse(idx: Int) throws -> Verse?{
+        guard let verses_count = self.verses_count else {
+            return nil
+        }
+        if(idx < 1 || idx > verses_count){
+            throw VerseParseError.outOfIndex
+        }
+        
+        if let verse = self.verses[idx] {
+            return verse
+        }
+        throw VerseParseError.isNotLoaded
     }
 }

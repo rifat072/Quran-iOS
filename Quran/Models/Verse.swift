@@ -23,9 +23,8 @@ class Verse: Decodable {
     let juz_number: Int
     let hizb_number: Int
     let rub_number: Int?
-    //TODO: Need to find a way store null
-//    let sajdah_type: Int
-//    let sajdah_number: Int
+    let sajdah_type: Int?
+    let sajdah_number: Int?
     let page_number: Int
     let image_url: URL?
     let image_width: Int?
@@ -36,8 +35,5 @@ class Verse: Decodable {
             })
         }
     }
-    
 
-
-    
 }

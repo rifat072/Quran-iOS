@@ -8,25 +8,29 @@
 import UIKit
 
 class SurahCollectionView: UICollectionView {
+    
+    private static let wordSpacing: CGFloat = 15
     var chapter: Chapter!{
         didSet{
-            self.delegate = self
-            self.dataSource = self
-            self.prefetchDataSource = self
+            Task{
+                do{
+                    try await self.chapter.loadAllVerses()
+                    self.delegate = self
+                    self.dataSource = self
+                } catch{
+                    print("Cannot Load Data")
+                    //TODO: Should show retry
+                }
+                
+            }
         }
-        
     }
+    
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.register(UINib(nibName: SurahCollectionViewCell.reuseIdentifier, bundle:.main), forCellWithReuseIdentifier: SurahCollectionViewCell.reuseIdentifier)
-    }
-    
-    let loadingQueue = OperationQueue()
-    var loadingOperations: [IndexPath: VerseDataLoaderOperation] = [:]
-    
-    func determineCellHeight(for verse: Verse) -> CGFloat{
-        return 100
     }
     
 }
@@ -45,42 +49,23 @@ extension SurahCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cell = cell as? SurahCollectionViewCell else { return }
-        cell.removeViews()
-        
-        let updateCellClosure: (Verse?) -> Void = { [weak self] verse in
-            guard let self = self else {
-                return
-            }
-            cell.updateAppearanceFor(verse: verse, animated: true)
-            self.loadingOperations.removeValue(forKey: indexPath)
-        
-        }
-        
-        if let dataLoader = loadingOperations[indexPath] {
-            if dataLoader.state == .finished{
-                cell.updateAppearanceFor(verse: dataLoader.verse, animated: false)
-                loadingOperations.removeValue(forKey: indexPath)
-            } else {
-                dataLoader.loadingCompleteHandler = updateCellClosure
-            }
-        } else {
-            let dataLoader = VerseDataLoaderOperation(chapter: self.chapter, verseIdx: indexPath.row)
-            dataLoader.loadingCompleteHandler = updateCellClosure
-            loadingQueue.addOperation(dataLoader)
-            loadingOperations[indexPath] = dataLoader
+        do{
+            cell.updateAppearanceFor(verse: try self.chapter.getVerse(idx: indexPath.row + 1), wordSpacing: SurahCollectionView.wordSpacing)
+        } catch{
+            
         }
     }
-    
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if let dataLoader = loadingOperations[indexPath] {
-            dataLoader.cancel()
-            loadingOperations.removeValue(forKey: indexPath)
-        }
-    }
-    
+
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: 300)
+        do{
+            let verse = try self.chapter.getVerse(idx: indexPath.row + 1)
+            let lineCount = verse?.getLineCount(maxWidth: collectionView.bounds.width, itemSpacing: SurahCollectionView.wordSpacing) ?? 0
+            return CGSize(width: collectionView.bounds.width, height: CGFloat(lineCount * 50 + 40))
+        } catch {
+            return CGSize.zero
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -92,27 +77,56 @@ extension SurahCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
     }
 }
 
-extension SurahCollectionView: UICollectionViewDataSourcePrefetching{
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        for indexPath in indexPaths {
-            print("prefetching \(indexPath.row)")
-            if let _ = loadingOperations[indexPath] {
-                continue
-            }
-            let dataLoader = VerseDataLoaderOperation(chapter: self.chapter, verseIdx: indexPath.row)
-            loadingQueue.addOperation(dataLoader)
-            loadingOperations[indexPath] = dataLoader
-        }
-    }
+
+
+extension Word{
     
-    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
-        for indexPath in indexPaths {
-            if let dataLoader = loadingOperations[indexPath] {
-                dataLoader.cancel()
-                loadingOperations.removeValue(forKey: indexPath)
-            }
+  
+
+    func getMaxWidth() -> CGFloat{
+        
+        func getWidth(for text: String?, size: Int) -> CGFloat{
+            let label = UILabel()
+            label.text = text
+            label.textAlignment = .center
+            label.font = UIFont.systemFont(ofSize: CGFloat(size))
+            return label.textWidth()
         }
+        
+        
+        var maxWidth: CGFloat = 0
+        maxWidth = max(maxWidth, getWidth(for: self.text_uthmani, size: 15))
+        maxWidth = max(maxWidth, getWidth(for: self.transliteration.text, size: 11))
+        maxWidth = max(maxWidth, getWidth(for: self.translation.text, size: 11))
+        
+        return maxWidth
     }
     
 }
 
+extension Verse{
+    func getLineCount(maxWidth: CGFloat, itemSpacing: CGFloat = 15) -> Int{
+        if self.words == nil {return 0}
+
+        
+        var currWidth: CFloat = 0
+        var lineCount: Int = 1
+        
+        
+        for word in self.words!{
+            if word.char_type_name == "end" {
+                continue
+            }
+            var wordWidth: CGFloat = word.getMaxWidth()
+            
+            if CGFloat(currWidth) + wordWidth <= maxWidth {
+                currWidth += Float(wordWidth + itemSpacing)
+            } else {
+                lineCount += 1
+                currWidth = CFloat(wordWidth + itemSpacing)
+            }
+        }
+        
+        return lineCount
+    }
+}

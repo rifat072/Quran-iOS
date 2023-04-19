@@ -19,85 +19,27 @@ class SurahCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     }
+
     
-    func removeViews(){
+    func updateAppearanceFor(verse: Verse?, wordSpacing: CGFloat){
         let views = containerStackView.subviews
         for view in views{
             view.removeFromSuperview()
         }
-    }
-    
-    func updateAppearanceFor(verse: Verse?, animated: Bool){
-
-        func generateLabel(str: String?) -> UILabel{
-            let label = UILabel()
-            label.text = str
-            label.textColor = .white
-            label.textAlignment = .center
-            return label
-        }
         
-        func generateNewLine() -> UIStackView{
-            let stackView = UIStackView()
-            stackView.backgroundColor = .red
-            stackView.axis = .horizontal
-            stackView.distribution = .equalSpacing
-            stackView.alignment = .center
-            stackView.spacing = 15
-            return stackView
-        }
+        let lines = verse?.generateLines(wordSpacing: wordSpacing, lineMaxWidth: self.bounds.width) ?? []
         
-        
-        var currentWordCount: CGFloat = 0
-        var currentLine: UIStackView? = generateNewLine()
-        var currentLineWidth: CGFloat = 0
-        let cellWidth = self.bounds.width
-        func addToLine(view: UIStackView, width: CGFloat){
-            if(width + currentLineWidth + (15.0 * (currentWordCount - 1.0)) > cellWidth){
-                if let _currentLine = currentLine{
-                    containerStackView.addArrangedSubview(_currentLine)
-                    currentLine = generateNewLine()
-                    currentLineWidth = 0
-                    currentWordCount = 0
-                }
-            }
-            currentLine?.insertArrangedSubview(view, at: 0)
-            currentLineWidth += width
-            currentWordCount += 1
-        }
-
-        for word in verse!.words!{
-            if word.char_type_name == "end" {
-                continue
-            }
-            var maxWidth: CGFloat = 0
-            let label1 = generateLabel(str: word.text_uthmani)
-            label1.font = UIFont.systemFont(ofSize: 15)
-            maxWidth = max(maxWidth, label1.textWidth())
-            let label2 = generateLabel(str: word.transliteration.text)
-            label2.font = UIFont.systemFont(ofSize: 11)
-            maxWidth = max(maxWidth, label2.textWidth())
-            let label3 = generateLabel(str: word.translation.text)
-            label3.font = UIFont.systemFont(ofSize: 11)
-            maxWidth = max(maxWidth, label3.textWidth())
-            
-            let stackView = UIStackView()
-            stackView.axis = .vertical
-            stackView.alignment = .center
-            stackView.distribution = .fill
-            stackView.addArrangedSubview(label1)
-            stackView.addArrangedSubview(label2)
-            stackView.addArrangedSubview(label3)
-
-            addToLine(view: stackView, width: maxWidth)
-        }
-        
-        if let _currentLine = currentLine{
-            containerStackView.addArrangedSubview(_currentLine)
+        for line in lines {
+            containerStackView.addArrangedSubview(line)
         }
     }
 
 }
+
+
+
+
+
 
 
 extension UILabel {
@@ -155,8 +97,94 @@ extension UILabel {
         let myText = (self.text ?? "") as NSString
 
         let rect = CGSize(width: width, height: height)
-        let labelSize = myText.boundingRect(with: rect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: self.font], context: nil)
+        let labelSize = myText.boundingRect(with: rect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: self.font as Any], context: nil)
 
         return Int(ceil(CGFloat(labelSize.height) / self.font.lineHeight))
+    }
+}
+
+
+extension Word{
+    func generateDisplayView() -> (view: UIView, width: CGFloat){
+        
+        func generateLabel(str: String?) -> UILabel{
+            let label = UILabel()
+            label.text = str
+            label.textColor = .white
+            label.textAlignment = .center
+            return label
+        }
+        
+        var maxWidth: CGFloat = 0
+        let label1 = generateLabel(str: self.text_uthmani)
+        label1.font = UIFont.systemFont(ofSize: 15)
+        maxWidth = max(maxWidth, label1.textWidth())
+        let label2 = generateLabel(str: self.transliteration.text)
+        label2.font = UIFont.systemFont(ofSize: 11)
+        maxWidth = max(maxWidth, label2.textWidth())
+        let label3 = generateLabel(str: self.translation.text)
+        label3.font = UIFont.systemFont(ofSize: 11)
+        maxWidth = max(maxWidth, label3.textWidth())
+        
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.distribution = .fill
+        stackView.addArrangedSubview(label1)
+        stackView.addArrangedSubview(label2)
+        stackView.addArrangedSubview(label3)
+        
+        return (view: stackView, width: maxWidth)
+    }
+}
+
+extension Verse{
+    func generateLines(wordSpacing: CGFloat, lineMaxWidth: CGFloat) -> [UIView]{
+        if self.words == nil{ return [] }
+        
+        func generateNewLine() -> UIStackView{
+            let stackView = UIStackView()
+            stackView.backgroundColor = .red
+            stackView.axis = .horizontal
+            stackView.distribution = .equalSpacing
+            stackView.alignment = .center
+            stackView.spacing = wordSpacing
+            return stackView
+        }
+        
+        var lines: [UIView] = []
+        
+        var currentWordCount: CGFloat = 0
+        var currentLine: UIStackView? = generateNewLine()
+        var currentLineWidth: CGFloat = 0
+        
+        
+        func addToLine(view: UIView, width: CGFloat){
+            if(width + currentLineWidth + (wordSpacing * (currentWordCount - 1.0)) > lineMaxWidth){
+                if let _currentLine = currentLine{
+                    lines.append(_currentLine)
+                    currentLine = generateNewLine()
+                    currentLineWidth = 0
+                    currentWordCount = 0
+                }
+            }
+            currentLine?.insertArrangedSubview(view, at: 0)
+            currentLineWidth += width
+            currentWordCount += 1
+        }
+
+        for word in self.words!{
+            if word.char_type_name == "end" {
+                continue
+            }
+            let wordDisplay = word.generateDisplayView()
+
+            addToLine(view: wordDisplay.view, width: wordDisplay.width)
+        }
+        
+        if let _currentLine = currentLine{
+            lines.append(_currentLine)
+        }
+        return lines
     }
 }

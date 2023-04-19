@@ -20,19 +20,9 @@ class ViewController: UIViewController {
         
     }
     @IBAction func btnLoadSurahPressed(_ sender: UIButton) {
-        
-        Task{
-            do{
-                let sharedItem = try await QuranSharedItem.getSharedItem()
-                let storyboard = UIStoryboard(name: "SurahListVC", bundle: .main)
-                let vc = storyboard.instantiateViewController(withIdentifier: "SurahListVC") as! SurahListVC
-                vc.quran = sharedItem
-                self.navigationController?.pushViewController(vc, animated: true)
-            } catch{
-                print(error.localizedDescription)
-            }
-            
-        }
+        let storyboard = UIStoryboard(name: "SurahListVC", bundle: .main)
+        let vc = storyboard.instantiateViewController(withIdentifier: "SurahListVC")
+        self.navigationController?.pushViewController(vc, animated: true)
 
     }
     

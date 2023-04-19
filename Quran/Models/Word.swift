@@ -17,11 +17,10 @@ class Word: Decodable {
     let verse_key: String?
     let page_number: Int?
     let line_number: Int?
-    let audio_url: URL?
+    let audio_url: String?
     let location: String?
     let char_type_name: String
     let code_v1: String?
     let translation: Translation
     let transliteration: Transliteration
-    
 }
