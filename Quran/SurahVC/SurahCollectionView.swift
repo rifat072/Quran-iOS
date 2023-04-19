@@ -53,6 +53,7 @@ extension SurahCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
             }
             cell.updateAppearanceFor(verse: verse, animated: true)
             self.loadingOperations.removeValue(forKey: indexPath)
+        
         }
         
         if let dataLoader = loadingOperations[indexPath] {

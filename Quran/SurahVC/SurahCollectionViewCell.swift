@@ -32,8 +32,8 @@ class SurahCollectionViewCell: UICollectionViewCell {
         func generateLabel(str: String?) -> UILabel{
             let label = UILabel()
             label.text = str
-            label.textAlignment = .right
             label.textColor = .white
+            label.textAlignment = .center
             return label
         }
         
@@ -41,7 +41,7 @@ class SurahCollectionViewCell: UICollectionViewCell {
             let stackView = UIStackView()
             stackView.backgroundColor = .red
             stackView.axis = .horizontal
-            stackView.distribution = .fill
+            stackView.distribution = .equalSpacing
             stackView.alignment = .center
             stackView.spacing = 15
             return stackView
@@ -81,15 +81,13 @@ class SurahCollectionViewCell: UICollectionViewCell {
             label3.font = UIFont.systemFont(ofSize: 11)
             maxWidth = max(maxWidth, label3.textWidth())
             
-
             let stackView = UIStackView()
             stackView.axis = .vertical
-            stackView.alignment = .lastBaseline
+            stackView.alignment = .center
             stackView.distribution = .fill
             stackView.addArrangedSubview(label1)
             stackView.addArrangedSubview(label2)
             stackView.addArrangedSubview(label3)
-
 
             addToLine(view: stackView, width: maxWidth)
         }

@@ -38,7 +38,7 @@ class VerseDataLoaderOperation: Operation {
         self.state = .running
         
         Task{
-            let _verse = try await chapter.loadVerse(idx: index)
+            let _verse = try await chapter.loadVerse(idx: index + 1)
             if isCancelled {
                 self.state = .cancelled
                 return
