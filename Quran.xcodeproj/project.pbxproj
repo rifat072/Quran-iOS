@@ -1,0 +1,586 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		35B1FB2A29EED228009047F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB2929EED228009047F2 /* AppDelegate.swift */; };
+		35B1FB2C29EED228009047F2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB2B29EED228009047F2 /* SceneDelegate.swift */; };
+		35B1FB2E29EED228009047F2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB2D29EED228009047F2 /* ViewController.swift */; };
+		35B1FB3129EED228009047F2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35B1FB2F29EED228009047F2 /* Main.storyboard */; };
+		35B1FB3329EED229009047F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35B1FB3229EED229009047F2 /* Assets.xcassets */; };
+		35B1FB3629EED229009047F2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35B1FB3429EED229009047F2 /* LaunchScreen.storyboard */; };
+		35B1FB3E29EED362009047F2 /* QuranSharedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB3D29EED362009047F2 /* QuranSharedItem.swift */; };
+		35B1FB6829EEDA1C009047F2 /* QuranTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB6729EEDA1C009047F2 /* QuranTests.swift */; };
+		35B1FB6D29EEDB66009047F2 /* Chapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB6C29EEDB66009047F2 /* Chapter.swift */; };
+		35B1FB7029EEDBF8009047F2 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB6F29EEDBF8009047F2 /* Utility.swift */; };
+		35B1FB7329EEFDD0009047F2 /* Verse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB7229EEFDD0009047F2 /* Verse.swift */; };
+		35B1FB7529EEFF1C009047F2 /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB7429EEFF1C009047F2 /* Word.swift */; };
+		35B1FB7829EF0B6C009047F2 /* SurahListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB7729EF0B6C009047F2 /* SurahListVC.swift */; };
+		35B1FB7A29EF0B77009047F2 /* SurahListVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35B1FB7929EF0B77009047F2 /* SurahListVC.storyboard */; };
+		35B1FB7D29EF0C43009047F2 /* SurahListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB7B29EF0C43009047F2 /* SurahListCollectionViewCell.swift */; };
+		35B1FB7E29EF0C43009047F2 /* SurahListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 35B1FB7C29EF0C43009047F2 /* SurahListCollectionViewCell.xib */; };
+		35B1FB8529EF13C4009047F2 /* SurahCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB8429EF13C4009047F2 /* SurahCollectionView.swift */; };
+		35B1FB8829EF13D1009047F2 /* SurahCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB8629EF13D1009047F2 /* SurahCollectionViewCell.swift */; };
+		35B1FB8929EF13D1009047F2 /* SurahCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 35B1FB8729EF13D1009047F2 /* SurahCollectionViewCell.xib */; };
+		35B1FB8B29EF1421009047F2 /* SurahVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB8A29EF1421009047F2 /* SurahVC.swift */; };
+		35B1FB8D29EF142A009047F2 /* SurahVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35B1FB8C29EF142A009047F2 /* SurahVC.storyboard */; };
+		35B1FB8F29EF1C71009047F2 /* VerseDataLoaderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB8E29EF1C71009047F2 /* VerseDataLoaderOperation.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		35B1FB6129EED9EC009047F2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35B1FB1E29EED228009047F2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 35B1FB2529EED228009047F2;
+			remoteInfo = Quran;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		35B1FB2629EED228009047F2 /* Quran.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quran.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		35B1FB2929EED228009047F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		35B1FB2B29EED228009047F2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		35B1FB2D29EED228009047F2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		35B1FB3029EED228009047F2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		35B1FB3229EED229009047F2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		35B1FB3529EED229009047F2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		35B1FB3729EED229009047F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		35B1FB3D29EED362009047F2 /* QuranSharedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuranSharedItem.swift; sourceTree = "<group>"; };
+		35B1FB5D29EED9EC009047F2 /* QuranTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuranTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		35B1FB6629EEDA1B009047F2 /* QuranTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "QuranTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		35B1FB6729EEDA1C009047F2 /* QuranTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuranTests.swift; sourceTree = "<group>"; };
+		35B1FB6C29EEDB66009047F2 /* Chapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chapter.swift; sourceTree = "<group>"; };
+		35B1FB6F29EEDBF8009047F2 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		35B1FB7129EEE8B8009047F2 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		35B1FB7229EEFDD0009047F2 /* Verse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Verse.swift; sourceTree = "<group>"; };
+		35B1FB7429EEFF1C009047F2 /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
+		35B1FB7729EF0B6C009047F2 /* SurahListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahListVC.swift; sourceTree = "<group>"; };
+		35B1FB7929EF0B77009047F2 /* SurahListVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SurahListVC.storyboard; sourceTree = "<group>"; };
+		35B1FB7B29EF0C43009047F2 /* SurahListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahListCollectionViewCell.swift; sourceTree = "<group>"; };
+		35B1FB7C29EF0C43009047F2 /* SurahListCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SurahListCollectionViewCell.xib; sourceTree = "<group>"; };
+		35B1FB8429EF13C4009047F2 /* SurahCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahCollectionView.swift; sourceTree = "<group>"; };
+		35B1FB8629EF13D1009047F2 /* SurahCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahCollectionViewCell.swift; sourceTree = "<group>"; };
+		35B1FB8729EF13D1009047F2 /* SurahCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SurahCollectionViewCell.xib; sourceTree = "<group>"; };
+		35B1FB8A29EF1421009047F2 /* SurahVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahVC.swift; sourceTree = "<group>"; };
+		35B1FB8C29EF142A009047F2 /* SurahVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SurahVC.storyboard; sourceTree = "<group>"; };
+		35B1FB8E29EF1C71009047F2 /* VerseDataLoaderOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerseDataLoaderOperation.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		35B1FB2329EED228009047F2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		35B1FB5A29EED9EC009047F2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		35B1FB1D29EED228009047F2 = {
+			isa = PBXGroup;
+			children = (
+				35B1FB7129EEE8B8009047F2 /* MyPlayground.playground */,
+				35B1FB2829EED228009047F2 /* Quran */,
+				35B1FB5E29EED9EC009047F2 /* QuranTests */,
+				35B1FB2729EED228009047F2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		35B1FB2729EED228009047F2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				35B1FB2629EED228009047F2 /* Quran.app */,
+				35B1FB5D29EED9EC009047F2 /* QuranTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		35B1FB2829EED228009047F2 /* Quran */ = {
+			isa = PBXGroup;
+			children = (
+				35B1FB7F29EF1375009047F2 /* SurahVC */,
+				35B1FB7629EF0B4D009047F2 /* SurahListVC */,
+				35B1FB6E29EEDBE9009047F2 /* UtilityModels */,
+				35B1FB6929EEDAAC009047F2 /* Models */,
+				35B1FB2929EED228009047F2 /* AppDelegate.swift */,
+				35B1FB2B29EED228009047F2 /* SceneDelegate.swift */,
+				35B1FB2D29EED228009047F2 /* ViewController.swift */,
+				35B1FB2F29EED228009047F2 /* Main.storyboard */,
+				35B1FB3229EED229009047F2 /* Assets.xcassets */,
+				35B1FB3429EED229009047F2 /* LaunchScreen.storyboard */,
+				35B1FB3729EED229009047F2 /* Info.plist */,
+			);
+			path = Quran;
+			sourceTree = "<group>";
+		};
+		35B1FB5E29EED9EC009047F2 /* QuranTests */ = {
+			isa = PBXGroup;
+			children = (
+				35B1FB6729EEDA1C009047F2 /* QuranTests.swift */,
+				35B1FB6629EEDA1B009047F2 /* QuranTests-Bridging-Header.h */,
+			);
+			path = QuranTests;
+			sourceTree = "<group>";
+		};
+		35B1FB6929EEDAAC009047F2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				35B1FB3D29EED362009047F2 /* QuranSharedItem.swift */,
+				35B1FB6C29EEDB66009047F2 /* Chapter.swift */,
+				35B1FB7229EEFDD0009047F2 /* Verse.swift */,
+				35B1FB7429EEFF1C009047F2 /* Word.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		35B1FB6E29EEDBE9009047F2 /* UtilityModels */ = {
+			isa = PBXGroup;
+			children = (
+				35B1FB6F29EEDBF8009047F2 /* Utility.swift */,
+			);
+			path = UtilityModels;
+			sourceTree = "<group>";
+		};
+		35B1FB7629EF0B4D009047F2 /* SurahListVC */ = {
+			isa = PBXGroup;
+			children = (
+				35B1FB7729EF0B6C009047F2 /* SurahListVC.swift */,
+				35B1FB7929EF0B77009047F2 /* SurahListVC.storyboard */,
+				35B1FB7B29EF0C43009047F2 /* SurahListCollectionViewCell.swift */,
+				35B1FB7C29EF0C43009047F2 /* SurahListCollectionViewCell.xib */,
+			);
+			path = SurahListVC;
+			sourceTree = "<group>";
+		};
+		35B1FB7F29EF1375009047F2 /* SurahVC */ = {
+			isa = PBXGroup;
+			children = (
+				35B1FB8429EF13C4009047F2 /* SurahCollectionView.swift */,
+				35B1FB8629EF13D1009047F2 /* SurahCollectionViewCell.swift */,
+				35B1FB8729EF13D1009047F2 /* SurahCollectionViewCell.xib */,
+				35B1FB8A29EF1421009047F2 /* SurahVC.swift */,
+				35B1FB8C29EF142A009047F2 /* SurahVC.storyboard */,
+				35B1FB8E29EF1C71009047F2 /* VerseDataLoaderOperation.swift */,
+			);
+			path = SurahVC;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		35B1FB2529EED228009047F2 /* Quran */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 35B1FB3A29EED229009047F2 /* Build configuration list for PBXNativeTarget "Quran" */;
+			buildPhases = (
+				35B1FB2229EED228009047F2 /* Sources */,
+				35B1FB2329EED228009047F2 /* Frameworks */,
+				35B1FB2429EED228009047F2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Quran;
+			productName = Quran;
+			productReference = 35B1FB2629EED228009047F2 /* Quran.app */;
+			productType = "com.apple.product-type.application";
+		};
+		35B1FB5C29EED9EC009047F2 /* QuranTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 35B1FB6329EED9EC009047F2 /* Build configuration list for PBXNativeTarget "QuranTests" */;
+			buildPhases = (
+				35B1FB5929EED9EC009047F2 /* Sources */,
+				35B1FB5A29EED9EC009047F2 /* Frameworks */,
+				35B1FB5B29EED9EC009047F2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				35B1FB6229EED9EC009047F2 /* PBXTargetDependency */,
+			);
+			name = QuranTests;
+			productName = QuranTests;
+			productReference = 35B1FB5D29EED9EC009047F2 /* QuranTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		35B1FB1E29EED228009047F2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					35B1FB2529EED228009047F2 = {
+						CreatedOnToolsVersion = 14.3;
+					};
+					35B1FB5C29EED9EC009047F2 = {
+						CreatedOnToolsVersion = 14.3;
+						LastSwiftMigration = 1430;
+						TestTargetID = 35B1FB2529EED228009047F2;
+					};
+				};
+			};
+			buildConfigurationList = 35B1FB2129EED228009047F2 /* Build configuration list for PBXProject "Quran" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 35B1FB1D29EED228009047F2;
+			productRefGroup = 35B1FB2729EED228009047F2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				35B1FB2529EED228009047F2 /* Quran */,
+				35B1FB5C29EED9EC009047F2 /* QuranTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		35B1FB2429EED228009047F2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35B1FB3629EED229009047F2 /* LaunchScreen.storyboard in Resources */,
+				35B1FB7A29EF0B77009047F2 /* SurahListVC.storyboard in Resources */,
+				35B1FB3329EED229009047F2 /* Assets.xcassets in Resources */,
+				35B1FB7E29EF0C43009047F2 /* SurahListCollectionViewCell.xib in Resources */,
+				35B1FB3129EED228009047F2 /* Main.storyboard in Resources */,
+				35B1FB8D29EF142A009047F2 /* SurahVC.storyboard in Resources */,
+				35B1FB8929EF13D1009047F2 /* SurahCollectionViewCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		35B1FB5B29EED9EC009047F2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		35B1FB2229EED228009047F2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35B1FB8F29EF1C71009047F2 /* VerseDataLoaderOperation.swift in Sources */,
+				35B1FB8829EF13D1009047F2 /* SurahCollectionViewCell.swift in Sources */,
+				35B1FB7829EF0B6C009047F2 /* SurahListVC.swift in Sources */,
+				35B1FB8529EF13C4009047F2 /* SurahCollectionView.swift in Sources */,
+				35B1FB7329EEFDD0009047F2 /* Verse.swift in Sources */,
+				35B1FB7529EEFF1C009047F2 /* Word.swift in Sources */,
+				35B1FB2E29EED228009047F2 /* ViewController.swift in Sources */,
+				35B1FB6D29EEDB66009047F2 /* Chapter.swift in Sources */,
+				35B1FB3E29EED362009047F2 /* QuranSharedItem.swift in Sources */,
+				35B1FB7029EEDBF8009047F2 /* Utility.swift in Sources */,
+				35B1FB2A29EED228009047F2 /* AppDelegate.swift in Sources */,
+				35B1FB8B29EF1421009047F2 /* SurahVC.swift in Sources */,
+				35B1FB7D29EF0C43009047F2 /* SurahListCollectionViewCell.swift in Sources */,
+				35B1FB2C29EED228009047F2 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		35B1FB5929EED9EC009047F2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35B1FB6829EEDA1C009047F2 /* QuranTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		35B1FB6229EED9EC009047F2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 35B1FB2529EED228009047F2 /* Quran */;
+			targetProxy = 35B1FB6129EED9EC009047F2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		35B1FB2F29EED228009047F2 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				35B1FB3029EED228009047F2 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		35B1FB3429EED229009047F2 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				35B1FB3529EED229009047F2 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		35B1FB3829EED229009047F2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		35B1FB3929EED229009047F2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		35B1FB3B29EED229009047F2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3BV298V8XW;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Quran/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rifat.Quran;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		35B1FB3C29EED229009047F2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3BV298V8XW;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Quran/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rifat.Quran;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		35B1FB6429EED9EC009047F2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3BV298V8XW;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rifat.QuranTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "QuranTests/QuranTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Quran.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Quran";
+			};
+			name = Debug;
+		};
+		35B1FB6529EED9EC009047F2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3BV298V8XW;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rifat.QuranTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "QuranTests/QuranTests-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Quran.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Quran";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		35B1FB2129EED228009047F2 /* Build configuration list for PBXProject "Quran" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35B1FB3829EED229009047F2 /* Debug */,
+				35B1FB3929EED229009047F2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		35B1FB3A29EED229009047F2 /* Build configuration list for PBXNativeTarget "Quran" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35B1FB3B29EED229009047F2 /* Debug */,
+				35B1FB3C29EED229009047F2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		35B1FB6329EED9EC009047F2 /* Build configuration list for PBXNativeTarget "QuranTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35B1FB6429EED9EC009047F2 /* Debug */,
+				35B1FB6529EED9EC009047F2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 35B1FB1E29EED228009047F2 /* Project object */;
+}
