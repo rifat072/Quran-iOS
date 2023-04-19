@@ -111,7 +111,8 @@ extension Chapter{
         }
         
         url = url.appending(queryItems: [URLQueryItem(name: "words", value: "true"),
-                                        URLQueryItem(name: "word_fields", value: "text_uthmani,text_indopak")])
+                                        URLQueryItem(name: "word_fields", value: "text_uthmani,text_indopak"),
+                                        URLQueryItem(name: "audio", value: "\(recitationId)")])
         
         let (data, _) = try await URLSession.shared.data(from: url)
         struct Root: Decodable{
@@ -130,9 +131,10 @@ extension Chapter{
         let totalPage = Int(ceil(Double(verses_count!) / 50.0))
         for pageNumber in 1...totalPage{
             let curUrl = url.appending(queryItems: [URLQueryItem(name: "words", value: "true"),
-                                             URLQueryItem(name: "page", value: "\(pageNumber)"),
-                                             URLQueryItem(name: "per_page", value: "\(50)"),
-                                            URLQueryItem(name: "word_fields", value: "text_uthmani,text_indopak")])
+                                                    URLQueryItem(name: "page", value: "\(pageNumber)"),
+                                                    URLQueryItem(name: "per_page", value: "\(50)"),
+                                                    URLQueryItem(name: "word_fields", value: "text_uthmani,text_indopak"),
+                                                    URLQueryItem(name: "audio", value: "\(recitationId)")])
             let (data, _) = try await URLSession.shared.data(from: curUrl)
             struct Root: Decodable{
                 let verses: [Verse]

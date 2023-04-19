@@ -7,7 +7,15 @@
 
 import UIKit
 
-class Verse: Decodable {
+class Verse: Decodable, Hashable {
+    static func == (lhs: Verse, rhs: Verse) -> Bool {
+        return lhs.verse_key == rhs.verse_key
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(verse_key)
+    }
+
 
     let id: Int
     let chapter_id: Int?
@@ -28,6 +36,7 @@ class Verse: Decodable {
     let page_number: Int
     let image_url: URL?
     let image_width: Int?
+    let audio: AudioFile?
     var words: [Word]?{
         didSet{
             words?.sort(by: { word1, word2 in
@@ -35,5 +44,53 @@ class Verse: Decodable {
             })
         }
     }
+    
+    
+    private static let audioDownloadedDefaults : UserDefaults = UserDefaults(suiteName: "VerseDownload")!
+    var isDownloaded: Bool{
+        set{
+            guard let url = audioDownloadRootUrl?.appending(path: audio?.url ?? "") else {
+                return
+            }
+            Verse.audioDownloadedDefaults.set(newValue, forKey: url.absoluteString)
+        } get{
+            guard let url = audioDownloadRootUrl?.appending(path: audio?.url ?? "") else {
+                return false
+            }
+            return Verse.audioDownloadedDefaults.bool(forKey: url.absoluteString) 
+        }
+    }
+    
+    
+    func loadAudioFile() async throws{
+        guard let url = audioDownloadRootUrl?.appending(path: audio?.url ?? "") else {
+            return
+        }
+
+        if let relativePath = audio?.url,
+           let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first{
+            
+            let savedUrl = directory.appending(path:relativePath)
+            
+            if FileManager.default.fileExists(atPath: savedUrl.path()){
+                return
+            }
+            try? FileManager.default.createDirectory(at: savedUrl.deletingLastPathComponent(), withIntermediateDirectories: true)
+            let (data, _) = try await URLSession.shared.data(from: url)
+            try data.write(to: savedUrl)
+        }
+    }
+    
+    func getSavedUrl() -> URL?{
+        guard let url = audioDownloadRootUrl?.appending(path: audio?.url ?? "") else {
+            return nil
+        }
+        if let relativePath = audio?.url,
+           let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first{
+            return directory.appending(path:relativePath)
+        }
+        return nil
+    }
+
 
 }

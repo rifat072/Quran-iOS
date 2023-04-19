@@ -51,3 +51,10 @@ class Pagination: Decodable{
     let total_pages: Int?
     let total_records: Int?
 }
+
+class AudioFile: Decodable{
+    let url: String?
+    let duration: Int?
+    let format: String?
+    let segments: [[Int]]
+}
