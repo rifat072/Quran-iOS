@@ -22,9 +22,9 @@
                                 <rect key="frame" x="20" y="79" width="353" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="erG-Vv-eqB">
-                                        <rect key="frame" x="148.66666666666666" y="7.6666666666666714" width="56" height="35"/>
+                                        <rect key="frame" x="125.66666666666666" y="7.6666666666666714" width="102" height="35"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Play"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="PlayPause"/>
                                         <connections>
                                             <action selector="playBtnPressed:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="O0x-eX-2cW"/>
                                         </connections>
