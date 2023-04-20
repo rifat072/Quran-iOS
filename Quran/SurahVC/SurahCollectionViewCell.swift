@@ -15,6 +15,7 @@ class SurahCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var containerStackView: UIStackView!
     
+    @IBOutlet weak var titleLbl: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,7 +28,8 @@ class SurahCollectionViewCell: UICollectionViewCell {
         for view in views{
             view.removeFromSuperview()
         }
-        
+        let splitText = verse?.verse_key.split(separator: ":")[1]
+        self.titleLbl.text = "Ayah - \(splitText ?? "")"
         let lines = verse?.generateLines(wordSpacing: wordSpacing, lineMaxWidth: self.bounds.width) ?? []
         
         for line in lines {

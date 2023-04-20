@@ -20,9 +20,19 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jfu-tN-sgk">
                         <rect key="frame" x="0.0" y="0.0" width="417" height="40"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ttH-8x-U8g">
+                                <rect key="frame" x="10" y="9.6666666666666643" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" red="0.098039215686274508" green="0.10196078431372549" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="UOZ-wY-0AC"/>
+                            <constraint firstItem="ttH-8x-U8g" firstAttribute="leading" secondItem="jfu-tN-sgk" secondAttribute="leading" constant="10" id="aUi-Ca-A4C"/>
+                            <constraint firstItem="ttH-8x-U8g" firstAttribute="centerY" secondItem="jfu-tN-sgk" secondAttribute="centerY" id="fBa-nU-ZkZ"/>
                         </constraints>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="bottom" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="ae1-8F-ROT">
@@ -46,13 +56,14 @@
             <connections>
                 <outlet property="containerStackView" destination="ae1-8F-ROT" id="sNg-0U-BYU"/>
                 <outlet property="controlView" destination="jfu-tN-sgk" id="cqV-Cy-HSi"/>
+                <outlet property="titleLbl" destination="ttH-8x-U8g" id="6Vi-YN-wB9"/>
             </connections>
             <point key="canvasLocation" x="220.61068702290075" y="52.112676056338032"/>
         </collectionViewCell>
     </objects>
     <resources>
         <namedColor name="cellDeselectedColor">
-            <color red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.14900000393390656" green="0.14900000393390656" blue="0.14900000393390656" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
