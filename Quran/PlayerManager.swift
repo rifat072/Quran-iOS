@@ -10,9 +10,42 @@ import MediaPlayer
 import UIKit
 import FloatingPanel
 
-protocol PlayerManagerDelegate: NSObject{
-    func updateDuration(value: Float)
-    func currentPlayerProgress(value: Float)
+enum RepeationType: CaseIterable{
+    case _1
+    case _2
+    case _4
+    case _8
+    case _infinite
+    
+    func getString() -> String{
+        if self == ._1 {return "1"}
+        else if self == ._2{return "2"}
+        else if self == ._4{return "4"}
+        else if self == ._8{return "8"}
+        else {return "infinte"}
+    }
+    
+    static func getType(str: String) -> RepeationType{
+        if str == "1" {return ._1}
+        else if str == "2"{return ._2}
+        else if str == "4"{return ._4}
+        else if str == "8"{return ._8}
+        else {return ._infinite}
+    }
+    
+    func getIntValue() -> Int{
+        if self == ._1{
+            return 1
+        } else if self == ._2{
+            return 2
+        } else if self == ._4{
+            return 4
+        } else if self == ._8{
+            return 8
+        } else {
+            return 100000000
+        }
+    }
 }
 
 
@@ -20,31 +53,21 @@ class PlayerManager: NSObject {
     //TODO: Need to maintain Queue for downloading But downloading is fast enough
     static let shared = PlayerManager()
     
-    private var currentlyPlayingIndex: Int?
-    private var playList: [Verse]
-    private let player: AVQueuePlayer
-    private let shouldLoop: Bool
-    private var timer: Timer?
-    private var isPlaying: Bool
+    private var currentlyPlayingIndex: Int? = nil
+    private var playList: [Verse] = []
+    private let player: AVQueuePlayer  = AVQueuePlayer()
+    private var isPlaying: Bool = false
     private var playerItemContext = 0
-    
+    private var repeationType: RepeationType = ._1
+    private var currentLoopCount: Int = 1
     weak var navigationController: UINavigationController? = nil
-    private let floatingPanel: FloatingPanelController
+    private let floatingPanel: FloatingPanelController = FloatingPanelController()
     private let floatingPanelContentVC: FloatingPanelContentVC
-    
-    
-    weak var delegate: PlayerManagerDelegate? = nil
+
     
     private override init(){
-        self.currentlyPlayingIndex = nil
-        self.playList = []
-        self.player = AVQueuePlayer()
-        self.shouldLoop = false
-        self.timer = nil
-        self.isPlaying = false
-        self.floatingPanel = FloatingPanelController()
         self.floatingPanelContentVC = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "FloatingPanelContentVC") as! FloatingPanelContentVC
-        
+        self.repeationType = ._1
         super.init()
         
         
@@ -56,7 +79,6 @@ class PlayerManager: NSObject {
         
         self.player.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 60), queue: .main) { time in
             self.floatingPanelContentVC.setTotalDuration(value: Float(self.player.currentItem?.duration.seconds ?? 0 ))
-            self.delegate?.currentPlayerProgress(value: Float(time.seconds))
             
             self.floatingPanelContentVC.currentProgress(value: Float(time.seconds))
         }
@@ -96,8 +118,6 @@ class PlayerManager: NSObject {
     }
     
     private func makePlayerDeactive(){
-        self.timer?.invalidate()
-        self.timer = nil
         self.isPlaying = false
         self.player.pause()
     }
@@ -120,16 +140,21 @@ class PlayerManager: NSObject {
         self.makePlayerDeactive()
     }
     
+    func setRepationType(type: RepeationType){
+        self.repeationType = type
+        self.currentLoopCount = 1
+    }
+    
     func addVerseToPlayList(verse: Verse){
         let playerItem = VersePlayerItem(verse: verse)
         self.player.insert(playerItem, after: nil)
         self.playList.append(verse)
-        
     }
     
     func clearPlayList(){
         self.player.removeAllItems()
         self.playList = []
+        self.currentLoopCount = 1
     }
     
     func getPlayListCount() -> Int{
@@ -224,13 +249,36 @@ extension PlayerManager{
     
     @objc private func playerItemDidFinishPlaying(sender: Notification){
         if self.currentlyPlayingIndex! + 1 == self.playList.count{
+            self.currentlyPlayingIndex = 0
             self.player.removeAllItems()
-            for verse in self.playList{
-                let playerItem = VersePlayerItem(verse: verse)
-                self.player.insert(playerItem, after: nil)
+            
+            func addVerses(){
+                for verse in self.playList{
+                    let playerItem = VersePlayerItem(verse: verse)
+                    self.player.insert(playerItem, after: nil)
+                }
             }
+            
+            
+            if self.repeationType == ._1{
+                self.clearPlayList()
+                self.dismisFloatingPanel()
+            } else if self.repeationType == ._infinite{
+                addVerses()
+            } else {
+                self.currentLoopCount += 1
+                let loopCount = self.repeationType.getIntValue()
+                if self.currentLoopCount <= loopCount{
+                    addVerses()
+                } else {
+                    self.clearPlayList()
+                    self.dismisFloatingPanel()
+                }
+            }
+ 
         } else {
             self.currentlyPlayingIndex! += 1
+            self.currentlyPlayingIndex! %= self.playList.count
         }
         
     }

@@ -4,7 +4,9 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,28 +20,114 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mu9-Pu-iPa">
-                                <rect key="frame" x="20" y="79" width="353" height="50"/>
+                                <rect key="frame" x="20" y="79" width="353" height="130"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="erG-Vv-eqB">
-                                        <rect key="frame" x="125.66666666666666" y="8" width="102" height="34.333333333333336"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="PlayPause">
-                                            <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </buttonConfiguration>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x3N-UO-WRZ">
+                                        <rect key="frame" x="10" y="9.9999999999999982" width="333" height="20.333333333333329"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="61" translatesAutoresizingMaskIntoConstraints="NO" id="MCg-nV-lFy">
+                                        <rect key="frame" x="10" y="90" width="333" height="30"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="XVY-gv-lyJ">
+                                                <rect key="frame" x="0.0" y="0.0" width="157.33333333333334" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T2i-x2-Ibg">
+                                                        <rect key="frame" x="0.0" y="0.0" width="26.666666666666668" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Od0-QJ-T3C">
+                                                        <rect key="frame" x="36.666666666666671" y="0.0" width="44" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <menu key="menu" id="8Ha-Bo-OVE">
+                                                            <children>
+                                                                <command title="Item 1" id="aDo-Ds-zqo"/>
+                                                                <command title="Item 2" id="BGt-6z-Jme"/>
+                                                            </children>
+                                                        </menu>
+                                                        <state key="normal" title="Select">
+                                                            <color key="titleColor" name="cellSelectedColor"/>
+                                                        </state>
+                                                    </button>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q8g-ZO-iCn">
+                                                        <rect key="frame" x="90.666666666666671" y="0.0" width="12.666666666666671" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bmO-Zf-W3B">
+                                                        <rect key="frame" x="113.33333333333334" y="0.0" width="44" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <menu key="menu" id="sOl-tG-mI4">
+                                                            <children>
+                                                                <command title="Item 1" id="qv4-9V-54i"/>
+                                                                <command title="Item 2" id="zm6-6J-566"/>
+                                                            </children>
+                                                        </menu>
+                                                        <state key="normal" title="Select">
+                                                            <color key="titleColor" name="cellSelectedColor"/>
+                                                        </state>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="9Oo-xR-c7X">
+                                                <rect key="frame" x="244" y="0.0" width="89" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Repeat" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pa0-kL-VqT">
+                                                        <rect key="frame" x="0.0" y="0.0" width="37" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WG9-wI-0FO">
+                                                        <rect key="frame" x="45" y="0.0" width="44" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <menu key="menu" id="kDF-Ka-mdh">
+                                                            <children>
+                                                                <command title="Item 1" id="7aA-1j-331"/>
+                                                                <command title="Item 2" id="ThM-66-kl9"/>
+                                                            </children>
+                                                        </menu>
+                                                        <state key="normal" title="Select">
+                                                            <color key="titleColor" name="cellSelectedColor"/>
+                                                        </state>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="erG-Vv-eqB">
+                                        <rect key="frame" x="159.66666666666666" y="41" width="34" height="34"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="erG-Vv-eqB" secondAttribute="height" id="BBm-uK-Umi"/>
+                                            <constraint firstAttribute="width" constant="34" id="rgH-87-XYk"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Button" image="play"/>
                                         <connections>
                                             <action selector="playBtnPressed:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="O0x-eX-2cW"/>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="erG-Vv-eqB" firstAttribute="centerX" secondItem="mu9-Pu-iPa" secondAttribute="centerX" id="7YZ-tU-Pak"/>
-                                    <constraint firstAttribute="height" constant="50" id="GEV-1M-ZBd"/>
-                                    <constraint firstItem="erG-Vv-eqB" firstAttribute="centerY" secondItem="mu9-Pu-iPa" secondAttribute="centerY" id="Y4H-TK-uHe"/>
+                                    <constraint firstAttribute="trailing" secondItem="MCg-nV-lFy" secondAttribute="trailing" constant="10" id="2mk-kA-JFr"/>
+                                    <constraint firstAttribute="trailing" secondItem="x3N-UO-WRZ" secondAttribute="trailing" constant="10" id="BTh-bX-z8W"/>
+                                    <constraint firstAttribute="height" constant="130" id="GEV-1M-ZBd"/>
+                                    <constraint firstAttribute="bottom" secondItem="MCg-nV-lFy" secondAttribute="bottom" constant="10" id="Zhf-b7-4ce"/>
+                                    <constraint firstItem="MCg-nV-lFy" firstAttribute="leading" secondItem="mu9-Pu-iPa" secondAttribute="leading" constant="10" id="d4h-QM-Y4d"/>
+                                    <constraint firstItem="x3N-UO-WRZ" firstAttribute="leading" secondItem="mu9-Pu-iPa" secondAttribute="leading" constant="10" id="eL2-Ao-lxR"/>
+                                    <constraint firstItem="MCg-nV-lFy" firstAttribute="top" secondItem="erG-Vv-eqB" secondAttribute="bottom" constant="15" id="i4h-m2-KEH"/>
+                                    <constraint firstItem="x3N-UO-WRZ" firstAttribute="top" secondItem="mu9-Pu-iPa" secondAttribute="top" constant="10" id="r0e-DP-OxM"/>
+                                    <constraint firstItem="erG-Vv-eqB" firstAttribute="centerX" secondItem="mu9-Pu-iPa" secondAttribute="centerX" id="rXs-V4-IRJ"/>
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Xnj-Z9-hC1" customClass="SurahCollectionView" customModule="Quran" customModuleProvider="target">
-                                <rect key="frame" x="20" y="149" width="353" height="649"/>
+                                <rect key="frame" x="20" y="229" width="353" height="569"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="HWU-oI-ORd">
                                     <size key="itemSize" width="128" height="128"/>
@@ -73,7 +161,11 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="Xnj-Z9-hC1" id="BCS-u1-cOS"/>
+                        <outlet property="fromButton" destination="Od0-QJ-T3C" id="Qqc-xy-eak"/>
                         <outlet property="playBtn" destination="erG-Vv-eqB" id="Wqx-sJ-Cez"/>
+                        <outlet property="repeatButton" destination="WG9-wI-0FO" id="9hG-Jz-Ggl"/>
+                        <outlet property="titleLabel" destination="x3N-UO-WRZ" id="GgQ-mB-Mtr"/>
+                        <outlet property="toButton" destination="bmO-Zf-W3B" id="LEe-Nv-vga"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -81,4 +173,10 @@
             <point key="canvasLocation" x="52.671755725190835" y="-34.507042253521128"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="play" width="320" height="320"/>
+        <namedColor name="cellSelectedColor">
+            <color red="0.37299999594688416" green="0.37299999594688416" blue="0.96100002527236938" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>
