@@ -6,16 +6,17 @@
 //
 
 import UIKit
+import FloatingPanel
 
 class SurahVC: UIViewController {
     
     var chapter: Chapter!
 
-    @IBOutlet weak var floatingView: FloatingView!{
-        didSet{
-            self.floatingView.delegate = self
-        }
-    }
+//    @IBOutlet weak var floatingView: FloatingView!{
+//        didSet{
+//            self.floatingView.delegate = self
+//        }
+//    }
     
     @IBOutlet weak var playBtn: UIButton!{
         didSet{
@@ -30,14 +31,14 @@ class SurahVC: UIViewController {
         }
     }
     
-    private let playerManager = PlayerManager()
+    private let playerManager = PlayerManager.shared
     override func viewDidLoad() {
         super.viewDidLoad()
         self.playerManager.delegate = self
+        
     }
 
     @IBAction func playBtnPressed(_ sender: Any) {
-        self.floatingView.isHidden = false
         if self.playerManager.getPlayListCount() == 0{
             for i in 1...chapter.getVersesCount(){
                 if let verse = try! chapter.getVerse(idx: i){
@@ -47,18 +48,14 @@ class SurahVC: UIViewController {
         }
         playerManager.togglePlayPause()
     }
-    
-    deinit{
-        self.playerManager.pause()
-    }
 }
 
-extension SurahVC: FloatingViewDelegate{
-    func crossPressed() {
-        self.playerManager.clearPlayList()
-        self.playerManager.pause()
-    }
-}
+//extension SurahVC: FloatingViewDelegate{
+//    func crossPressed() {
+//        self.playerManager.clearPlayList()
+//        self.playerManager.pause()
+//    }
+//}
 
 
 extension SurahVC: SurahCollectionViewDelegate{
@@ -70,19 +67,19 @@ extension SurahVC: SurahCollectionViewDelegate{
 extension SurahVC: PlayerManagerDelegate{
     
     func currentPlayerProgress(value: Float) {
-        if value.isNaN {
-            return
-        }
-        if floatingView.totalDuration != nil{
-            let data = secondsToHoursMinutesSeconds(Int(value))
-            let str = NSString(format:"%02d:%02d:%02d", data.0, data.1, data.2)
-            self.floatingView.startTimeLabel.text = String(str)
-            self.floatingView.playerSlider.setValue(value/floatingView.totalDuration!, animated: true)
-        }
+//        if value.isNaN {
+//            return
+//        }
+//        if floatingView.totalDuration != nil{
+//            let data = secondsToHoursMinutesSeconds(Int(value))
+//            let str = NSString(format:"%02d:%02d:%02d", data.0, data.1, data.2)
+//            self.floatingView.startTimeLabel.text = String(str)
+//            self.floatingView.playerSlider.setValue(value/floatingView.totalDuration!, animated: true)
+//        }
     }
     
     func updateDuration(value: Float) {
-        self.floatingView.totalDuration = value
+//        self.floatingView.totalDuration = value
     }
     
     

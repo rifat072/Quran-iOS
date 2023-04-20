@@ -14,10 +14,8 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        PlayerManager.shared.configureFloatingPanel(navControl: self.navigationController!)
         self.btnLoadSurahPressed(btnLoadSurah)
-        
-        
     }
     @IBAction func btnLoadSurahPressed(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "SurahListVC", bundle: .main)
