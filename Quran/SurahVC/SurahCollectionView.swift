@@ -17,7 +17,6 @@ class SurahCollectionView: UICollectionView {
                     try await self.chapter.loadAllVerses()
                     self.delegate = self
                     self.dataSource = self
-                    self.prefetchDataSource = self
                 } catch{
                     print("Cannot Load Data")
                     //TODO: Should show retry
@@ -51,29 +50,11 @@ extension SurahCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
         do{
             let verse = try self.chapter.getVerse(idx: indexPath.row + 1)
             cell.updateAppearanceFor(verse: verse, wordSpacing: SurahCollectionView.wordSpacing)
-            
-            if let verse = verse{
-                AudioDownloaderOperation.addDownloadIfNeeded(verse: verse)
-            }
-
         } catch{
             
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        do{
-            let verse = try self.chapter.getVerse(idx: indexPath.row + 1)
-            if let verse = verse{
-                AudioDownloaderOperation.cancelDownload(verse: verse)
-            }
-
-        } catch{
-            
-        }
-        
-    }
-
 
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -93,24 +74,6 @@ extension SurahCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 20
-    }
-}
-
-extension SurahCollectionView: UICollectionViewDataSourcePrefetching{
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        for indexPath in indexPaths {
-            if let verse = try? self.chapter.getVerse(idx: indexPath.row + 1){
-                AudioDownloaderOperation.addDownloadIfNeeded(verse: verse)
-            }
-        }
-        
-    }
-    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
-        for indexPath in indexPaths {
-            if let verse = try? self.chapter.getVerse(idx: indexPath.row + 1){
-                AudioDownloaderOperation.cancelDownload(verse: verse)
-            }
-        }
     }
 }
 

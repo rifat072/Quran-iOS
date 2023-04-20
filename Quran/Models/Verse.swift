@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class Verse: Decodable, Hashable {
     static func == (lhs: Verse, rhs: Verse) -> Bool {
@@ -82,15 +83,24 @@ class Verse: Decodable, Hashable {
     }
     
     func getSavedUrl() -> URL?{
-        guard let url = audioDownloadRootUrl?.appending(path: audio?.url ?? "") else {
-            return nil
-        }
         if let relativePath = audio?.url,
            let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first{
             return directory.appending(path:relativePath)
         }
         return nil
     }
-
+    
+    func getServerURL() -> URL?{
+        return audioDownloadRootUrl?.appending(path: audio?.url ?? "")
+    }
+    
+    func getPlayableUrl() -> URL?{
+        if self.isDownloaded{
+            return self.getSavedUrl()
+        } else {
+            return self.getServerURL()
+        }
+    }
+    
 
 }

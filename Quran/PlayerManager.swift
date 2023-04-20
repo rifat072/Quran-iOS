@@ -17,7 +17,7 @@ class PlayerManager: NSObject {
     
     private var currentlyPlayingIndex: Int?
     private var playList: [Verse]
-    private let player: AVPlayer
+    private let player: AVQueuePlayer
     private let shouldLoop: Bool
     private var timer: Timer?
     private var isPlaying: Bool
@@ -28,20 +28,25 @@ class PlayerManager: NSObject {
     override init(){
         self.currentlyPlayingIndex = nil
         self.playList = []
-        self.player = AVPlayer()
+        self.player = AVQueuePlayer()
         self.shouldLoop = false
         self.timer = nil
         self.isPlaying = false
         super.init()
         
         
-        AudioDownloaderOperation.isPresentInPlayList = self.isPresentInPlayList(verse:)
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(.playback, mode: .moviePlayback, options: [])
+        } catch {
+            print("Failed to set audio session category.")
+        }
         
         NotificationCenter.default.addObserver(
           self,
           selector: #selector(self.playerItemDidFinishPlaying(sender:)),
           name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
-          object: nil)
+          object: player.currentItem)
     }
     
     @objc private func timerSelector(timer: Timer){
@@ -50,15 +55,14 @@ class PlayerManager: NSObject {
             self.delegate?.currentPlayerProgress(normalizedValue: Float(currentTime/totaltime))
         }
     }
-    
-    func isPresentInPlayList(verse: Verse) -> Bool{
-        return playList.firstIndex(of: verse) != nil
-    }
-    
+
     private func makePlayerActive(){
         self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.timerSelector(timer:)), userInfo: nil, repeats: true)
         self.player.play()
         self.isPlaying = true
+        if self.currentlyPlayingIndex == nil{
+            self.currentlyPlayingIndex = 0
+        }
     }
     
     private func makePlayerDeactive(){
@@ -77,51 +81,28 @@ class PlayerManager: NSObject {
     }
     
     func play(){
-        if self.currentlyPlayingIndex == nil && self.playList.count >= 1{
-            self.currentlyPlayingIndex = 0
-            self.play(index: self.currentlyPlayingIndex!)
-        } else {
-            self.makePlayerActive()
-        }
+        self.makePlayerActive()
     }
     func pause(){
         self.makePlayerDeactive()
     }
     
     func addVerseToPlayList(verse: Verse){
+        self.player.insert(VersePlayerItem(verse: verse), after: nil)
         self.playList.append(verse)
+        
     }
     
     func clearPlayList(){
+        self.player.removeAllItems()
         self.playList = []
     }
     
-    
+    var isFirst = true
 }
 
 extension PlayerManager{
-    private func play(index: Int){
-        let verse = self.playList[index]
-        AudioDownloaderOperation.addDownloadIfNeeded(verse: verse) { [weak self] in
-            guard let self = self else {
-                return
-            }
-            let url = verse.getSavedUrl()!
-            let playerItem = AVPlayerItem(url: url)
-            self.player.replaceCurrentItem(with: playerItem)
-            
-            playerItem.addObserver(self,
-                                   forKeyPath: #keyPath(AVPlayerItem.status),
-                                   options: [.old, .new],
-                                   context: &playerItemContext)
-            
-            self.makePlayerActive()
-            
 
-
-        }
-    }
-    
     override func observeValue(forKeyPath keyPath: String?,
                                of object: Any?,
                                change: [NSKeyValueChangeKey : Any]?,
@@ -153,24 +134,14 @@ extension PlayerManager{
     }
     
     @objc private func playerItemDidFinishPlaying(sender: Notification){
-        if self.currentlyPlayingIndex == nil{
-            self.isPlaying = false
-            return
-        }
-        self.currentlyPlayingIndex! += 1
-        if self.currentlyPlayingIndex! >= self.playList.count{
-            if shouldLoop{
-                self.currentlyPlayingIndex = 0
-                self.play(index: self.currentlyPlayingIndex!)
-            } else {
-                self.currentlyPlayingIndex = nil
-                self.isPlaying = false
+        if self.currentlyPlayingIndex! + 1 == self.playList.count{
+            self.player.removeAllItems()
+            for verse in self.playList{
+                self.player.insert(VersePlayerItem(verse: verse), after: nil)
             }
+        } else {
+            self.currentlyPlayingIndex! += 1
         }
-        if self.currentlyPlayingIndex != nil{
-            self.play(index: self.currentlyPlayingIndex!)
-        }
-        
 
     }
 }
