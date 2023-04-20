@@ -18,6 +18,7 @@ class SurahCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.layer.cornerRadius = 15
     }
 
     
@@ -144,7 +145,6 @@ extension Verse{
         
         func generateNewLine() -> UIStackView{
             let stackView = UIStackView()
-            stackView.backgroundColor = .red
             stackView.axis = .horizontal
             stackView.distribution = .equalSpacing
             stackView.alignment = .center

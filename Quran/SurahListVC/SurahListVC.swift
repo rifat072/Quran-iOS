@@ -10,6 +10,8 @@ import UIKit
 class SurahListVC: UIViewController {
     public static let reuseIdentifier = "SurahListCollectionViewCell"
     
+    @IBOutlet weak var headView: UIView!
+    
     @IBOutlet weak var collectionView: UICollectionView!{
         didSet{
             Task{
@@ -32,6 +34,7 @@ class SurahListVC: UIViewController {
 }
 
 
+
 extension SurahListVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return quran.chapterCount()
@@ -39,8 +42,6 @@ extension SurahListVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SurahListVC.reuseIdentifier, for: indexPath)
-
-        cell.backgroundColor = .blue
         return cell
     }
     
@@ -64,7 +65,7 @@ extension SurahListVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: 100)
+        return CGSize(width: collectionView.bounds.width, height: 80)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 20

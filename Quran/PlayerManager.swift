@@ -9,7 +9,7 @@ import AVFoundation
 
 protocol PlayerManagerDelegate: NSObject{
     func updateDuration(value: Float)
-    func currentPlayerProgress(normalizedValue: Float)
+    func currentPlayerProgress(value: Float)
 }
 
 class PlayerManager: NSObject {
@@ -39,17 +39,14 @@ class PlayerManager: NSObject {
           selector: #selector(self.playerItemDidFinishPlaying(sender:)),
           name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
           object: player.currentItem)
+        
+        self.player.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 2), queue: .main) { time in
+            self.delegate?.currentPlayerProgress(value: Float(time.seconds))
+        }
+
     }
     
-    @objc private func timerSelector(timer: Timer){
-        let currentTime = self.player.currentTime().seconds
-        if let totaltime = self.player.currentItem?.duration.seconds{
-            self.delegate?.currentPlayerProgress(normalizedValue: Float(currentTime/totaltime))
-        }
-    }
-
     private func makePlayerActive(){
-        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.timerSelector(timer:)), userInfo: nil, repeats: true)
         self.player.play()
         self.isPlaying = true
         if self.currentlyPlayingIndex == nil{
@@ -80,7 +77,12 @@ class PlayerManager: NSObject {
     }
     
     func addVerseToPlayList(verse: Verse){
-        self.player.insert(VersePlayerItem(verse: verse), after: nil)
+        let playerItem = VersePlayerItem(verse: verse)
+        self.player.insert(playerItem, after: nil)
+        playerItem.addObserver(self,
+                               forKeyPath: #keyPath(AVPlayerItem.status),
+                               options: [.old, .new],
+                               context: &playerItemContext)
         self.playList.append(verse)
         
     }
@@ -131,7 +133,12 @@ extension PlayerManager{
         if self.currentlyPlayingIndex! + 1 == self.playList.count{
             self.player.removeAllItems()
             for verse in self.playList{
-                self.player.insert(VersePlayerItem(verse: verse), after: nil)
+                let playerItem = VersePlayerItem(verse: verse)
+                self.player.insert(playerItem, after: nil)
+                playerItem.addObserver(self,
+                                       forKeyPath: #keyPath(AVPlayerItem.status),
+                                       options: [.old, .new],
+                                       context: &playerItemContext)
             }
         } else {
             self.currentlyPlayingIndex! += 1

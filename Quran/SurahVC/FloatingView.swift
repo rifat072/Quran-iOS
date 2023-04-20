@@ -7,17 +7,17 @@
 
 import UIKit
 
+protocol FloatingViewDelegate: NSObject{
+    func crossPressed()
+}
+
 class FloatingView: UIView {
+    weak var delegate: FloatingViewDelegate? = nil
     var totalDuration: Float!{
         didSet{
-            let seconds = Int(totalDuration)
-            let dateComponents = DateComponents(second: seconds)
-            let formatter = DateComponentsFormatter()
-            formatter.allowedUnits = [.minute, .second]
-            formatter.unitsStyle = .positional
-            let formattedString = formatter.string(from: dateComponents)!
-            
-            self.endTimeLabel.text = formattedString
+            let value = secondsToHoursMinutesSeconds(Int(totalDuration))
+            let str = NSString(format:"%02d:%02d:%02d", value.0, value.1, value.2)
+            self.endTimeLabel.text = String(str)
         }
     }
     
@@ -27,9 +27,20 @@ class FloatingView: UIView {
     @IBOutlet weak var endTimeLabel: UILabel!
     @IBOutlet weak var playerSlider: UISlider!
     
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        self.layer.cornerRadius = 15
+        self.isHidden = true
+    }
+    
     
     @IBAction func sliderValueChanged(sender: UISlider){
         
+    }
+    
+    @IBAction func crossPressed(sender: UIButton){
+        self.delegate?.crossPressed()
+        self.isHidden = true
     }
 }
 

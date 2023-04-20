@@ -13,6 +13,7 @@ protocol SurahCollectionViewDelegate: NSObject{
 
 class SurahCollectionView: UICollectionView {
     
+    static let lineHeight: Int = 70
     private static let wordSpacing: CGFloat = 15
     weak var viewControllerDelegate: SurahCollectionViewDelegate? = nil
     var chapter: Chapter!{
@@ -47,7 +48,6 @@ extension SurahCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SurahCollectionViewCell.reuseIdentifier, for: indexPath)
-        cell.backgroundColor = .blue
         return cell
     }
     
@@ -67,8 +67,7 @@ extension SurahCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
         do{
             let verse = try self.chapter.getVerse(idx: indexPath.row + 1)
             let lineCount = verse?.getLineCount(maxWidth: collectionView.bounds.width, itemSpacing: SurahCollectionView.wordSpacing) ?? 0
-            print("For \(indexPath.row) \(lineCount)")
-            return CGSize(width: collectionView.bounds.width, height: CGFloat(lineCount * 50 + 40))
+            return CGSize(width: collectionView.bounds.width, height: CGFloat(lineCount * SurahCollectionView.lineHeight + 40))
         } catch {
             return CGSize.zero
         }

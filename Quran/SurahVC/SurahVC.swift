@@ -11,7 +11,11 @@ class SurahVC: UIViewController {
     
     var chapter: Chapter!
 
-    @IBOutlet weak var floatingView: FloatingView!
+    @IBOutlet weak var floatingView: FloatingView!{
+        didSet{
+            self.floatingView.delegate = self
+        }
+    }
     
     @IBOutlet weak var playBtn: UIButton!{
         didSet{
@@ -33,6 +37,7 @@ class SurahVC: UIViewController {
     }
 
     @IBAction func playBtnPressed(_ sender: Any) {
+        self.floatingView.isHidden = false
         if self.playerManager.getPlayListCount() == 0{
             for i in 1...chapter.getVersesCount(){
                 if let verse = try! chapter.getVerse(idx: i){
@@ -48,6 +53,13 @@ class SurahVC: UIViewController {
     }
 }
 
+extension SurahVC: FloatingViewDelegate{
+    func crossPressed() {
+        self.playerManager.clearPlayList()
+        self.playerManager.pause()
+    }
+}
+
 
 extension SurahVC: SurahCollectionViewDelegate{
     func isReadyForStream() {
@@ -56,27 +68,21 @@ extension SurahVC: SurahCollectionViewDelegate{
 }
 
 extension SurahVC: PlayerManagerDelegate{
-    func currentPlayerProgress(normalizedValue: Float) {
-        if normalizedValue.isNaN {
+    
+    func currentPlayerProgress(value: Float) {
+        if value.isNaN {
             return
         }
         if floatingView.totalDuration != nil{
-            let seconds = Int(normalizedValue * floatingView.totalDuration)
-            let dateComponents = DateComponents(second: seconds)
-            let formatter = DateComponentsFormatter()
-            formatter.allowedUnits = [.minute, .second]
-            formatter.unitsStyle = .positional
-            let formattedString = formatter.string(from: dateComponents)!
-            self.floatingView.startTimeLabel.text = formattedString
+            let data = secondsToHoursMinutesSeconds(Int(value))
+            let str = NSString(format:"%02d:%02d:%02d", data.0, data.1, data.2)
+            self.floatingView.startTimeLabel.text = String(str)
+            self.floatingView.playerSlider.setValue(value/floatingView.totalDuration!, animated: true)
         }
-
-        self.floatingView.playerSlider.setValue(normalizedValue, animated: true)
     }
     
     func updateDuration(value: Float) {
         self.floatingView.totalDuration = value
-
-
     }
     
     
