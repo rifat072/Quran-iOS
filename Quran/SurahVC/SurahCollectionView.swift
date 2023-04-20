@@ -7,9 +7,14 @@
 
 import UIKit
 
+protocol SurahCollectionViewDelegate: NSObject{
+    func isReadyForStream()
+}
+
 class SurahCollectionView: UICollectionView {
     
     private static let wordSpacing: CGFloat = 15
+    weak var viewControllerDelegate: SurahCollectionViewDelegate? = nil
     var chapter: Chapter!{
         didSet{
             Task{
@@ -17,6 +22,7 @@ class SurahCollectionView: UICollectionView {
                     try await self.chapter.loadAllVerses()
                     self.delegate = self
                     self.dataSource = self
+                    self.viewControllerDelegate?.isReadyForStream()
                 } catch{
                     print("Cannot Load Data")
                     //TODO: Should show retry
@@ -84,39 +90,35 @@ extension Word{
     func getMaxWidth() -> CGFloat{
         
         func getWidth(for text: String?, size: Int) -> CGFloat{
-            let label = UILabel()
-            label.text = text
-            label.textAlignment = .center
-            label.font = UIFont.systemFont(ofSize: CGFloat(size))
-            return label.textWidth()
+            Word.dummyLabel.text = text
+            Word.dummyLabel.textAlignment = .center
+            Word.dummyLabel.font = UIFont.systemFont(ofSize: CGFloat(size))
+            return Word.dummyLabel.textWidth()
         }
-        
-        
-        var maxWidth: CGFloat = 0
-        maxWidth = max(maxWidth, getWidth(for: self.text_uthmani, size: 15))
-        maxWidth = max(maxWidth, getWidth(for: self.transliteration.text, size: 11))
-        maxWidth = max(maxWidth, getWidth(for: self.translation.text, size: 11))
-        
-        return maxWidth
+
+        return  max(getWidth(for: self.text_uthmani, size: 15),
+                    getWidth(for: self.transliteration.text, size: 11),
+                    getWidth(for: self.translation.text, size: 11))
     }
     
 }
 
 extension Verse{
+    
     func getLineCount(maxWidth: CGFloat, itemSpacing: CGFloat = 15) -> Int{
         if self.words == nil {return 0}
 
-        
+
         var currWidth: CFloat = 0
         var lineCount: Int = 1
-        
-        
+
+
         for word in self.words!{
             if word.char_type_name == "end" {
                 continue
             }
             let wordWidth: CGFloat = word.getMaxWidth()
-            
+
             if CGFloat(currWidth) + wordWidth <= maxWidth {
                 currWidth += Float(wordWidth + itemSpacing)
             } else {
@@ -124,7 +126,7 @@ extension Verse{
                 currWidth = CFloat(wordWidth + itemSpacing)
             }
         }
-        
+
         return lineCount
     }
 }

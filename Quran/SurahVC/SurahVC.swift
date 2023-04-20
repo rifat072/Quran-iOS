@@ -13,9 +13,15 @@ class SurahVC: UIViewController {
 
     @IBOutlet weak var floatingView: FloatingView!
     
-    @IBOutlet weak var playBtn: UIButton!
+    @IBOutlet weak var playBtn: UIButton!{
+        didSet{
+            self.playBtn.isHidden = true
+        }
+        
+    }
     @IBOutlet weak var collectionView: SurahCollectionView!{
         didSet{
+            self.collectionView.viewControllerDelegate = self
             self.collectionView.chapter = self.chapter
         }
     }
@@ -24,27 +30,32 @@ class SurahVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.playerManager.delegate = self
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
+    }
+
+    @IBAction func playBtnPressed(_ sender: Any) {
+        if self.playerManager.getPlayListCount() == 0{
             for i in 1...chapter.getVersesCount(){
                 if let verse = try! chapter.getVerse(idx: i){
                     playerManager.addVerseToPlayList(verse: verse)
                 }
             }
         }
-    }
-
-    @IBAction func playBtnPressed(_ sender: Any) {
         playerManager.togglePlayPause()
+    }
+    
+    deinit{
+        self.playerManager.pause()
     }
 }
 
 
-extension SurahVC: PlayerManagerDelegate{
-    
+extension SurahVC: SurahCollectionViewDelegate{
+    func isReadyForStream() {
+        self.playBtn.isHidden = false
+    }
+}
 
-    
-    
+extension SurahVC: PlayerManagerDelegate{
     func currentPlayerProgress(normalizedValue: Float) {
         if normalizedValue.isNaN {
             return

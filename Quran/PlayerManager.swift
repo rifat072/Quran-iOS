@@ -34,14 +34,6 @@ class PlayerManager: NSObject {
         self.isPlaying = false
         super.init()
         
-        
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setCategory(.playback, mode: .moviePlayback, options: [])
-        } catch {
-            print("Failed to set audio session category.")
-        }
-        
         NotificationCenter.default.addObserver(
           self,
           selector: #selector(self.playerItemDidFinishPlaying(sender:)),
@@ -98,7 +90,9 @@ class PlayerManager: NSObject {
         self.playList = []
     }
     
-    var isFirst = true
+    func getPlayListCount() -> Int{
+        return self.playList.count
+    }
 }
 
 extension PlayerManager{
