@@ -6,6 +6,8 @@
 //
 
 import AVFoundation
+import MediaPlayer
+
 
 protocol PlayerManagerDelegate: NSObject{
     func updateDuration(value: Float)
@@ -43,7 +45,50 @@ class PlayerManager: NSObject {
         self.player.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 2), queue: .main) { time in
             self.delegate?.currentPlayerProgress(value: Float(time.seconds))
         }
+        self.setupRemoteTransportControls()
 
+    }
+    
+    func setupRemoteTransportControls() {
+        // Get the shared MPRemoteCommandCenter
+        let commandCenter = MPRemoteCommandCenter.shared()
+
+        // Add handler for Play Command
+        commandCenter.playCommand.addTarget { [unowned self] event in
+            if self.player.rate == 0.0 {
+                self.player.play()
+                return .success
+            }
+            return .commandFailed
+        }
+
+        // Add handler for Pause Command
+        commandCenter.pauseCommand.addTarget { [unowned self] event in
+            if self.player.rate == 1.0 {
+                self.player.pause()
+                return .success
+            }
+            return .commandFailed
+        }
+    }
+    
+    func setupNowPlaying() {
+        // Define Now Playing Info
+        var nowPlayingInfo = [String : Any]()
+        nowPlayingInfo[MPMediaItemPropertyTitle] = "My Movie"
+
+        if let image = UIImage(named: "AppIcon") {
+            nowPlayingInfo[MPMediaItemPropertyArtwork] =
+                MPMediaItemArtwork(boundsSize: image.size) { size in
+                    return image
+            }
+        }
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.player.currentItem?.currentTime().seconds
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = self.player.currentItem?.asset.duration.seconds
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = player.rate
+
+        // Set the metadata
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
     
     private func makePlayerActive(){
@@ -122,6 +167,7 @@ extension PlayerManager{
             }
 
             if status == .readyToPlay{
+                self.setupNowPlaying()
                 if let totaltime = self.player.currentItem?.duration.seconds{
                     self.delegate?.updateDuration(value: Float(totaltime))
                 }
