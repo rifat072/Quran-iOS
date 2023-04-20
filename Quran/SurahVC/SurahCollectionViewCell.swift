@@ -160,7 +160,7 @@ extension Verse{
         
         
         func addToLine(view: UIView, width: CGFloat){
-            if(width + currentLineWidth + (wordSpacing * (currentWordCount - 1.0)) > lineMaxWidth){
+            if(width + currentLineWidth + (wordSpacing * currentWordCount) > lineMaxWidth){
                 if let _currentLine = currentLine{
                     lines.append(_currentLine)
                     currentLine = generateNewLine()

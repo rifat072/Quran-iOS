@@ -61,6 +61,7 @@ extension SurahCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
         do{
             let verse = try self.chapter.getVerse(idx: indexPath.row + 1)
             let lineCount = verse?.getLineCount(maxWidth: collectionView.bounds.width, itemSpacing: SurahCollectionView.wordSpacing) ?? 0
+            print("For \(indexPath.row) \(lineCount)")
             return CGSize(width: collectionView.bounds.width, height: CGFloat(lineCount * 50 + 40))
         } catch {
             return CGSize.zero
@@ -114,7 +115,7 @@ extension Verse{
             if word.char_type_name == "end" {
                 continue
             }
-            var wordWidth: CGFloat = word.getMaxWidth()
+            let wordWidth: CGFloat = word.getMaxWidth()
             
             if CGFloat(currWidth) + wordWidth <= maxWidth {
                 currWidth += Float(wordWidth + itemSpacing)
