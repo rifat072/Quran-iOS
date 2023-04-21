@@ -48,6 +48,12 @@ enum RepeationType: CaseIterable{
     }
 }
 
+protocol ContinouseReadingDelegate: NSObject{
+    func currentProgress(value: Float)
+    func setTotalDuration(value: Float)
+    func setVerse(verse: Verse)
+}
+
 
 class PlayerManager: NSObject {
     //TODO: Need to maintain Queue for downloading But downloading is fast enough
@@ -62,33 +68,41 @@ class PlayerManager: NSObject {
     weak var navigationController: UINavigationController? = nil
     private let floatingPanel: FloatingPanelController = FloatingPanelController()
     private let floatingPanelContentVC: FloatingPanelContentVC
+    weak var continousReadingDelegate: ContinouseReadingDelegate? = nil
 
     
     private var prevStatus: AVPlayerItem.Status? = .unknown
     private override init(){
         self.floatingPanelContentVC = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "FloatingPanelContentVC") as! FloatingPanelContentVC
-        self.repeationType = ._1
         super.init()
         
-        
+        self.registerNotifications()
+        self.addPeriodicObserver()
+        self.setupRemoteTransportControls()
+    }
+    
+    private func registerNotifications(){
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.playerItemDidFinishPlaying(sender:)),
             name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
             object: player.currentItem)
-        
+    }
+    
+    private func addPeriodicObserver(){
         self.player.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 60), queue: .main) { time in
             if self.player.currentItem?.status == .readyToPlay{
                 self.floatingPanelContentVC.currentProgress(value: Float(time.seconds))
+                self.continousReadingDelegate?.currentProgress(value: Float(time.seconds))
                 if self.prevStatus != .readyToPlay{
                     self.floatingPanelContentVC.setTotalDuration(value: Float(self.player.currentItem?.duration.seconds ?? 0 ))
+                    self.continousReadingDelegate?.setTotalDuration(value: Float(self.player.currentItem?.duration.seconds ?? 0 ))
                     QuranSharedItem.getSharedItem { [weak self] quran in
                         guard let self = self,
                               let quran = quran,
                               let playerItem = self.player.currentItem as? VersePlayerItem else {
                             return
                         }
-                        
                         let verse_key = playerItem.verse.verse_key.split(separator: ":")
                         let duration = playerItem.duration.seconds
                         let currenTime = playerItem.currentTime().seconds
@@ -101,8 +115,9 @@ class PlayerManager: NSObject {
                                 self.setupNowPlaying(title: title, currentTime: currenTime, duraion: Float(duration), rate: rate)
                                 self.floatingPanelContentVC.setTitle(title: title)
                                 self.floatingPanelContentVC.setVerse(verse: self.playList[self.currentlyPlayingIndex!])
+                                
+                                self.continousReadingDelegate?.setVerse(verse: self.playList[self.currentlyPlayingIndex!])
                             }
-                            
                             if Thread.isMainThread{
                                 updateUI()
                             } else {
@@ -110,19 +125,12 @@ class PlayerManager: NSObject {
                                     updateUI()
                                 }
                             }
-
-
                         }
-                        
                     }
-
                 }
-                
             }
             self.prevStatus = self.player.currentItem?.status
         }
- 
-        self.setupRemoteTransportControls()
     }
     
     private func showFloatingPanel(){

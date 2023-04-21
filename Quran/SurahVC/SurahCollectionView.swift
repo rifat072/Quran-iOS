@@ -16,8 +16,8 @@ class SurahCollectionView: UICollectionView {
     static let lineHeight: Int = 70
     private static let wordSpacing: CGFloat = 15
     weak var viewControllerDelegate: SurahCollectionViewDelegate? = nil
-    
     private var verseViewModels: [VerseViewModel?] = []
+    
     var chapter: Chapter!{
         didSet{
             Task{
@@ -31,6 +31,7 @@ class SurahCollectionView: UICollectionView {
                     self.delegate = self
                     self.dataSource = self
                     self.viewControllerDelegate?.isReadyForStream()
+                    PlayerManager.shared.continousReadingDelegate = self
                 } catch{
                     print("Cannot Load Data")
                     //TODO: Should show retry
@@ -39,6 +40,15 @@ class SurahCollectionView: UICollectionView {
             }
         }
     }
+    
+    
+    //PlayerMarking Variables
+    weak var currentMarkedView: UIView? = nil
+    var currentMarkingIndex: Int = 0
+    var currentverse: Verse? = nil
+    var totalDuration: Float = .zero
+    var currentVerseViewModel: VerseViewModel? = nil
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -85,8 +95,64 @@ extension SurahCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
     }
 }
 
-
-extension Verse{
+extension SurahCollectionView: ContinouseReadingDelegate{
     
-
+    func markView(newView: UIStackView?){
+        if let view = self.currentMarkedView{
+            let subViews = view.subviews
+            for subView in subViews {
+                let label = subView as! UILabel
+                label.textColor = .white
+            }
+        }
+        self.currentMarkedView = newView
+        
+        if let view = self.currentMarkedView{
+            let subViews = view.subviews
+            for subView in subViews {
+                let label = subView as! UILabel
+                label.textColor = UIColor(named: "cellSelectedColor")
+            }
+        }
+    }
+    func currentProgress(value: Float) {
+        if value.isNaN {
+            return
+        }
+        if self.currentMarkingIndex < self.currentverse?.audio?.segments.count ?? 0{
+            let segement = self.currentverse!.audio!.segments[currentMarkingIndex]
+            let segmetntTotalDuration = self.currentverse!.audio!.segments.last![3]
+            
+            let currentSegmentTime = (value * Float(segmetntTotalDuration)) / totalDuration
+            
+            if Int(currentSegmentTime) >= segement[2] && Int(currentSegmentTime) <= segement[3]{
+                self.markView(newView: self.currentVerseViewModel?.wordViewModels[self.currentMarkingIndex].lastGeneratedView as? UIStackView)
+                currentMarkingIndex += 1
+            }
+            
+        }
+    }
+    
+    func setTotalDuration(value: Float) {
+        if value.isNaN {
+            return
+        }
+        self.totalDuration = value
+    }
+    
+    func setVerse(verse: Verse) {
+        let key = verse.verse_key.split(separator: ":")
+        self.currentMarkingIndex = 0
+        
+        if Int(key[0]) == self.chapter.id{
+            self.currentverse = verse
+            self.currentVerseViewModel = verseViewModels[Int(key[1])! - 1]
+            self.scrollToItem(at: IndexPath(row: Int(key[1])! - 1, section: 0), at: .top, animated: true)
+        } else {
+            self.currentverse = nil
+            self.totalDuration = .zero
+            self.currentVerseViewModel = nil
+            self.markView(newView: nil)
+        }
+    }
 }

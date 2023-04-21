@@ -56,6 +56,7 @@ class FloatingPanelContentVC: UIViewController {
     var verseViewModel: VerseViewModel? = nil
     var lines: [UIView] = []
     
+    //PlayerMarking Variables
     weak var currentMarkedView: UIView? = nil
     var currentMarkingIndex: Int = 0
 

@@ -24,7 +24,7 @@ class Chapter: Decodable {
     }
     
     
-    private let id: Int?
+    let id: Int?
     private let revelation_place: String?
     private let revelation_order: Int?
     private let bismillah_pre: Bool?
