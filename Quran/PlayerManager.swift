@@ -57,7 +57,6 @@ class PlayerManager: NSObject {
     private var playList: [Verse] = []
     private let player: AVQueuePlayer  = AVQueuePlayer()
     private var isPlaying: Bool = false
-    private var playerItemContext = 0
     private var repeationType: RepeationType = ._1
     private var currentLoopCount: Int = 1
     weak var navigationController: UINavigationController? = nil
@@ -224,10 +223,10 @@ extension PlayerManager{
         }
     }
     
-    func setupNowPlaying() {
+    func setupNowPlaying(title: String, currentTime: CGFloat, duraion: Float, rate: Float) {
         // Define Now Playing Info
         var nowPlayingInfo = [String : Any]()
-        nowPlayingInfo[MPMediaItemPropertyTitle] = "My Movie"
+        nowPlayingInfo[MPMediaItemPropertyTitle] = title
         
         if let image = UIImage(named: "AppIcon") {
             nowPlayingInfo[MPMediaItemPropertyArtwork] =
@@ -235,9 +234,9 @@ extension PlayerManager{
                 return image
             }
         }
-        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.player.currentItem?.currentTime().seconds
-        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = self.player.currentItem?.asset.duration.seconds
-        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = player.rate
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = duraion
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = rate
         
         // Set the metadata
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
@@ -245,6 +244,52 @@ extension PlayerManager{
 }
 
 extension PlayerManager{
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard context == &VersePlayerItem.playerItemContext else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+        
+        if keyPath == #keyPath(AVPlayerItem.status){
+            let status: AVPlayerItem.Status
+            if let statusNumber = change?[.newKey] as? NSNumber{
+                status = AVPlayerItem.Status(rawValue: statusNumber.intValue)!
+            } else {
+                status = .unknown
+            }
+            
+            if status == .readyToPlay{
+                QuranSharedItem.getSharedItem { [weak self] quran in
+                    guard let self = self,
+                          let quran = quran,
+                          let playerItem = self.player.currentItem as? VersePlayerItem else {
+                        return
+                    }
+                    
+                    let verse_key = playerItem.verse.verse_key.split(separator: ":")
+                    let duration = playerItem.duration.seconds
+                    let currenTime = playerItem.currentTime().seconds
+                    let rate = self.player.rate
+                    let rtlIsolate = "\u{202A}"
+                    if let chapter = quran.getChapter(for: Int(verse_key[0])! - 1){
+                        let title = "\(rtlIsolate)\(chapter.name_arabic ?? "") | \(chapter.name_complex ?? "") | \(chapter.translated_name.name) | Ayah - \(verse_key[1] )"
+                        
+                        DispatchQueue.main.async {
+                            self.setupNowPlaying(title: title, currentTime: currenTime, duraion: Float(duration), rate: rate)
+                            self.floatingPanelContentVC.setTitle(title: title)
+                        }
+
+                    }
+                    
+                }
+
+            }
+        }
+
+        
+    }
+
 
     
     @objc private func playerItemDidFinishPlaying(sender: Notification){

@@ -10,14 +10,17 @@ import AVFoundation
 
 
 class VersePlayerItem: CachingPlayerItem, CachingPlayerItemDelegate{
-    
+    static var playerItemContext = 0
     let verse: Verse
-    
     init(verse: Verse){
         self.verse = verse
         let url = self.verse.getPlayableUrl()!
         super.init(url: url, customFileExtension: nil)
         self.delegate = self
+        self.addObserver(PlayerManager.shared,
+                               forKeyPath: #keyPath(AVPlayerItem.status),
+                               options: [.old, .new],
+                               context: &VersePlayerItem.playerItemContext)
     }
     
     func playerItem(_ playerItem: CachingPlayerItem, didFinishDownloadingData data: Data){

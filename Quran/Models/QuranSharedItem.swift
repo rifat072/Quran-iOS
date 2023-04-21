@@ -25,13 +25,19 @@ class QuranSharedItem {
         if self.isInitialized{
             return _shared
         } else {
-            do{
-                _shared = try await QuranSharedItem()
-                return _shared
-            } catch{
-                throw error
+            _shared = try await QuranSharedItem()
+            return _shared
+        }
+    }
+    
+    static func getSharedItem(completion: @escaping ((QuranSharedItem?) -> ())){
+        if self.isInitialized{
+            completion(_shared)
+        } else {
+            Task{
+                let sharedItem = try? await getSharedItem()
+                completion(sharedItem)
             }
-
         }
     }
     

@@ -36,6 +36,9 @@ class SurahVC: UIViewController {
     private let playerManager = PlayerManager.shared
     override func viewDidLoad() {
         super.viewDidLoad()
+        let rtlIsolate = "\u{202A}"
+        let title = "\(rtlIsolate)\(chapter.name_arabic ?? "") | \(chapter.name_complex ?? "") | \(chapter.translated_name.name)"
+        self.titleLabel.text = title
         
     }
 
