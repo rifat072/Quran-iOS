@@ -30,6 +30,7 @@ class Chapter: Decodable {
     private let bismillah_pre: Bool?
     let name_complex: String?
     let name_arabic: String?
+    let name_simple: String?
     private let verses_count: Int?
     private let pages: [Int]?
     let translated_name: TranslatedName
@@ -47,6 +48,7 @@ class Chapter: Decodable {
         case verses_count
         case pages
         case translated_name
+        case name_simple
     }
     
     required init(from decoder: Decoder) throws {
@@ -56,6 +58,7 @@ class Chapter: Decodable {
         self.revelation_order = try container.decodeIfPresent(Int.self, forKey: .revelation_order)
         self.bismillah_pre = try container.decodeIfPresent(Bool.self, forKey: .bismillah_pre)
         self.name_complex = try container.decodeIfPresent(String.self, forKey: .name_complex)
+        self.name_simple = try container.decodeIfPresent(String.self, forKey: .name_simple)
         self.name_arabic = try container.decodeIfPresent(String.self, forKey: .name_arabic)
         self.verses_count = try container.decodeIfPresent(Int.self, forKey: .verses_count)
         self.pages = try container.decodeIfPresent([Int].self, forKey: .pages)
@@ -93,34 +96,34 @@ extension Chapter{
         return self.chapterInfo
     }
     
-    func loadVerse(idx: Int) async throws -> Verse?{
-        guard let verses_count = self.verses_count else {
-            return nil
-        }
-        if(idx < 0 || idx >= verses_count){
-            throw VerseParseError.outOfIndex
-        }
-        
-        if let verse = self.verses[idx] {
-            return verse
-        }
-        
-        guard let id = self.id,
-              var url = apiRootUrl?.appending(path: "verses").appending(path: "by_key").appending(path: "\(id):\(idx)") else {
-            return nil
-        }
-        
-        url = url.appending(queryItems: [URLQueryItem(name: "words", value: "true"),
-                                        URLQueryItem(name: "word_fields", value: "text_uthmani,text_indopak"),
-                                        URLQueryItem(name: "audio", value: "\(recitationId)")])
-        
-        let (data, _) = try await URLSession.shared.data(from: url)
-        struct Root: Decodable{
-            let verse: Verse?
-        }
-        self.verses[idx] = try JSONDecoder().decode(Root.self, from: data).verse
-        return self.verses[idx]
-    }
+//    func loadVerse(idx: Int) async throws -> Verse?{
+//        guard let verses_count = self.verses_count else {
+//            return nil
+//        }
+//        if(idx < 0 || idx >= verses_count){
+//            throw VerseParseError.outOfIndex
+//        }
+//
+//        if let verse = self.verses[idx] {
+//            return verse
+//        }
+//
+//        guard let id = self.id,
+//              var url = apiRootUrl?.appending(path: "verses").appending(path: "by_key").appending(path: "\(id):\(idx)") else {
+//            return nil
+//        }
+//
+//        url = url.appending(queryItems: [URLQueryItem(name: "words", value: "true"),
+//                                        URLQueryItem(name: "word_fields", value: "text_uthmani,text_indopak"),
+//                                        URLQueryItem(name: "audio", value: "\(recitationId)")])
+//
+//        let (data, _) = try await URLSession.shared.data(from: url)
+//        struct Root: Decodable{
+//            let verse: Verse?
+//        }
+//        self.verses[idx] = try JSONDecoder().decode(Root.self, from: data).verse
+//        return self.verses[idx]
+//    }
     
     func loadAllVerses() async throws{
         guard let id = self.id,
@@ -133,7 +136,8 @@ extension Chapter{
             let curUrl = url.appending(queryItems: [URLQueryItem(name: "words", value: "true"),
                                                     URLQueryItem(name: "page", value: "\(pageNumber)"),
                                                     URLQueryItem(name: "per_page", value: "\(50)"),
-                                                    URLQueryItem(name: "word_fields", value: "text_uthmani,text_indopak"),
+                                                    URLQueryItem(name: "word_fields", value: "text_uthmani,text_indopak,text_imlaei"),
+                                                    URLQueryItem(name: "language", value: languageCode),
                                                     URLQueryItem(name: "audio", value: "\(recitationId)")])
             let (data, _) = try await URLSession.shared.data(from: curUrl)
             struct Root: Decodable{

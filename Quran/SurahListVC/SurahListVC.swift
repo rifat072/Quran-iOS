@@ -49,7 +49,7 @@ extension SurahListVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
         if let cell = cell as? SurahListCollectionViewCell,
            let chapter = quran.getChapter(for: indexPath.row){
             cell.firstLabel.text = chapter.name_arabic
-            cell.secondLabel.text = chapter.name_complex
+            cell.secondLabel.text = chapter.name_simple
             cell.thirdLabel.text = chapter.translated_name.name
         }
     }

@@ -11,6 +11,7 @@ import UIKit
 public let apiRootUrl = URL(string:"https://api.quran.com/api/v4")
 public let audioDownloadRootUrl = URL(string: "https://verses.quran.com")
 public let recitationId: Int = 7 //TODO: Need to load all reciters
+public let languageCode: String = "bn"
 let rtlIsolate = "\u{202A}"
 
 class QuranSharedItem {
@@ -60,9 +61,10 @@ class QuranSharedItem {
     }
     
     private func loadChapters() async throws{
-        guard let url = apiRootUrl?.appending(path: "chapters") else {
+        guard var url = apiRootUrl?.appending(path: "chapters") else {
             return
         }
+        url = url.appending(queryItems: [URLQueryItem(name: "language", value: languageCode)])
 
         let (data, _) = try await URLSession.shared.data(from: url)
         struct Root: Decodable{
