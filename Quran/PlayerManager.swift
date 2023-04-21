@@ -94,14 +94,24 @@ class PlayerManager: NSObject {
                         let duration = playerItem.duration.seconds
                         let currenTime = playerItem.currentTime().seconds
                         let rate = self.player.rate
-                        let rtlIsolate = "\u{202A}"
+                        
                         if let chapter = quran.getChapter(for: Int(verse_key[0])! - 1){
                             let title = "\(rtlIsolate)\(chapter.name_arabic ?? "") | \(chapter.name_complex ?? "") | \(chapter.translated_name.name) | Ayah - \(verse_key[1] )"
                             
-                            DispatchQueue.main.async {
+                            func updateUI(){
                                 self.setupNowPlaying(title: title, currentTime: currenTime, duraion: Float(duration), rate: rate)
                                 self.floatingPanelContentVC.setTitle(title: title)
+                                self.floatingPanelContentVC.setVerse(verse: self.playList[self.currentlyPlayingIndex!])
                             }
+                            
+                            if Thread.isMainThread{
+                                updateUI()
+                            } else {
+                                DispatchQueue.main.async {
+                                    updateUI()
+                                }
+                            }
+
 
                         }
                         
@@ -129,6 +139,9 @@ class PlayerManager: NSObject {
     }
     
     func configureFloatingPanel(navControl: UINavigationController){
+        self.floatingPanel.surfaceView.backgroundColor = .clear
+        self.floatingPanel.view.backgroundColor = .clear
+        
         self.floatingPanel.delegate = self
         self.floatingPanelContentVC.delgate = self
         self.floatingPanel.set(contentViewController: self.floatingPanelContentVC)

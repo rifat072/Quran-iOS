@@ -103,6 +103,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		35604D9E29F27C1700C1E40D /* FloatingPanel */ = {
+			isa = PBXGroup;
+			children = (
+				3567115C29F17A7E008427B1 /* FloatingPanelContentVC.swift */,
+			);
+			path = FloatingPanel;
+			sourceTree = "<group>";
+		};
 		35B1FB1D29EED228009047F2 = {
 			isa = PBXGroup;
 			children = (
@@ -129,7 +137,7 @@
 			children = (
 				3567115829F12E0B008427B1 /* CachingPlayerItem.swift */,
 				3511018A29F0721F00D8986D /* PlayerManager.swift */,
-				3567115C29F17A7E008427B1 /* FloatingPanelContentVC.swift */,
+				35604D9E29F27C1700C1E40D /* FloatingPanel */,
 				35B1FB7F29EF1375009047F2 /* SurahVC */,
 				35B1FB7629EF0B4D009047F2 /* SurahListVC */,
 				35B1FB6E29EEDBE9009047F2 /* UtilityModels */,

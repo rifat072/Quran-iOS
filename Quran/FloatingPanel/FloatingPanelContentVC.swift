@@ -13,7 +13,7 @@ class MyFloatingPanelLayout: FloatingPanelLayout {
     let initialState: FloatingPanelState = .tip
     let anchors: [FloatingPanelState: FloatingPanelLayoutAnchoring] = [
                 .full: FloatingPanelLayoutAnchor(absoluteInset: 18.0, edge: .top, referenceGuide: .safeArea),
-//        .half: FloatingPanelLayoutAnchor(fractionalInset: 0.5, edge: .bottom, referenceGuide: .safeArea),
+        .half: FloatingPanelLayoutAnchor(fractionalInset: 0.7, edge: .bottom, referenceGuide: .safeArea),
         .tip: FloatingPanelLayoutAnchor(absoluteInset: 200, edge: .bottom, referenceGuide: .safeArea),
     ]
     
@@ -34,6 +34,8 @@ protocol FloatingPanelContentVCDelegate: PlayerManager{
 }
 
 class FloatingPanelContentVC: UIViewController {
+    
+    private static let reuseIdentifier = "FloatingPanelVerseTableViewCell"
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var totalTimeLabel: UILabel!
@@ -41,12 +43,23 @@ class FloatingPanelContentVC: UIViewController {
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var prevButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var tableView: UITableView!{
+        didSet{
+            tableView.dataSource = self
+            tableView.delegate = self
+        }
+    }
+    
     
     weak var delgate: FloatingPanelContentVCDelegate? = nil
+    var verse: Verse? = nil
+    var lines: [UIView]? = nil
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.roundCorners(corners: [.topLeft, .topLeft], radius: 15)
 
         // Do any additional setup after loading the view.
     }
@@ -101,5 +114,50 @@ class FloatingPanelContentVC: UIViewController {
         self.totalTimeLabel.text = secondsToHoursMinutesSeconds(Int(value))
         self.progressSlider.maximumValue = value
     }
+    
+    func setVerse(verse: Verse){
+        self.verse = verse
+        self.lines = verse.generateLines(wordSpacing: 15, lineMaxWidth: self.tableView.bounds.width)
+        self.tableView.reloadData()
+    }
 
+}
+
+
+extension FloatingPanelContentVC: UITableViewDelegate, UITableViewDataSource{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return lines?.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return tableView.dequeueReusableCell(withIdentifier: FloatingPanelContentVC.reuseIdentifier)!
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let line = lines?[indexPath.row],
+           let stackView = cell.viewWithTag(1) as? UIStackView{
+            for view in stackView.subviews{
+                view.removeFromSuperview()
+            }
+            stackView.addArrangedSubview(line)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70
+    }
+    
+    
+
+    
+}
+
+
+extension UIView {
+   func roundCorners(corners: UIRectCorner, radius: CGFloat) {
+        let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        layer.mask = mask
+    }
 }

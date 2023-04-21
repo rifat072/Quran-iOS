@@ -11,6 +11,7 @@ import UIKit
 public let apiRootUrl = URL(string:"https://api.quran.com/api/v4")
 public let audioDownloadRootUrl = URL(string: "https://verses.quran.com")
 public let recitationId: Int = 7 //TODO: Need to load all reciters
+let rtlIsolate = "\u{202A}"
 
 class QuranSharedItem {
 
