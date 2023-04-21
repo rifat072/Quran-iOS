@@ -64,6 +64,7 @@ class PlayerManager: NSObject {
     private let floatingPanelContentVC: FloatingPanelContentVC
 
     
+    private var prevStatus: AVPlayerItem.Status? = .unknown
     private override init(){
         self.floatingPanelContentVC = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "FloatingPanelContentVC") as! FloatingPanelContentVC
         self.repeationType = ._1
@@ -77,9 +78,39 @@ class PlayerManager: NSObject {
             object: player.currentItem)
         
         self.player.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 60), queue: .main) { time in
-            self.floatingPanelContentVC.setTotalDuration(value: Float(self.player.currentItem?.duration.seconds ?? 0 ))
-            
-            self.floatingPanelContentVC.currentProgress(value: Float(time.seconds))
+            if self.player.currentItem?.status == .readyToPlay{
+                self.floatingPanelContentVC.setTotalDuration(value: Float(self.player.currentItem?.duration.seconds ?? 0 ))
+                self.floatingPanelContentVC.currentProgress(value: Float(time.seconds))
+                
+                if self.prevStatus != .readyToPlay{
+                    QuranSharedItem.getSharedItem { [weak self] quran in
+                        guard let self = self,
+                              let quran = quran,
+                              let playerItem = self.player.currentItem as? VersePlayerItem else {
+                            return
+                        }
+                        
+                        let verse_key = playerItem.verse.verse_key.split(separator: ":")
+                        let duration = playerItem.duration.seconds
+                        let currenTime = playerItem.currentTime().seconds
+                        let rate = self.player.rate
+                        let rtlIsolate = "\u{202A}"
+                        if let chapter = quran.getChapter(for: Int(verse_key[0])! - 1){
+                            let title = "\(rtlIsolate)\(chapter.name_arabic ?? "") | \(chapter.name_complex ?? "") | \(chapter.translated_name.name) | Ayah - \(verse_key[1] )"
+                            
+                            DispatchQueue.main.async {
+                                self.setupNowPlaying(title: title, currentTime: currenTime, duraion: Float(duration), rate: rate)
+                                self.floatingPanelContentVC.setTitle(title: title)
+                            }
+
+                        }
+                        
+                    }
+
+                }
+                
+            }
+            self.prevStatus = self.player.currentItem?.status
         }
  
         self.setupRemoteTransportControls()
@@ -244,54 +275,7 @@ extension PlayerManager{
 }
 
 extension PlayerManager{
-    
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard context == &VersePlayerItem.playerItemContext else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-            return
-        }
-        
-        if keyPath == #keyPath(AVPlayerItem.status){
-            let status: AVPlayerItem.Status
-            if let statusNumber = change?[.newKey] as? NSNumber{
-                status = AVPlayerItem.Status(rawValue: statusNumber.intValue)!
-            } else {
-                status = .unknown
-            }
-            
-            if status == .readyToPlay{
-                QuranSharedItem.getSharedItem { [weak self] quran in
-                    guard let self = self,
-                          let quran = quran,
-                          let playerItem = self.player.currentItem as? VersePlayerItem else {
-                        return
-                    }
-                    
-                    let verse_key = playerItem.verse.verse_key.split(separator: ":")
-                    let duration = playerItem.duration.seconds
-                    let currenTime = playerItem.currentTime().seconds
-                    let rate = self.player.rate
-                    let rtlIsolate = "\u{202A}"
-                    if let chapter = quran.getChapter(for: Int(verse_key[0])! - 1){
-                        let title = "\(rtlIsolate)\(chapter.name_arabic ?? "") | \(chapter.name_complex ?? "") | \(chapter.translated_name.name) | Ayah - \(verse_key[1] )"
-                        
-                        DispatchQueue.main.async {
-                            self.setupNowPlaying(title: title, currentTime: currenTime, duraion: Float(duration), rate: rate)
-                            self.floatingPanelContentVC.setTitle(title: title)
-                        }
 
-                    }
-                    
-                }
-
-            }
-        }
-
-        
-    }
-
-
-    
     @objc private func playerItemDidFinishPlaying(sender: Notification){
         if self.currentlyPlayingIndex! + 1 == self.playList.count{
             self.currentlyPlayingIndex = 0
@@ -303,8 +287,7 @@ extension PlayerManager{
                     self.player.insert(playerItem, after: nil)
                 }
             }
-            
-            
+
             if self.repeationType == ._1{
                 self.clearPlayList()
                 self.dismisFloatingPanel()
@@ -325,6 +308,8 @@ extension PlayerManager{
             self.currentlyPlayingIndex! += 1
             self.currentlyPlayingIndex! %= self.playList.count
         }
+        
+        self.prevStatus = .unknown
         
     }
 }
