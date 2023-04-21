@@ -53,15 +53,17 @@ class FloatingPanelContentVC: UIViewController {
     
     weak var delgate: FloatingPanelContentVCDelegate? = nil
     var verse: Verse? = nil
-    var lines: [UIView]? = nil
+    var verseViewModel: VerseViewModel? = nil
+    var lines: [UIView] = []
     
-    
+    weak var currentMarkedView: UIView? = nil
+    var currentMarkingIndex: Int = 0
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.roundCorners(corners: [.topLeft, .topLeft], radius: 15)
 
-        // Do any additional setup after loading the view.
     }
     @IBAction func prevBtnPressed(_ sender: Any) {
         self.delgate?.prevBtnPressed()
@@ -77,8 +79,25 @@ class FloatingPanelContentVC: UIViewController {
         
     }
     
-    
-    
+    func markView(newView: UIStackView?){
+        if let view = self.currentMarkedView{
+            let subViews = view.subviews
+            for subView in subViews {
+                let label = subView as! UILabel
+                label.textColor = .white
+            }
+        }
+        self.currentMarkedView = newView
+        
+        if let view = self.currentMarkedView{
+            let subViews = view.subviews
+            for subView in subViews {
+                let label = subView as! UILabel
+                label.textColor = UIColor(named: "cellSelectedColor")
+            }
+        }
+    }
+
     deinit{
         print("Deinit FloatingPanelContentVC")
     }
@@ -104,6 +123,21 @@ class FloatingPanelContentVC: UIViewController {
             return
         }
         self.currentTimeLabel.text = secondsToHoursMinutesSeconds(Int(value))
+        
+        if self.currentMarkingIndex < self.verse?.audio?.segments.count ?? 0{
+            let segement = self.verse!.audio!.segments[currentMarkingIndex]
+            let segmetntTotalDuration = self.verse!.audio!.segments.last![3]
+            
+            let totalDuration = self.progressSlider.maximumValue
+            
+            let currentSegmentTime = (value * Float(segmetntTotalDuration)) / totalDuration
+            
+            if Int(currentSegmentTime) >= segement[2] && Int(currentSegmentTime) <= segement[3]{
+                self.markView(newView: self.verseViewModel?.wordViewModels[self.currentMarkingIndex].lastGeneratedView as? UIStackView)
+                currentMarkingIndex += 1
+            }
+            
+        }
         self.progressSlider.setValue(value, animated: true)
     }
     
@@ -117,7 +151,10 @@ class FloatingPanelContentVC: UIViewController {
     
     func setVerse(verse: Verse){
         self.verse = verse
-        self.lines = verse.generateLines(wordSpacing: 15, lineMaxWidth: self.tableView.bounds.width)
+        self.verseViewModel = VerseViewModel(verse: verse)
+        self.lines = self.verseViewModel?.generateDisplayView(wordSpacing: 15, lineMaxWidth: self.tableView.bounds.width) ?? []
+        self.currentMarkedView = nil
+        self.currentMarkingIndex = 0
         self.tableView.reloadData()
     }
 
@@ -126,7 +163,7 @@ class FloatingPanelContentVC: UIViewController {
 
 extension FloatingPanelContentVC: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lines?.count ?? 0
+        return self.verseViewModel?.getLineCount(maxWidth: tableView.bounds.width, itemSpacing: 15) ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -134,8 +171,8 @@ extension FloatingPanelContentVC: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if let line = lines?[indexPath.row],
-           let stackView = cell.viewWithTag(1) as? UIStackView{
+        let line = lines[indexPath.row]
+        if let stackView = cell.viewWithTag(1) as? UIStackView{
             for view in stackView.subviews{
                 view.removeFromSuperview()
             }
@@ -146,10 +183,6 @@ extension FloatingPanelContentVC: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
     }
-    
-    
-
-    
 }
 
 

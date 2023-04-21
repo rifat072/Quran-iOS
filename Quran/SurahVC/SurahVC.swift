@@ -49,8 +49,8 @@ class SurahVC: UIViewController {
     }
     
     func reconfigurePlayList(){
-        let fromAyah = Int(self.fromSelectionAction?.title ?? "1")!
-        var toAyah = Int(self.toSelectedAction?.title ?? "1")!
+        let fromAyah = Int(self.fromSelectionAction?.title ?? "1")! - 1
+        var toAyah = Int(self.toSelectedAction?.title ?? "1")! - 1
         toAyah = max(fromAyah, toAyah)
         let repeatationType = RepeationType.getType(str: self.repeatSelectionAction?.title ?? "1")
         self.playerManager.pause()

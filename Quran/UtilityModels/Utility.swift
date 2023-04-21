@@ -56,7 +56,13 @@ class AudioFile: Decodable{
     let url: String?
     let duration: Int?
     let format: String?
-    let segments: [[Int]]
+    var segments: [[Int]]{
+        didSet{
+            segments.sort { a, b in
+                a[1] < b[1]
+            }
+        }
+    }
 }
 
 

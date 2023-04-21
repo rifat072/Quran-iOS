@@ -9,7 +9,7 @@ import UIKit
 
 class Word: Decodable {
     
-    static let dummyLabel: UILabel = UILabel()
+    
     
     let id: Int?
     let position: Int

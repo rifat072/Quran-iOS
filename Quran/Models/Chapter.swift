@@ -62,7 +62,7 @@ class Chapter: Decodable {
         self.translated_name = try container.decode(TranslatedName.self, forKey: .translated_name)
         self.chapterInfo = nil
         if let verses_count = self.verses_count{
-            self.verses = [Verse?](repeating: nil, count: verses_count + 1)
+            self.verses = [Verse?](repeating: nil, count: verses_count)
         } else {
             self.verses = []
         }
@@ -97,7 +97,7 @@ extension Chapter{
         guard let verses_count = self.verses_count else {
             return nil
         }
-        if(idx < 1 || idx > verses_count){
+        if(idx < 0 || idx >= verses_count){
             throw VerseParseError.outOfIndex
         }
         
@@ -143,7 +143,7 @@ extension Chapter{
             let currentVerses = try JSONDecoder().decode(Root.self, from: data).verses
             for curVerse in currentVerses{
                 if let id = Int(curVerse.verse_key.split(separator: ":")[1]){
-                    self.verses[id] = curVerse
+                    self.verses[id - 1] = curVerse
                 }
             }
         }
@@ -153,7 +153,7 @@ extension Chapter{
         guard let verses_count = self.verses_count else {
             return nil
         }
-        if(idx < 1 || idx > verses_count){
+        if(idx < 0 || idx >= verses_count){
             throw VerseParseError.outOfIndex
         }
         

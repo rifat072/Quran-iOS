@@ -79,10 +79,9 @@ class PlayerManager: NSObject {
         
         self.player.addPeriodicTimeObserver(forInterval: CMTime(value: 1, timescale: 60), queue: .main) { time in
             if self.player.currentItem?.status == .readyToPlay{
-                self.floatingPanelContentVC.setTotalDuration(value: Float(self.player.currentItem?.duration.seconds ?? 0 ))
                 self.floatingPanelContentVC.currentProgress(value: Float(time.seconds))
-                
                 if self.prevStatus != .readyToPlay{
+                    self.floatingPanelContentVC.setTotalDuration(value: Float(self.player.currentItem?.duration.seconds ?? 0 ))
                     QuranSharedItem.getSharedItem { [weak self] quran in
                         guard let self = self,
                               let quran = quran,
