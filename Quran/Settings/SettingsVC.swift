@@ -16,26 +16,58 @@ class SettingsVC: UITableViewController {
     let settingsData: SettingsData = SettingsData.shared
     
     @IBOutlet weak var systemModeSwitch: UISwitch!{
-        didSet{ systemModeSwitch.isOn = settingsData.systemMode ? true : false }
+        didSet{
+            systemModeSwitch.isOn = settingsData.systemMode ? true : false
+            systemModeSwitch.addAction(UIAction(handler: {_ in
+                self.settingsData.systemMode = self.systemModeSwitch.isOn
+            }), for: .valueChanged)
+        }
     }
     @IBOutlet weak var darkModeSwitch: UISwitch!{
-        didSet{ darkModeSwitch.isOn = settingsData.darkMode ? true : false }
+        didSet{
+            darkModeSwitch.isOn = settingsData.darkMode ? true : false
+            darkModeSwitch.addAction(UIAction(handler: {_ in
+                self.settingsData.darkMode = self.darkModeSwitch.isOn
+            }), for: .valueChanged)
+        }
     }
     @IBOutlet weak var transliterationSwitch: UISwitch!{
-        didSet{ transliterationSwitch.isOn = settingsData.shouldShowTransliteration ? true : false }
+        didSet{
+            transliterationSwitch.isOn = settingsData.shouldShowTransliteration ? true : false
+            transliterationSwitch.addAction(UIAction(handler: {_ in
+                self.settingsData.shouldShowTransliteration = self.transliterationSwitch.isOn
+            }), for: .valueChanged)
+        }
     }
     @IBOutlet weak var translationLanguageBtn: UIButton!
     @IBOutlet weak var translationReciterBtn: UIButton!
     
     @IBOutlet weak var englishWordTranslationSwitch: UISwitch!{
-        didSet{ englishWordTranslationSwitch.isOn = settingsData.shouldShowEnglishWordTranslation ? true : false }
+        didSet{
+            englishWordTranslationSwitch.isOn = settingsData.shouldShowEnglishWordTranslation ? true : false
+            englishWordTranslationSwitch.addAction(UIAction(handler: {_ in
+                self.settingsData.shouldShowEnglishWordTranslation = self.englishWordTranslationSwitch.isOn
+            }), for: .valueChanged)
+        }
     }
     @IBOutlet weak var audioReciterBtn: UIButton!
     @IBOutlet weak var markProbableWordSwitch: UISwitch!{
-        didSet{ markProbableWordSwitch.isOn = settingsData.shouldMarkProbableWord ? true : false }
+        didSet{
+            markProbableWordSwitch.isOn = settingsData.shouldMarkProbableWord ? true : false
+            
+            markProbableWordSwitch.addAction(UIAction(handler: {_ in
+                self.settingsData.shouldMarkProbableWord = self.markProbableWordSwitch.isOn
+            }), for: .valueChanged)
+        }
     }
     @IBOutlet weak var autoScrollSwitch: UISwitch!{
-        didSet{ autoScrollSwitch.isOn = settingsData.shouldAutoScroll ? true : false }
+        didSet{
+            autoScrollSwitch.isOn = settingsData.shouldAutoScroll ? true : false
+            
+            autoScrollSwitch.addAction(UIAction(handler: {_ in
+                self.settingsData.shouldAutoScroll = self.autoScrollSwitch.isOn
+            }), for: .valueChanged)
+        }
     }
     @IBOutlet weak var fontSizeBtn: UIButton!
     

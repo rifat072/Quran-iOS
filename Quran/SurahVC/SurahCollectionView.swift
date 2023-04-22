@@ -98,6 +98,9 @@ extension SurahCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
 extension SurahCollectionView: ContinouseReadingDelegate{
     
     func markView(newView: UIStackView?){
+        if SettingsData.shared.shouldMarkProbableWord == false {
+            return
+        }
         if let view = self.currentMarkedView{
             let subViews = view.subviews
             for subView in subViews {
@@ -147,7 +150,9 @@ extension SurahCollectionView: ContinouseReadingDelegate{
         if Int(key[0]) == self.chapter.id{
             self.currentverse = verse
             self.currentVerseViewModel = verseViewModels[Int(key[1])! - 1]
-            self.scrollToItem(at: IndexPath(row: Int(key[1])! - 1, section: 0), at: .top, animated: true)
+            if SettingsData.shared.shouldAutoScroll{
+                self.scrollToItem(at: IndexPath(row: Int(key[1])! - 1, section: 0), at: .top, animated: true)
+            }
         } else {
             self.currentverse = nil
             self.totalDuration = .zero

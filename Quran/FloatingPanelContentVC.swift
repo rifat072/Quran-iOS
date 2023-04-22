@@ -81,6 +81,9 @@ class FloatingPanelContentVC: UIViewController {
     }
     
     func markView(newView: UIStackView?){
+        if SettingsData.shared.shouldMarkProbableWord == false {
+            return
+        }
         if let view = self.currentMarkedView{
             let subViews = view.subviews
             for subView in subViews {
