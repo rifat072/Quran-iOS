@@ -7,12 +7,28 @@
 
 import UIKit
 
-class TranslatedName: Decodable{
+struct TranslationInfo: Decodable{
+    let id: Int?
+    let name: String?
+    let author_name: String?
+    let slug: String?
+    let language_name: String?
+    let translated_name: TranslatedName?
+}
+
+struct TranslatedName: Decodable{
     let name: String
     let language_name: String
 }
 
-class Language: Decodable {
+struct Language: Decodable, Hashable {
+    func hash(into hasher: inout Hasher){
+        hasher.combine(self.iso_code!)
+    }
+    static func == (lhs: Language, rhs: Language) -> Bool {
+        return lhs.iso_code! == rhs.iso_code!
+    }
+    
     let id: Int?
     let name: String?
     let iso_code: String?
@@ -20,9 +36,10 @@ class Language: Decodable {
     let direction: String?
     let translations_count: Int?
     let translated_name: TranslatedName?
+    
 }
 
-class Translation: Decodable{
+struct Translation: Decodable{
     let resource_id: Int?
     let resource_name: String?
     let id: Int?
@@ -39,7 +56,7 @@ class Translation: Decodable{
     let page_number: Int?
 
 }
-class Transliteration: Decodable{
+struct Transliteration: Decodable{
     let language_name: String?
     let text: String?
 }

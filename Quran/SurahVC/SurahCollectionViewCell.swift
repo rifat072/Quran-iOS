@@ -11,6 +11,8 @@ class SurahCollectionViewCell: UICollectionViewCell {
 
     public static let reuseIdentifier = "SurahCollectionViewCell"
     
+    @IBOutlet weak var translationLabel: UILabel!
+    
     @IBOutlet weak var controlView: UIView!
     
     @IBOutlet weak var containerStackView: UIStackView!
@@ -35,6 +37,10 @@ class SurahCollectionViewCell: UICollectionViewCell {
         for line in lines {
             containerStackView.addArrangedSubview(line)
         }
+        
+        let translation = verseViewModel.verse.getTranslation(for: SettingsData.shared.translationReciterId)
+        
+        self.translationLabel.text = translation?.text
     }
 
 }

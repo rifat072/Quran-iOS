@@ -80,7 +80,7 @@ extension SurahCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if let viewModel = self.verseViewModels[indexPath.row]{
             let lineCount = viewModel.getLineCount(maxWidth: collectionView.bounds.width, itemSpacing: SurahCollectionView.wordSpacing)
-            return CGSize(width: collectionView.bounds.width, height: CGFloat(lineCount * SurahCollectionView.lineHeight + 40))
+            return CGSize(width: collectionView.bounds.width, height: CGFloat(lineCount * SurahCollectionView.lineHeight + 40 + 100))
         }
         return .zero
         

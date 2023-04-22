@@ -33,6 +33,8 @@
 		35B1FB8929EF13D1009047F2 /* SurahCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 35B1FB8729EF13D1009047F2 /* SurahCollectionViewCell.xib */; };
 		35B1FB8B29EF1421009047F2 /* SurahVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB8A29EF1421009047F2 /* SurahVC.swift */; };
 		35B1FB8D29EF142A009047F2 /* SurahVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35B1FB8C29EF142A009047F2 /* SurahVC.storyboard */; };
+		35C8F7BA29F2E6C800ADA531 /* SettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C8F7B929F2E6C800ADA531 /* SettingsData.swift */; };
+		35C8F7BC29F2F0C000ADA531 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C8F7BB29F2F0C000ADA531 /* SettingsVC.swift */; };
 		B80AD604344996CA0EFF49CA /* Pods_Quran.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED39DA116E6DBEEEB542B65A /* Pods_Quran.framework */; };
 		C1FDF7D95A4E011EB176E5C7 /* Pods_QuranTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34A91CDC120252A7A347B47E /* Pods_QuranTests.framework */; };
 /* End PBXBuildFile section */
@@ -81,6 +83,8 @@
 		35B1FB8729EF13D1009047F2 /* SurahCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SurahCollectionViewCell.xib; sourceTree = "<group>"; };
 		35B1FB8A29EF1421009047F2 /* SurahVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahVC.swift; sourceTree = "<group>"; };
 		35B1FB8C29EF142A009047F2 /* SurahVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SurahVC.storyboard; sourceTree = "<group>"; };
+		35C8F7B929F2E6C800ADA531 /* SettingsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsData.swift; sourceTree = "<group>"; };
+		35C8F7BB29F2F0C000ADA531 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		363083C4FC0B55EF6C5DE750 /* Pods-Quran.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quran.debug.xcconfig"; path = "Target Support Files/Pods-Quran/Pods-Quran.debug.xcconfig"; sourceTree = "<group>"; };
 		88A7EBBA39B604EDADDFFB39 /* Pods-QuranTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuranTests.debug.xcconfig"; path = "Target Support Files/Pods-QuranTests/Pods-QuranTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C76E94FD886BCB684C37857F /* Pods-QuranTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuranTests.release.xcconfig"; path = "Target Support Files/Pods-QuranTests/Pods-QuranTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -131,6 +135,7 @@
 		35B1FB2829EED228009047F2 /* Quran */ = {
 			isa = PBXGroup;
 			children = (
+				35C8F7BD29F2F0C700ADA531 /* Settings */,
 				35564C6F29F294AC004F05A4 /* WordViewModel.swift */,
 				3567115829F12E0B008427B1 /* CachingPlayerItem.swift */,
 				3511018A29F0721F00D8986D /* PlayerManager.swift */,
@@ -200,6 +205,15 @@
 				35B1FB8C29EF142A009047F2 /* SurahVC.storyboard */,
 			);
 			path = SurahVC;
+			sourceTree = "<group>";
+		};
+		35C8F7BD29F2F0C700ADA531 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				35C8F7B929F2E6C800ADA531 /* SettingsData.swift */,
+				35C8F7BB29F2F0C000ADA531 /* SettingsVC.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		9A51ADFE7574D7A04232A95D /* Frameworks */ = {
@@ -404,10 +418,12 @@
 				3567115929F12E0B008427B1 /* CachingPlayerItem.swift in Sources */,
 				3511018B29F0721F00D8986D /* PlayerManager.swift in Sources */,
 				35B1FB7529EEFF1C009047F2 /* Word.swift in Sources */,
+				35C8F7BC29F2F0C000ADA531 /* SettingsVC.swift in Sources */,
 				35B1FB2E29EED228009047F2 /* ViewController.swift in Sources */,
 				35564C7229F29932004F05A4 /* VerseViewModel.swift in Sources */,
 				35B1FB6D29EEDB66009047F2 /* Chapter.swift in Sources */,
 				35B1FB3E29EED362009047F2 /* QuranSharedItem.swift in Sources */,
+				35C8F7BA29F2E6C800ADA531 /* SettingsData.swift in Sources */,
 				35B1FB7029EEDBF8009047F2 /* Utility.swift in Sources */,
 				35B1FB2A29EED228009047F2 /* AppDelegate.swift in Sources */,
 				35B1FB8B29EF1421009047F2 /* SurahVC.swift in Sources */,
@@ -582,7 +598,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -612,7 +628,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

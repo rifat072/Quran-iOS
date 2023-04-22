@@ -45,6 +45,7 @@ class Verse: Decodable, Hashable {
             })
         }
     }
+    var translations: [Translation]
     
     
     private static let audioDownloadedDefaults : UserDefaults = UserDefaults(suiteName: "VerseDownload")!
@@ -100,6 +101,15 @@ class Verse: Decodable, Hashable {
         } else {
             return self.getServerURL()
         }
+    }
+    
+    func getTranslation(for resourceId: Int) -> Translation?{
+        for translation in translations {
+            if translation.resource_id == resourceId{
+                return translation
+            }
+        }
+        return nil
     }
     
 

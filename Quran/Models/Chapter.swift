@@ -138,7 +138,8 @@ extension Chapter{
                                                     URLQueryItem(name: "per_page", value: "\(50)"),
                                                     URLQueryItem(name: "word_fields", value: "text_uthmani,text_indopak,text_imlaei"),
                                                     URLQueryItem(name: "language", value: languageCode),
-                                                    URLQueryItem(name: "audio", value: "\(recitationId)")])
+                                                    URLQueryItem(name: "audio", value: "\(recitationId)"),
+                                                    URLQueryItem(name: "translations", value: "\(SettingsData.shared.translationReciterId)")])
             let (data, _) = try await URLSession.shared.data(from: curUrl)
             struct Root: Decodable{
                 let verses: [Verse]

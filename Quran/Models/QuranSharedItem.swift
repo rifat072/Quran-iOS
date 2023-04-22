@@ -21,7 +21,9 @@ class QuranSharedItem {
     private static var _shared:QuranSharedItem!
     
     private var chapters: [Chapter]? = nil
-    private var languages: [Language]? = nil
+    private var languages: [Language] = []
+    private var translationInfos: [TranslationInfo] = []
+    private var languageSpecificTranslationInfo: [Language: [TranslationInfo]] = [:]
     
     static func getSharedItem() async throws -> QuranSharedItem {
         if self.isInitialized{
@@ -38,7 +40,9 @@ class QuranSharedItem {
         } else {
             Task{
                 let sharedItem = try? await getSharedItem()
-                completion(sharedItem)
+                DispatchQueue.main.async {
+                    completion(sharedItem)
+                }
             }
         }
     }
@@ -46,7 +50,43 @@ class QuranSharedItem {
     
     private init() async throws{
         try await self.loadLanguages()
+        try await self.loadTranslationsInfo()
         try await self.loadChapters()
+    }
+    
+    private func loadTranslationsInfo() async throws{
+        guard let url = apiRootUrl?.appending(path: "resources").appending(path: "translations") else {
+            return
+        }
+        let (data, _) = try await URLSession.shared.data(from: url)
+        struct Root: Decodable{
+            let translations: [TranslationInfo]
+        }
+        do{
+            self.translationInfos = try JSONDecoder().decode(Root.self, from: data).translations
+        } catch{
+            print("Error")
+        }
+
+        
+        func getLanguage(for name: String) -> Language?{
+            for language in self.languages{
+                if language.name?.lowercased() == name{
+                    return language
+                }
+            }
+            return nil
+        }
+        
+        for info in self.translationInfos{
+            if let languageName = info.language_name?.lowercased(),
+               let language = getLanguage(for: languageName){
+                if self.languageSpecificTranslationInfo[language] == nil{
+                    self.languageSpecificTranslationInfo[language] = []
+                }
+                self.languageSpecificTranslationInfo[language]!.append(info)
+            }
+        }
     }
     
     private func loadLanguages() async throws{
@@ -81,5 +121,22 @@ extension QuranSharedItem{
     
     func getChapter(for idx: Int) -> Chapter?{
         return chapters?[idx]
+    }
+    
+    func getLanguages() -> [Language]?{
+        return self.languages
+    }
+    
+    func getTranslationInfos() -> [Language: [TranslationInfo]]{
+        return self.languageSpecificTranslationInfo
+    }
+    
+    func getLanguage(fromIso iso: String) -> Language?{
+        for language in self.languages{
+            if language.iso_code == iso{
+                return language
+            }
+        }
+        return nil
     }
 }
