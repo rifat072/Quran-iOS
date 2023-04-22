@@ -57,19 +57,24 @@ class SurahTableView: UITableView {
 extension SurahTableView: UITableViewDataSource, UITableViewDelegate{
     
     func fixedMessedUpSizeIfNeeded(indexPath: IndexPath){
-        if messedUPSize[indexPath.row]{
-            print("Fixed \(indexPath.row)")
+        if messedUPSize[indexPath.section]{
+            print("Fixed \(indexPath.section)")
             UIView.performWithoutAnimation {
                 let loc = self.contentOffset
                 self.beginUpdates()
                 self.endUpdates()
                 self.contentOffset = loc
             }
-            messedUPSize[indexPath.row] = false
+            messedUPSize[indexPath.section] = false
         }
     }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         return chapter.getVersesCount()
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -81,8 +86,8 @@ extension SurahTableView: UITableViewDataSource, UITableViewDelegate{
             guard let self = self else {
                 return
             }
-            self.verseViewModels[indexPath.row] = viewModel
-            cell.updateAppearanceFor(verseViewModel: self.verseViewModels[indexPath.row]!, wordSpacing: SurahTableView.wordSpacing)
+            self.verseViewModels[indexPath.section] = viewModel
+            cell.updateAppearanceFor(verseViewModel: self.verseViewModels[indexPath.section]!, wordSpacing: SurahTableView.wordSpacing)
             self.loadingOperations.removeValue(forKey: indexPath)
 
             self.fixedMessedUpSizeIfNeeded(indexPath: indexPath)
@@ -92,7 +97,7 @@ extension SurahTableView: UITableViewDataSource, UITableViewDelegate{
 
         if let dataLoader = loadingOperations[indexPath] {
             if dataLoader.state == .finished{
-                self.verseViewModels[indexPath.row] = dataLoader.verseViewModel
+                self.verseViewModels[indexPath.section] = dataLoader.verseViewModel
                 cell.updateAppearanceFor(verseViewModel: dataLoader.verseViewModel!, wordSpacing: SurahTableView.wordSpacing)
                 loadingOperations.removeValue(forKey: indexPath)
 
@@ -101,7 +106,7 @@ extension SurahTableView: UITableViewDataSource, UITableViewDelegate{
                 dataLoader.loadingCompleteHandler = updateCellClosure
             }
         } else {
-            let dataLoader = VerseDataLoaderOperation(chapter: self.chapter, verseIdx: indexPath.row)
+            let dataLoader = VerseDataLoaderOperation(chapter: self.chapter, verseIdx: indexPath.section)
             dataLoader.loadingCompleteHandler = updateCellClosure
             loadingQueue.addOperation(dataLoader)
             loadingOperations[indexPath] = dataLoader
@@ -125,12 +130,12 @@ extension SurahTableView: UITableViewDataSource, UITableViewDelegate{
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if let viewModel = self.verseViewModels[indexPath.row]{
-            messedUPSize[indexPath.row] = false
+        if let viewModel = self.verseViewModels[indexPath.section]{
+            messedUPSize[indexPath.section] = false
             let lineCount = viewModel.getLineCount(maxWidth: tableView.bounds.width, itemSpacing: SurahTableView.wordSpacing)
             return CGFloat(lineCount * SurahTableView.lineHeight) + 100
         } else{
-            messedUPSize[indexPath.row] = true
+            messedUPSize[indexPath.section] = true
         }
         return 600
     }
@@ -143,7 +148,7 @@ extension SurahTableView: UITableViewDataSourcePrefetching{
             if let _ = loadingOperations[indexPath] {
                 continue
             }
-            let dataLoader = VerseDataLoaderOperation(chapter: self.chapter, verseIdx: indexPath.row)
+            let dataLoader = VerseDataLoaderOperation(chapter: self.chapter, verseIdx: indexPath.section)
             loadingQueue.addOperation(dataLoader)
             loadingOperations[indexPath] = dataLoader
         }
@@ -156,6 +161,19 @@ extension SurahTableView: UITableViewDataSourcePrefetching{
                 loadingOperations.removeValue(forKey: indexPath)
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 10
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.numberOfLines = 2
+        label.text = "Ayah - \(section + 1)\n"
+        label.textAlignment = .center
+        label.textColor = UIColor(named: "cellSelectedColor")
+        return label
     }
 }
 

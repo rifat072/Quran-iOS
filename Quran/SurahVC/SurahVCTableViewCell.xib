@@ -33,21 +33,12 @@
                                     <action selector="playBtnPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="TsY-rp-EJf"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MLr-iB-gC3">
-                                <rect key="frame" x="54" y="14.666666666666664" width="256" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.098039215686274508" green="0.098039215686274508" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="wsJ-wK-JzI" firstAttribute="centerY" secondItem="mLm-9i-6WU" secondAttribute="centerY" id="6CB-jq-IcJ"/>
                             <constraint firstAttribute="height" constant="50" id="6f9-8z-L53"/>
                             <constraint firstItem="wsJ-wK-JzI" firstAttribute="leading" secondItem="mLm-9i-6WU" secondAttribute="leading" constant="10" id="Eif-VB-ulf"/>
-                            <constraint firstAttribute="trailing" secondItem="MLr-iB-gC3" secondAttribute="trailing" constant="10" id="Peg-8n-54S"/>
-                            <constraint firstItem="MLr-iB-gC3" firstAttribute="centerY" secondItem="mLm-9i-6WU" secondAttribute="centerY" id="g4Q-RR-JJ3"/>
-                            <constraint firstItem="MLr-iB-gC3" firstAttribute="leading" secondItem="wsJ-wK-JzI" secondAttribute="trailing" constant="10" id="wEe-5s-AvI"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8s2-Mu-9kH">
@@ -93,7 +84,6 @@
             <connections>
                 <outlet property="containerStackView" destination="Cfl-hF-NvP" id="leE-zy-kVT"/>
                 <outlet property="playBtn" destination="wsJ-wK-JzI" id="kaa-CE-JMN"/>
-                <outlet property="titleLabel" destination="MLr-iB-gC3" id="feV-HF-GcC"/>
                 <outlet property="translationLabel" destination="liF-rb-DUy" id="UGi-4g-a5N"/>
             </connections>
             <point key="canvasLocation" x="-32.061068702290072" y="59.859154929577471"/>

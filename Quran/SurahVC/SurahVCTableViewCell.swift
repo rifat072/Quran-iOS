@@ -11,7 +11,6 @@ class SurahVCTableViewCell: UITableViewCell {
     
     @IBOutlet weak var containerStackView: UIStackView!
     
-    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var translationLabel: UILabel!
     @IBOutlet weak var playBtn: UIButton!
 
@@ -35,8 +34,6 @@ class SurahVCTableViewCell: UITableViewCell {
         for view in views{
             view.removeFromSuperview()
         }
-        let splitText = verseViewModel.verse.verse_key.split(separator: ":")[1]
-        self.titleLabel.text = "Ayah - \(splitText )"
         
         let lines = verseViewModel.generateDisplayView(wordSpacing: wordSpacing, lineMaxWidth: self.bounds.width)
         for line in lines {
