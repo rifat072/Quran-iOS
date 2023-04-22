@@ -103,12 +103,20 @@ class SettingsData: NSObject{
         }
     }
     
+    var audioReciterId: Int{
+        get{
+            return self.userDefaults.integer(forKey: "audioReciterId")
+        } set {
+            self.userDefaults.set(newValue, forKey: "audioReciterId")
+        }
+    }
+    
     private override init(){
         super.init()
         
         //TODO: Need to user version
         if self.userDefaults.bool(forKey: "isValueIntiatedFirstTime") == false {
-            
+
             self.shouldAutoScroll = true
             self.shouldMarkProbableWord = true
             self.darkMode = false
@@ -120,8 +128,7 @@ class SettingsData: NSObject{
             self.wordByWordTranslation = true
             self.wordByWordTranslationLanguageISO = "en"
             self.offlineAudioDownload = true
-            
-            
+            self.audioReciterId = 7
             self.userDefaults.set(true, forKey: "isValueIntiatedFirstTime")
         }
     }

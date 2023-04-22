@@ -198,6 +198,7 @@ class PlayerManager: NSObject {
     func addVerseToPlayList(verse: Verse){
         let playerItem = VersePlayerItem(verse: verse)
         self.player.insert(playerItem, after: nil)
+        print("Audio Url", verse.audio?.url)
         self.playList.append(verse)
     }
     

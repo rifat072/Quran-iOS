@@ -61,7 +61,7 @@ struct Transliteration: Decodable{
     let text: String?
 }
 
-class Pagination: Decodable{
+struct Pagination: Decodable{
     let per_page: Int?
     let current_page: Int?
     let next_page: Int?
@@ -69,7 +69,7 @@ class Pagination: Decodable{
     let total_records: Int?
 }
 
-class AudioFile: Decodable{
+struct AudioFile: Decodable{
     let url: String?
     let duration: Int?
     let format: String?
@@ -83,3 +83,10 @@ class AudioFile: Decodable{
 }
 
 
+struct AudioReciterInfo: Decodable{
+    let id: Int?
+    let name: String?
+    let style: TranslatedName?
+    let qirat: TranslatedName?
+    let translated_name: TranslatedName?
+}

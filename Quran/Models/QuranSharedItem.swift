@@ -10,7 +10,6 @@ import UIKit
 
 public let apiRootUrl = URL(string:"https://api.quran.com/api/v4")
 public let audioDownloadRootUrl = URL(string: "https://verses.quran.com")
-public let recitationId: Int = 7 //TODO: Need to load all reciters
 let rtlIsolate = "\u{202A}"
 
 class QuranSharedItem {
@@ -23,6 +22,7 @@ class QuranSharedItem {
     private var languages: [Language] = []
     private var translationInfos: [TranslationInfo] = []
     private var languageSpecificTranslationInfo: [Language: [TranslationInfo]] = [:]
+    private var audioReciters: [AudioReciterInfo] = []
     
     static func getSharedItem() async throws -> QuranSharedItem {
         if self.isInitialized{
@@ -50,7 +50,20 @@ class QuranSharedItem {
     private init() async throws{
         try await self.loadLanguages()
         try await self.loadTranslationsInfo()
+        try await self.loadAudioReciters()
         try await self.loadChapters()
+    }
+    
+    private func loadAudioReciters() async throws{
+
+        guard let url = apiRootUrl?.appending(path: "resources").appending(path: "chapter_reciters") else {
+            return
+        }
+        let (data, _) = try await URLSession.shared.data(from: url)
+        struct Root: Decodable{
+            let reciters: [AudioReciterInfo]
+        }
+        self.audioReciters = try JSONDecoder().decode(Root.self, from: data).reciters
     }
     
     private func loadTranslationsInfo() async throws{
@@ -128,6 +141,10 @@ extension QuranSharedItem{
     
     func getTranslationInfos() -> [Language: [TranslationInfo]]{
         return self.languageSpecificTranslationInfo
+    }
+    
+    func getAudioReciters() -> [AudioReciterInfo]{
+        return self.audioReciters
     }
     
     func getLanguage(fromIso iso: String) -> Language?{

@@ -65,6 +65,7 @@ class SettingsVC: UITableViewController {
     @IBOutlet weak var wordByWordTranslationLanguageBtn: UIButton!
     
     @IBOutlet weak var audioReciterBtn: UIButton!
+    
     @IBOutlet weak var markProbableWordSwitch: UISwitch!{
         didSet{
             markProbableWordSwitch.isOn = settingsData.shouldMarkProbableWord ? true : false
@@ -89,6 +90,7 @@ class SettingsVC: UITableViewController {
         didSet{
             self.loadDropDownMenusForTranslation()
             self.loadWordByWordTranslationLanguage()
+            self.loadAudioReciters()
             self.wordByWordTranslationLanguageBtn.isEnabled = self.wordByWordTranslationSwitch.isOn
         }
     }
@@ -212,6 +214,36 @@ class SettingsVC: UITableViewController {
         for language in languages {
             if language.iso_code == settingsData.wordByWordTranslationLanguageISO{
                 self.wordByWordTranslationLanguageBtn.setTitle(language.name, for: .normal)
+                break
+            }
+        }
+    }
+    
+    func loadAudioReciters(){
+        let reciters = sharedItem.getAudioReciters()
+        
+        let handler = { [weak self] (action: UIAction) in
+            guard let self = self else {
+                return
+            }
+            for reciter in reciters {
+                if reciter.name == action.title{
+                    self.audioReciterBtn.setTitle(action.title, for: .normal)
+                    self.settingsData.audioReciterId = reciter.id!
+                    break
+                }
+            }
+        }
+        
+        var actions: [UIAction] = []
+        for reciter in reciters {
+            actions.append(UIAction(title: reciter.name ?? "", handler: handler))
+        }
+        self.audioReciterBtn.menu = UIMenu(children: actions)
+        
+        for reciter in reciters {
+            if reciter.id == settingsData.audioReciterId{
+                self.audioReciterBtn.setTitle(reciter.name, for: .normal)
                 break
             }
         }

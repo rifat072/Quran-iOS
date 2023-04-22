@@ -92,6 +92,13 @@ class Verse: Decodable, Hashable {
     }
     
     func getServerURL() -> URL?{
+        guard let str = self.audio?.url else {
+            return nil
+        }
+        if str.contains("//mirrors.quranicaudio.com"){
+            let finalStr = str.replacingOccurrences(of: "//mirrors.quranicaudio.com", with: "https://mirrors.quranicaudio.com")
+            return URL(string: finalStr)
+        }
         return audioDownloadRootUrl?.appending(path: audio?.url ?? "")
     }
     
