@@ -6,8 +6,8 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
-        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -126,44 +126,28 @@
                                     <constraint firstItem="erG-Vv-eqB" firstAttribute="centerX" secondItem="mu9-Pu-iPa" secondAttribute="centerX" id="rXs-V4-IRJ"/>
                                 </constraints>
                             </view>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Xnj-Z9-hC1" customClass="SurahCollectionView" customModule="Quran" customModuleProvider="target">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="nG1-Kx-Ul9" customClass="SurahTableView" customModule="Quran" customModuleProvider="target">
                                 <rect key="frame" x="20" y="229" width="353" height="569"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="HWU-oI-ORd">
-                                    <size key="itemSize" width="128" height="128"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="SurahCollectionViewCell" id="NCr-Sj-M4w" customClass="SurahCollectionViewCell" customModule="Quran" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="S6J-cT-sRh">
-                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </collectionViewCellContentView>
-                                    </collectionViewCell>
-                                </cells>
-                            </collectionView>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Xnj-Z9-hC1" firstAttribute="top" secondItem="mu9-Pu-iPa" secondAttribute="bottom" constant="20" id="7Gw-G2-IA0"/>
-                            <constraint firstItem="Xnj-Z9-hC1" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="GZF-s0-7JF"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Xnj-Z9-hC1" secondAttribute="trailing" constant="20" id="Hw0-GN-grp"/>
+                            <constraint firstItem="nG1-Kx-Ul9" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="EDO-S3-906"/>
+                            <constraint firstItem="nG1-Kx-Ul9" firstAttribute="top" secondItem="mu9-Pu-iPa" secondAttribute="bottom" constant="20" id="VYT-1u-Ajg"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="mu9-Pu-iPa" secondAttribute="trailing" constant="20" id="hab-rQ-tfE"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="Xnj-Z9-hC1" secondAttribute="bottom" constant="20" id="hfk-Ml-n2U"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="nG1-Kx-Ul9" secondAttribute="bottom" constant="20" id="oG2-NK-pmk"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="nG1-Kx-Ul9" secondAttribute="trailing" constant="20" id="r9Q-Fa-ATL"/>
                             <constraint firstItem="mu9-Pu-iPa" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="tTs-SQ-rri"/>
                             <constraint firstItem="mu9-Pu-iPa" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="20" id="wsJ-n2-WXy"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="collectionView" destination="Xnj-Z9-hC1" id="BCS-u1-cOS"/>
                         <outlet property="fromButton" destination="Od0-QJ-T3C" id="Qqc-xy-eak"/>
                         <outlet property="playBtn" destination="erG-Vv-eqB" id="Wqx-sJ-Cez"/>
                         <outlet property="repeatButton" destination="WG9-wI-0FO" id="9hG-Jz-Ggl"/>
+                        <outlet property="tableView" destination="nG1-Kx-Ul9" id="tfI-FC-WWM"/>
                         <outlet property="titleLabel" destination="x3N-UO-WRZ" id="GgQ-mB-Mtr"/>
                         <outlet property="toButton" destination="bmO-Zf-W3B" id="LEe-Nv-vga"/>
                     </connections>
@@ -178,5 +162,8 @@
         <namedColor name="cellSelectedColor">
             <color red="0.37299999594688416" green="0.37299999594688416" blue="0.96100002527236938" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

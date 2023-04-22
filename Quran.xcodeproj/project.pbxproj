@@ -12,6 +12,8 @@
 		35564C7229F29932004F05A4 /* VerseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35564C7129F29932004F05A4 /* VerseViewModel.swift */; };
 		3567115929F12E0B008427B1 /* CachingPlayerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567115829F12E0B008427B1 /* CachingPlayerItem.swift */; };
 		3567115D29F17A7E008427B1 /* FloatingPanelContentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567115C29F17A7E008427B1 /* FloatingPanelContentVC.swift */; };
+		359E126B29F460A900CD3B41 /* SurahVCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E126929F460A900CD3B41 /* SurahVCTableViewCell.swift */; };
+		359E126C29F460A900CD3B41 /* SurahVCTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 359E126A29F460A900CD3B41 /* SurahVCTableViewCell.xib */; };
 		35B1FB2A29EED228009047F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB2929EED228009047F2 /* AppDelegate.swift */; };
 		35B1FB2C29EED228009047F2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB2B29EED228009047F2 /* SceneDelegate.swift */; };
 		35B1FB2E29EED228009047F2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB2D29EED228009047F2 /* ViewController.swift */; };
@@ -33,6 +35,8 @@
 		35B1FB8929EF13D1009047F2 /* SurahCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 35B1FB8729EF13D1009047F2 /* SurahCollectionViewCell.xib */; };
 		35B1FB8B29EF1421009047F2 /* SurahVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB8A29EF1421009047F2 /* SurahVC.swift */; };
 		35B1FB8D29EF142A009047F2 /* SurahVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35B1FB8C29EF142A009047F2 /* SurahVC.storyboard */; };
+		35B7A1C029F3BE7A001714E5 /* VerseDataLoaderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B7A1BF29F3BE7A001714E5 /* VerseDataLoaderOperation.swift */; };
+		35B7A1C229F3DEFE001714E5 /* SurahTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B7A1C129F3DEFE001714E5 /* SurahTableView.swift */; };
 		35C8F7BA29F2E6C800ADA531 /* SettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C8F7B929F2E6C800ADA531 /* SettingsData.swift */; };
 		35C8F7BC29F2F0C000ADA531 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C8F7BB29F2F0C000ADA531 /* SettingsVC.swift */; };
 		B80AD604344996CA0EFF49CA /* Pods_Quran.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED39DA116E6DBEEEB542B65A /* Pods_Quran.framework */; };
@@ -57,6 +61,8 @@
 		35564C7129F29932004F05A4 /* VerseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerseViewModel.swift; sourceTree = "<group>"; };
 		3567115829F12E0B008427B1 /* CachingPlayerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachingPlayerItem.swift; sourceTree = "<group>"; };
 		3567115C29F17A7E008427B1 /* FloatingPanelContentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelContentVC.swift; sourceTree = "<group>"; };
+		359E126929F460A900CD3B41 /* SurahVCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahVCTableViewCell.swift; sourceTree = "<group>"; };
+		359E126A29F460A900CD3B41 /* SurahVCTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SurahVCTableViewCell.xib; sourceTree = "<group>"; };
 		35B1FB2629EED228009047F2 /* Quran.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quran.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		35B1FB2929EED228009047F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		35B1FB2B29EED228009047F2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -83,6 +89,8 @@
 		35B1FB8729EF13D1009047F2 /* SurahCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SurahCollectionViewCell.xib; sourceTree = "<group>"; };
 		35B1FB8A29EF1421009047F2 /* SurahVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahVC.swift; sourceTree = "<group>"; };
 		35B1FB8C29EF142A009047F2 /* SurahVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SurahVC.storyboard; sourceTree = "<group>"; };
+		35B7A1BF29F3BE7A001714E5 /* VerseDataLoaderOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerseDataLoaderOperation.swift; sourceTree = "<group>"; };
+		35B7A1C129F3DEFE001714E5 /* SurahTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurahTableView.swift; sourceTree = "<group>"; };
 		35C8F7B929F2E6C800ADA531 /* SettingsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsData.swift; sourceTree = "<group>"; };
 		35C8F7BB29F2F0C000ADA531 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		363083C4FC0B55EF6C5DE750 /* Pods-Quran.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quran.debug.xcconfig"; path = "Target Support Files/Pods-Quran/Pods-Quran.debug.xcconfig"; sourceTree = "<group>"; };
@@ -135,15 +143,13 @@
 		35B1FB2829EED228009047F2 /* Quran */ = {
 			isa = PBXGroup;
 			children = (
+				35B7A1B429F3B88C001714E5 /* Player */,
 				35C8F7BD29F2F0C700ADA531 /* Settings */,
-				35564C6F29F294AC004F05A4 /* WordViewModel.swift */,
-				3567115829F12E0B008427B1 /* CachingPlayerItem.swift */,
-				3511018A29F0721F00D8986D /* PlayerManager.swift */,
-				3567115C29F17A7E008427B1 /* FloatingPanelContentVC.swift */,
-				35B1FB7F29EF1375009047F2 /* SurahVC */,
 				35B1FB7629EF0B4D009047F2 /* SurahListVC */,
+				35B1FB7F29EF1375009047F2 /* SurahVC */,
 				35B1FB6E29EEDBE9009047F2 /* UtilityModels */,
 				35B1FB6929EEDAAC009047F2 /* Models */,
+				3567115C29F17A7E008427B1 /* FloatingPanelContentVC.swift */,
 				35B1FB2929EED228009047F2 /* AppDelegate.swift */,
 				35B1FB2B29EED228009047F2 /* SceneDelegate.swift */,
 				35B1FB2D29EED228009047F2 /* ViewController.swift */,
@@ -151,7 +157,6 @@
 				35B1FB3229EED229009047F2 /* Assets.xcassets */,
 				35B1FB3429EED229009047F2 /* LaunchScreen.storyboard */,
 				35B1FB3729EED229009047F2 /* Info.plist */,
-				35564C7129F29932004F05A4 /* VerseViewModel.swift */,
 			);
 			path = Quran;
 			sourceTree = "<group>";
@@ -168,6 +173,8 @@
 		35B1FB6929EEDAAC009047F2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				35564C7129F29932004F05A4 /* VerseViewModel.swift */,
+				35564C6F29F294AC004F05A4 /* WordViewModel.swift */,
 				35B1FB3D29EED362009047F2 /* QuranSharedItem.swift */,
 				35B1FB6C29EEDB66009047F2 /* Chapter.swift */,
 				35B1FB7229EEFDD0009047F2 /* Verse.swift */,
@@ -199,12 +206,25 @@
 			isa = PBXGroup;
 			children = (
 				35B1FB8429EF13C4009047F2 /* SurahCollectionView.swift */,
+				35B7A1BF29F3BE7A001714E5 /* VerseDataLoaderOperation.swift */,
+				35B7A1C129F3DEFE001714E5 /* SurahTableView.swift */,
 				35B1FB8629EF13D1009047F2 /* SurahCollectionViewCell.swift */,
 				35B1FB8729EF13D1009047F2 /* SurahCollectionViewCell.xib */,
 				35B1FB8A29EF1421009047F2 /* SurahVC.swift */,
 				35B1FB8C29EF142A009047F2 /* SurahVC.storyboard */,
+				359E126929F460A900CD3B41 /* SurahVCTableViewCell.swift */,
+				359E126A29F460A900CD3B41 /* SurahVCTableViewCell.xib */,
 			);
 			path = SurahVC;
+			sourceTree = "<group>";
+		};
+		35B7A1B429F3B88C001714E5 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				3567115829F12E0B008427B1 /* CachingPlayerItem.swift */,
+				3511018A29F0721F00D8986D /* PlayerManager.swift */,
+			);
+			path = Player;
 			sourceTree = "<group>";
 		};
 		35C8F7BD29F2F0C700ADA531 /* Settings */ = {
@@ -327,6 +347,7 @@
 				35B1FB7E29EF0C43009047F2 /* SurahListCollectionViewCell.xib in Resources */,
 				35B1FB3129EED228009047F2 /* Main.storyboard in Resources */,
 				35B1FB8D29EF142A009047F2 /* SurahVC.storyboard in Resources */,
+				359E126C29F460A900CD3B41 /* SurahVCTableViewCell.xib in Resources */,
 				35B1FB8929EF13D1009047F2 /* SurahCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -413,12 +434,15 @@
 				35564C7029F294AC004F05A4 /* WordViewModel.swift in Sources */,
 				3567115D29F17A7E008427B1 /* FloatingPanelContentVC.swift in Sources */,
 				35B1FB7829EF0B6C009047F2 /* SurahListVC.swift in Sources */,
+				35B7A1C229F3DEFE001714E5 /* SurahTableView.swift in Sources */,
 				35B1FB8529EF13C4009047F2 /* SurahCollectionView.swift in Sources */,
 				35B1FB7329EEFDD0009047F2 /* Verse.swift in Sources */,
 				3567115929F12E0B008427B1 /* CachingPlayerItem.swift in Sources */,
 				3511018B29F0721F00D8986D /* PlayerManager.swift in Sources */,
 				35B1FB7529EEFF1C009047F2 /* Word.swift in Sources */,
+				35B7A1C029F3BE7A001714E5 /* VerseDataLoaderOperation.swift in Sources */,
 				35C8F7BC29F2F0C000ADA531 /* SettingsVC.swift in Sources */,
+				359E126B29F460A900CD3B41 /* SurahVCTableViewCell.swift in Sources */,
 				35B1FB2E29EED228009047F2 /* ViewController.swift in Sources */,
 				35564C7229F29932004F05A4 /* VerseViewModel.swift in Sources */,
 				35B1FB6D29EEDB66009047F2 /* Chapter.swift in Sources */,

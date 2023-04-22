@@ -21,13 +21,12 @@ class SurahVC: UIViewController {
         }
         
     }
-    @IBOutlet weak var collectionView: SurahCollectionView!{
+    @IBOutlet weak var tableView: SurahTableView!{
         didSet{
-            self.collectionView.viewControllerDelegate = self
-            self.collectionView.chapter = self.chapter
+            self.tableView.viewControllerDelegate = self
+            self.tableView.chapter = self.chapter
         }
     }
-    
     
     private var fromSelectionAction: UIAction? = nil
     private var toSelectedAction: UIAction? = nil
@@ -71,8 +70,11 @@ class SurahVC: UIViewController {
 }
 
 
-extension SurahVC: SurahCollectionViewDelegate{
+extension SurahVC: SurahTableViewDelegate{
     func isReadyForStream() {
+        //TODO: Streaming
+        
+        return;
         self.playBtn.isHidden = false
         self.loadDropDownMenus()
     }
