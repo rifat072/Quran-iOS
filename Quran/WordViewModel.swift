@@ -28,20 +28,28 @@ class WordViewModel: NSObject {
             return label
         }
         
-        let label1 = generateLabel(str: self.word.text_uthmani)
-        label1.font = UIFont.systemFont(ofSize: 15)
-        let label2 = generateLabel(str: self.word.transliteration.text)
-        label2.font = UIFont.systemFont(ofSize: 11)
-        let label3 = generateLabel(str: self.word.translation.text)
-        label3.font = UIFont.systemFont(ofSize: 11)
-        
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .fill
+        
+        let label1 = generateLabel(str: self.word.text_uthmani)
+        label1.font = UIFont.systemFont(ofSize: 15)
         stackView.addArrangedSubview(label1)
-        stackView.addArrangedSubview(label2)
-        stackView.addArrangedSubview(label3)
+        
+        if SettingsData.shared.shouldShowTransliteration{
+            let label2 = generateLabel(str: self.word.transliteration.text)
+            label2.font = UIFont.systemFont(ofSize: 11)
+            stackView.addArrangedSubview(label2)
+        }
+
+        if SettingsData.shared.wordByWordTranslation{
+            let label3 = generateLabel(str: self.word.translation.text)
+            label3.font = UIFont.systemFont(ofSize: 11)
+            stackView.addArrangedSubview(label3)
+            
+        }
+
         
         self.lastGeneratedView = stackView
         return (view: stackView, width: self.getMaxWidth())
@@ -49,8 +57,8 @@ class WordViewModel: NSObject {
     
     func getMaxWidth() -> CGFloat{
         return  max(getWidth(for: self.word.text_uthmani, font: UIFont.systemFont(ofSize: 15)).width,
-                    getWidth(for: self.word.transliteration.text, font: UIFont.systemFont(ofSize: 11)).width,
-                    getWidth(for: self.word.translation.text, font: UIFont.systemFont(ofSize: 11)).width)
+                    SettingsData.shared.shouldShowTransliteration ? getWidth(for: self.word.transliteration.text, font: UIFont.systemFont(ofSize: 11)).width : 0,
+                    SettingsData.shared.wordByWordTranslation ?  getWidth(for: self.word.translation.text, font: UIFont.systemFont(ofSize: 11)).width : 0)
     }
     
     func getWidth(for text: String?, font: UIFont) -> CGSize {

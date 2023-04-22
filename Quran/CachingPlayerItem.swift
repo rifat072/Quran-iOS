@@ -22,6 +22,9 @@ class VersePlayerItem: CachingPlayerItem, CachingPlayerItemDelegate{
         if self.verse.isDownloaded {
             return
         }
+        if SettingsData.shared.offlineAudioDownload == false {
+            return
+        }
         if let savedUrl = self.verse.getSavedUrl(){
             do{
                 let url = savedUrl.deletingLastPathComponent()

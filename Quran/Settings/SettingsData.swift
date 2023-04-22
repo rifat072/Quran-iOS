@@ -49,14 +49,6 @@ class SettingsData: NSObject{
             self.userDefaults.set(newValue, forKey: "systemMode")
         }
     }
-    var shouldShowEnglishWordTranslation: Bool{
-        get{
-            return self.userDefaults.bool(forKey: "shouldShowEnglishWordTranslation")
-        } set {
-            self.userDefaults.set(newValue, forKey: "shouldShowEnglishWordTranslation")
-        }
-        
-    }
     var shouldShowTransliteration: Bool{
         get{
             return self.userDefaults.bool(forKey: "shouldShowTransliteration")
@@ -87,6 +79,30 @@ class SettingsData: NSObject{
         }
     }
     
+    var wordByWordTranslation: Bool{
+        get{
+            return self.userDefaults.bool(forKey: "wordByWordTranslation")
+        } set {
+            self.userDefaults.set(newValue, forKey: "wordByWordTranslation")
+        }
+    }
+    
+    var wordByWordTranslationLanguageISO: String{
+        get{
+            return self.userDefaults.string(forKey: "wordByWordTranslationLanguageISO")!
+        } set {
+            self.userDefaults.set(newValue, forKey: "wordByWordTranslationLanguageISO")
+        }
+    }
+    
+    var offlineAudioDownload: Bool{
+        get{
+            return self.userDefaults.bool(forKey: "offlineAudioDownload")
+        } set {
+            self.userDefaults.set(newValue, forKey: "offlineAudioDownload")
+        }
+    }
+    
     private override init(){
         super.init()
         
@@ -97,11 +113,14 @@ class SettingsData: NSObject{
             self.shouldMarkProbableWord = true
             self.darkMode = false
             self.systemMode = false
-            self.shouldShowEnglishWordTranslation = true
             self.shouldShowTransliteration = true
             self.selectedFontSize = .Medium
             self.translationLanguageISO = "en"
             self.translationReciterId = -1
+            self.wordByWordTranslation = true
+            self.wordByWordTranslationLanguageISO = "en"
+            self.offlineAudioDownload = true
+            
             
             self.userDefaults.set(true, forKey: "isValueIntiatedFirstTime")
         }

@@ -42,14 +42,28 @@ class SettingsVC: UITableViewController {
     @IBOutlet weak var translationLanguageBtn: UIButton!
     @IBOutlet weak var translationReciterBtn: UIButton!
     
-    @IBOutlet weak var englishWordTranslationSwitch: UISwitch!{
+    
+    @IBOutlet weak var wordByWordTranslationSwitch: UISwitch!{
         didSet{
-            englishWordTranslationSwitch.isOn = settingsData.shouldShowEnglishWordTranslation ? true : false
-            englishWordTranslationSwitch.addAction(UIAction(handler: {_ in
-                self.settingsData.shouldShowEnglishWordTranslation = self.englishWordTranslationSwitch.isOn
+            wordByWordTranslationSwitch.isOn = settingsData.wordByWordTranslation ? true : false
+            wordByWordTranslationSwitch.addAction(UIAction(handler: {_ in
+                self.settingsData.wordByWordTranslation = self.wordByWordTranslationSwitch.isOn
+                self.wordByWordTranslationLanguageBtn.isEnabled = self.wordByWordTranslationSwitch.isOn
+                            
             }), for: .valueChanged)
         }
     }
+    @IBOutlet weak var saveOfflineAudioSwitch: UISwitch!{
+        didSet{
+            saveOfflineAudioSwitch.isOn = settingsData.offlineAudioDownload ? true : false
+            
+            saveOfflineAudioSwitch.addAction(UIAction(handler: {_ in
+                self.settingsData.offlineAudioDownload = self.saveOfflineAudioSwitch.isOn
+            }), for: .valueChanged)
+        }
+    }
+    @IBOutlet weak var wordByWordTranslationLanguageBtn: UIButton!
+    
     @IBOutlet weak var audioReciterBtn: UIButton!
     @IBOutlet weak var markProbableWordSwitch: UISwitch!{
         didSet{
@@ -74,6 +88,8 @@ class SettingsVC: UITableViewController {
     private var sharedItem: QuranSharedItem!{
         didSet{
             self.loadDropDownMenusForTranslation()
+            self.loadWordByWordTranslationLanguage()
+            self.wordByWordTranslationLanguageBtn.isEnabled = self.wordByWordTranslationSwitch.isOn
         }
     }
     
@@ -164,6 +180,38 @@ class SettingsVC: UITableViewController {
             if language.iso_code == settingsData.translationLanguageISO{
                 self.translationLanguageBtn.setTitle(language.name, for: .normal)
                 self.loadDropDownForTranslationReciters(with: reciters[language]!)
+                break
+            }
+        }
+    }
+    
+    func loadWordByWordTranslationLanguage(){
+        let languages = sharedItem.getLanguages()!
+        
+        let handler = { [weak self] (action: UIAction) in
+            guard let self = self else {
+                return
+            }
+            
+            for language in languages {
+                if language.name == action.title{
+                    self.wordByWordTranslationLanguageBtn.setTitle(action.title, for: .normal)
+                    self.settingsData.wordByWordTranslationLanguageISO = language.iso_code!
+                    break
+                }
+            }
+        }
+        
+        var actions: [UIAction] = []
+        for language in languages{
+            actions.append(UIAction(title: language.name ?? "", handler: handler))
+        }
+        self.wordByWordTranslationLanguageBtn.menu = UIMenu(children: actions)
+        
+        
+        for language in languages {
+            if language.iso_code == settingsData.wordByWordTranslationLanguageISO{
+                self.wordByWordTranslationLanguageBtn.setTitle(language.name, for: .normal)
                 break
             }
         }
