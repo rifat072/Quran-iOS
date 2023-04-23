@@ -54,8 +54,10 @@ class SurahVCTableViewCell: UITableViewCell {
         self.translationViewHeightConstraint.constant = height + 20
         let translation = verseViewModel.verse.getTranslation(for: SettingsData.shared.translationReciterId)
         
+        
         self.translationLabel.text = translation?.text
     }
     
     
 }
+

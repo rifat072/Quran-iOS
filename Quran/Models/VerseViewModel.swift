@@ -96,7 +96,6 @@ class VerseViewModel: NSObject {
         WordViewModel.DUMMY_LABEL.lineBreakMode = .byWordWrapping
         WordViewModel.DUMMY_LABEL.sizeToFit()
         
-        let view = WordViewModel.DUMMY_LABEL
         return WordViewModel.DUMMY_LABEL.frame.size.height
     }
 }
