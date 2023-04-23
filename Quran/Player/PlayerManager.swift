@@ -10,43 +10,6 @@ import MediaPlayer
 import UIKit
 import FloatingPanel
 
-enum RepeationType: CaseIterable{
-    case _1
-    case _2
-    case _4
-    case _8
-    case _infinite
-    
-    func getString() -> String{
-        if self == ._1 {return "1"}
-        else if self == ._2{return "2"}
-        else if self == ._4{return "4"}
-        else if self == ._8{return "8"}
-        else {return "infinte"}
-    }
-    
-    static func getType(str: String) -> RepeationType{
-        if str == "1" {return ._1}
-        else if str == "2"{return ._2}
-        else if str == "4"{return ._4}
-        else if str == "8"{return ._8}
-        else {return ._infinite}
-    }
-    
-    func getIntValue() -> Int{
-        if self == ._1{
-            return 1
-        } else if self == ._2{
-            return 2
-        } else if self == ._4{
-            return 4
-        } else if self == ._8{
-            return 8
-        } else {
-            return 100000000
-        }
-    }
-}
 
 protocol ContinouseReadingDelegate: NSObject{
     func currentProgress(value: Float)
@@ -138,7 +101,7 @@ class PlayerManager: NSObject {
         }
     }
     
-    private func dismisFloatingPanel(){
+    @MainActor private func dismisFloatingPanel(){
         if self.navigationController?.visibleViewController == self.floatingPanel{
             self.floatingPanel.dismiss(animated: true)
         }
@@ -178,13 +141,19 @@ class PlayerManager: NSObject {
     
     func play(){
         Task(priority: .high) {
-            let versePlayerItem = await self.playList?.getNextVersePlayerItem()
-            self.player.replaceCurrentItem(with: versePlayerItem)
             self.prevStatus = .unknown
+            if let versePlayerItem = await self.playList?.getNextVersePlayerItem(){
+                self.player.replaceCurrentItem(with: versePlayerItem)
+                await self.showFloatingPanel()
+                await self.floatingPanelContentVC.playerPlay()
+                self.makePlayerActive()
+            } else {
+                self.player.replaceCurrentItem(with: nil)
+                await self.dismisFloatingPanel()
+                await self.floatingPanelContentVC.playerStopped()
+                self.makePlayerDeactive()
+            }
             
-            await self.showFloatingPanel()
-            await self.floatingPanelContentVC.playerPlay()
-            self.makePlayerActive()
         }
     }
     func pause(){
@@ -286,9 +255,13 @@ extension PlayerManager{
     @objc private func playerItemDidFinishPlaying(sender: Notification){
         
         Task(priority: .high) {
-            let versePlayerItem = await self.playList?.getNextVersePlayerItem()
-            self.player.replaceCurrentItem(with: versePlayerItem)
             self.prevStatus = .unknown
+            if let versePlayerItem = await self.playList?.getNextVersePlayerItem(){
+                self.player.replaceCurrentItem(with: versePlayerItem)
+            } else {
+                self.player.replaceCurrentItem(with: nil)
+                await self.dismisFloatingPanel()
+            }
         }
         
     }

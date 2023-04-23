@@ -7,110 +7,89 @@
 
 import UIKit
 
+enum RepeationType: CaseIterable{
+    case _1
+    case _2
+    case _4
+    case _8
+    case _infinite
+    
+    func getString() -> String{
+        if self == ._1 {return "1"}
+        else if self == ._2{return "2"}
+        else if self == ._4{return "4"}
+        else if self == ._8{return "8"}
+        else {return "infinte"}
+    }
+    
+    static func getType(str: String) -> RepeationType{
+        if str == "1" {return ._1}
+        else if str == "2"{return ._2}
+        else if str == "4"{return ._4}
+        else if str == "8"{return ._8}
+        else {return ._infinite}
+    }
+    
+    func getIntValue() -> Int{
+        if self == ._1{
+            return 1
+        } else if self == ._2{
+            return 2
+        } else if self == ._4{
+            return 4
+        } else if self == ._8{
+            return 8
+        } else {
+            return 100000000
+        }
+    }
+}
+
+
 
 class PlayList: NSObject {
-    
-//    private actor VerseMap{
-//        private var verses: [Int: Verse] = [:]
-//        private var _versesCount: Int = 0
-//
-//
-//        var count: Int{
-//            return self._versesCount
-//        }
-//
-//        func addVerse(verse: Verse){
-//            let id = Int(verse.verse_key.split(separator: ":")[1])! - 1
-//            verses[id] = verse
-//            _versesCount += 1
-//        }
-//
-//        func isLoaded(index: Int) -> Bool{
-//            return verses[index] != nil
-//        }
-//    }
     
     private static let ADVANCE_LOADING_COUNT = 5
     private let chapter: Chapter
     private let fromAyah: Int
     private let toAyah: Int
+    private let repeationType: RepeationType
     private var totalCount: Int{
         return (toAyah - fromAyah) + 1
     }
     
-    private var currentIndex: Int{
-        didSet{
-//            self.checkIfLoadingNeeded()
-        }
-    }
-    
-//    private var verseMap: VerseMap = VerseMap()
+    private var currentIndex: Int
+    private var currentLoopCount: Int
 
-    private var verses: [Verse] = []{
-        didSet{
-//            if let completion = self.completionsToCall{
-//                if currentIndex < verses.count{
-//                    self.sendVerse()
-//                }
-//            }
-        }
-    }
-//    private var completionsToCall: ((Verse) -> ())? = nil
-    
-    
+    private var verses: [Verse] = []
     init(chapter: Chapter, from: Int? = nil, to: Int? = nil, repeatationType: RepeationType = ._1){
         self.chapter = chapter
         self.fromAyah = from ?? 1
         self.toAyah = to ?? chapter.getVersesCount()
         self.currentIndex = 0
+        self.currentLoopCount = 0
+        self.repeationType = repeatationType
 
         super.init()
     }
     
     
-    func getNextVersePlayerItem() async -> VersePlayerItem {
+    func getNextVersePlayerItem() async -> VersePlayerItem? {
+        if currentIndex >=  totalCount{
+            return nil
+        }
+
         let verse = try! await chapter.loadVerse(idx: currentIndex)
         currentIndex += 1
+        
+        if currentIndex == totalCount{
+            self.currentLoopCount += 1
+            if self.currentLoopCount < self.repeationType.getIntValue(){
+                currentIndex = 0
+            }
+        }
+        
         return VersePlayerItem(verse: verse!)
     }
     
-//    func getNextVerse(completion: @escaping (Verse) -> ()){
-//        self.completionsToCall = completion
-//        if currentIndex < verses.count{
-//            self.sendVerse()
-//        }
-//    }
-    
-//    private func sendVerse(){
-//        completionsToCall?(self.verses[currentIndex])
-//        self.completionsToCall = nil
-//        self.currentIndex += 1
-//        //TODO:
-//        self.currentIndex %= totalCount
-//    }
-//
-
-    
-//    private func checkIfLoadingNeeded() async throws{
-//        let alreadyLoadedCount = await verseMap.count
-//        let advanceLoadingIndex = currentIndex + PlayList.ADVANCE_LOADING_COUNT
-//
-//        let mini = await verseMap.count
-//        let maxi = min(advanceLoadingIndex, totalCount)
-//
-//        if(mini > maxi) {return}
-//
-//        await withThrowingTaskGroup(of: Verse.self, body: { group in
-//            for i in mini...maxi{
-//                group.addTask {
-//                    if let verse = try? await self.chapter.loadVerse(idx: i){
-//                        await self.verseMap.addVerse(verse: verse)
-//                    }
-//                }
-//            }
-//        })
-//
-//    }
-    
-
 }
