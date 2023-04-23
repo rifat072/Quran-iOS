@@ -59,12 +59,9 @@ class PlayerManager: NSObject {
     //TODO: Need to maintain Queue for downloading But downloading is fast enough
     static let shared = PlayerManager()
     
-    private var currentlyPlayingIndex: Int? = nil
-    private var playList: [Verse] = []
+    private var playList: PlayList? = nil
     private let player: AVQueuePlayer  = AVQueuePlayer()
     private var isPlaying: Bool = false
-    private var repeationType: RepeationType = ._1
-    private var currentLoopCount: Int = 1
     weak var navigationController: UINavigationController? = nil
     private let floatingPanel: FloatingPanelController = FloatingPanelController()
     private let floatingPanelContentVC: FloatingPanelContentVC
@@ -112,11 +109,11 @@ class PlayerManager: NSObject {
                             let title = "\(rtlIsolate)\(chapter.name_arabic ?? "") | \(chapter.name_complex ?? "") | \(chapter.translated_name.name) | Ayah - \(verse_key[1] )"
                             
                             func updateUI(){
-                                self.setupNowPlaying(title: title, currentTime: currenTime, duraion: Float(duration), rate: rate)
-                                self.floatingPanelContentVC.setTitle(title: title)
-                                self.floatingPanelContentVC.setVerse(verse: self.playList[self.currentlyPlayingIndex!])
-                                
-                                self.continousReadingDelegate?.setVerse(verse: self.playList[self.currentlyPlayingIndex!])
+//                                self.setupNowPlaying(title: title, currentTime: currenTime, duraion: Float(duration), rate: rate)
+//                                self.floatingPanelContentVC.setTitle(title: title)
+//                                self.floatingPanelContentVC.setVerse(verse: self.playList[self.currentlyPlayingIndex!])
+//
+//                                self.continousReadingDelegate?.setVerse(verse: self.playList[self.currentlyPlayingIndex!])
                             }
                             if Thread.isMainThread{
                                 updateUI()
@@ -133,7 +130,7 @@ class PlayerManager: NSObject {
         }
     }
     
-    private func showFloatingPanel(){
+    @MainActor private func showFloatingPanel(){
         if self.navigationController?.visibleViewController != self.floatingPanel{
             self.navigationController?.visibleViewController?.present(self.floatingPanel, animated: true)
         }
@@ -162,9 +159,6 @@ class PlayerManager: NSObject {
     private func makePlayerActive(){
         self.player.play()
         self.isPlaying = true
-        if self.currentlyPlayingIndex == nil{
-            self.currentlyPlayingIndex = 0
-        }
     }
     
     private func makePlayerDeactive(){
@@ -181,36 +175,26 @@ class PlayerManager: NSObject {
     }
     
     func play(){
-        self.showFloatingPanel()
-        self.floatingPanelContentVC.playerPlay()
-        self.makePlayerActive()
+        Task(priority: .high) {
+            let versePlayerItem = await self.playList?.getNextVersePlayerItem()
+            self.player.replaceCurrentItem(with: versePlayerItem)
+            self.prevStatus = .unknown
+            
+            await self.showFloatingPanel()
+            await self.floatingPanelContentVC.playerPlay()
+            self.makePlayerActive()
+        }
     }
     func pause(){
         self.floatingPanelContentVC.playerStopped()
         self.makePlayerDeactive()
     }
     
-    func setRepationType(type: RepeationType){
-        self.repeationType = type
-        self.currentLoopCount = 1
+    func setPlayList(playList: PlayList?){
+        self.pause()
+        self.playList = playList
     }
     
-    func addVerseToPlayList(verse: Verse){
-        let playerItem = VersePlayerItem(verse: verse)
-        self.player.insert(playerItem, after: nil)
-        print("Audio Url", verse.audio?.url)
-        self.playList.append(verse)
-    }
-    
-    func clearPlayList(){
-        self.player.removeAllItems()
-        self.playList = []
-        self.currentLoopCount = 1
-    }
-    
-    func getPlayListCount() -> Int{
-        return self.playList.count
-    }
 }
 
 extension PlayerManager: FloatingPanelContentVCDelegate{
@@ -244,7 +228,7 @@ extension PlayerManager: FloatingPanelControllerDelegate{
     /// Called when a panel is removed from the parent view controller.
     func floatingPanelDidRemove(_ fpc: FloatingPanelController){
         self.pause()
-        self.clearPlayList()
+        self.playList = nil
     }
 
 }
@@ -298,39 +282,12 @@ extension PlayerManager{
 extension PlayerManager{
 
     @objc private func playerItemDidFinishPlaying(sender: Notification){
-        if self.currentlyPlayingIndex! + 1 == self.playList.count{
-            self.currentlyPlayingIndex = 0
-            self.player.removeAllItems()
-            
-            func addVerses(){
-                for verse in self.playList{
-                    let playerItem = VersePlayerItem(verse: verse)
-                    self.player.insert(playerItem, after: nil)
-                }
-            }
-
-            if self.repeationType == ._1{
-                self.clearPlayList()
-                self.dismisFloatingPanel()
-            } else if self.repeationType == ._infinite{
-                addVerses()
-            } else {
-                self.currentLoopCount += 1
-                let loopCount = self.repeationType.getIntValue()
-                if self.currentLoopCount <= loopCount{
-                    addVerses()
-                } else {
-                    self.clearPlayList()
-                    self.dismisFloatingPanel()
-                }
-            }
- 
-        } else {
-            self.currentlyPlayingIndex! += 1
-            self.currentlyPlayingIndex! %= self.playList.count
-        }
         
-        self.prevStatus = .unknown
+        Task(priority: .high) {
+            let versePlayerItem = await self.playList?.getNextVersePlayerItem()
+            self.player.replaceCurrentItem(with: versePlayerItem)
+            self.prevStatus = .unknown
+        }
         
     }
 }

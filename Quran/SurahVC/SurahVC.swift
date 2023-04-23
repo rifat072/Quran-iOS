@@ -15,12 +15,7 @@ class SurahVC: UIViewController {
     @IBOutlet weak var repeatButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     var chapter: Chapter!
-    @IBOutlet weak var playBtn: UIButton!{
-        didSet{
-            self.playBtn.isHidden = true
-        }
-        
-    }
+    @IBOutlet weak var playBtn: UIButton!
     @IBOutlet weak var tableView: SurahTableView!{
         didSet{
             self.tableView.viewControllerDelegate = self
@@ -38,62 +33,52 @@ class SurahVC: UIViewController {
         let title = "\(rtlIsolate)\(chapter.name_arabic ?? "") | \(chapter.name_complex ?? "") | \(chapter.translated_name.name)"
         self.titleLabel.text = title
         
+        self.loadDropDownMenus()
+        
     }
 
     @IBAction func playBtnPressed(_ sender: Any) {
-        if self.playerManager.getPlayListCount() == 0{
-            self.reconfigurePlayList()
-        }
+//        if self.playerManager.getPlayListCount() == 0{
+//            self.reconfigurePlayList()
+//        }
+        self.reconfigurePlayList()
         self.playerManager.play()
     }
     
     func reconfigurePlayList(){
+        self.playerManager.pause()
         let fromAyah = Int(self.fromSelectionAction?.title ?? "1")! - 1
         var toAyah = Int(self.toSelectedAction?.title ?? "1")! - 1
         toAyah = max(fromAyah, toAyah)
         let repeatationType = RepeationType.getType(str: self.repeatSelectionAction?.title ?? "1")
         self.playerManager.pause()
-        
-        for i in fromAyah...toAyah{
-            if let verse = try! chapter.getVerse(idx: i){
-                playerManager.addVerseToPlayList(verse: verse)
-            }
-        }
-        self.playerManager.setRepationType(type: repeatationType)
+        let playList = PlayList(chapter: chapter, from: fromAyah, to: toAyah, repeatationType: repeatationType)
+        self.playerManager.setPlayList(playList: playList)
 
-    }
-    
-    func invalidatePlayer(){
-        self.playerManager.pause()
-        self.playerManager.clearPlayList()
     }
 }
 
 
 extension SurahVC: SurahTableViewDelegate{
-    func isReadyForStream() {
-        //TODO: Streaming
+    func playButtonPressedFor(verse: Verse) {
         
-        return;
-        self.playBtn.isHidden = false
-        self.loadDropDownMenus()
     }
 
     func loadDropDownMenus(){
         let fromActionClosure = {[weak self] (action: UIAction) in
             self?.fromSelectionAction = action
             self?.fromButton.setTitle(self?.fromSelectionAction?.title, for: .normal)
-            self?.invalidatePlayer()
+            self?.reconfigurePlayList()
         }
         let toActionClosure = {[weak self] (action: UIAction) in
             self?.toSelectedAction = action
             self?.toButton.setTitle(self?.toSelectedAction?.title, for: .normal)
-            self?.invalidatePlayer()
+            self?.reconfigurePlayList()
         }
         let repeatActionClosure = {[weak self] (action: UIAction) in
             self?.repeatSelectionAction = action
             self?.repeatButton.setTitle(self?.repeatSelectionAction?.title, for: .normal)
-            self?.invalidatePlayer()
+            self?.reconfigurePlayList()
         }
 
         

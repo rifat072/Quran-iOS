@@ -7,12 +7,19 @@
 
 import UIKit
 
+protocol SurahTableViewCellDelegate: NSObject{
+    func playBtnPressed(verseViewModel: VerseViewModel)
+}
+
 class SurahVCTableViewCell: UITableViewCell {
     
     @IBOutlet weak var containerStackView: UIStackView!
     
     @IBOutlet weak var translationLabel: UILabel!
     @IBOutlet weak var playBtn: UIButton!
+    
+    weak var verseModel: VerseViewModel!
+    weak var delegate: SurahTableViewCellDelegate? = nil
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -21,6 +28,7 @@ class SurahVCTableViewCell: UITableViewCell {
 
     
     @IBAction func playBtnPressed(_ sender: Any) {
+        self.delegate?.playBtnPressed(verseViewModel: verseModel)
     }
     func removeViews(){
         let views = containerStackView.subviews
@@ -30,6 +38,7 @@ class SurahVCTableViewCell: UITableViewCell {
     }
     
     func updateAppearanceFor(verseViewModel: VerseViewModel,wordSpacing: CGFloat){
+        self.verseModel = verseViewModel
         let views = containerStackView.subviews
         for view in views{
             view.removeFromSuperview()

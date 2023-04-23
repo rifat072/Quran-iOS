@@ -8,7 +8,7 @@
 import UIKit
 
 protocol SurahTableViewDelegate: NSObject{
-    func isReadyForStream()
+    func playButtonPressedFor(verse: Verse)
 }
 
 
@@ -28,8 +28,6 @@ class SurahTableView: UITableView {
             self.dataSource = self
             self.prefetchDataSource = self
             self.register(UINib(nibName: "SurahVCTableViewCell", bundle: .main), forCellReuseIdentifier: "SurahVCTableViewCell")
-            
-            self.viewControllerDelegate?.isReadyForStream()
             PlayerManager.shared.continousReadingDelegate = self
             
         }
@@ -79,6 +77,8 @@ extension SurahTableView: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SurahVCTableViewCell") as! SurahVCTableViewCell
+        
+        cell.delegate = self
         
         cell.removeViews()
 
@@ -174,6 +174,12 @@ extension SurahTableView: UITableViewDataSourcePrefetching{
         label.textAlignment = .center
         label.textColor = UIColor(named: "cellSelectedColor")
         return label
+    }
+}
+
+extension SurahTableView: SurahTableViewCellDelegate{
+    func playBtnPressed(verseViewModel: VerseViewModel) {
+        self.viewControllerDelegate?.playButtonPressedFor(verse: verseViewModel.verse)
     }
 }
 
