@@ -109,11 +109,13 @@ class PlayerManager: NSObject {
                             let title = "\(rtlIsolate)\(chapter.name_arabic ?? "") | \(chapter.name_complex ?? "") | \(chapter.translated_name.name) | Ayah - \(verse_key[1] )"
                             
                             func updateUI(){
-//                                self.setupNowPlaying(title: title, currentTime: currenTime, duraion: Float(duration), rate: rate)
-//                                self.floatingPanelContentVC.setTitle(title: title)
-//                                self.floatingPanelContentVC.setVerse(verse: self.playList[self.currentlyPlayingIndex!])
-//
-//                                self.continousReadingDelegate?.setVerse(verse: self.playList[self.currentlyPlayingIndex!])
+                                self.setupNowPlaying(title: title, currentTime: currenTime, duraion: Float(duration), rate: rate)
+                                self.floatingPanelContentVC.setTitle(title: title)
+                                if let verse = (self.player.currentItem as? VersePlayerItem)?.verse{
+                                    self.floatingPanelContentVC.setVerse(verse: verse)
+                                    self.continousReadingDelegate?.setVerse(verse: verse)
+                                }
+
                             }
                             if Thread.isMainThread{
                                 updateUI()

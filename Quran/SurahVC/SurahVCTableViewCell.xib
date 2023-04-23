@@ -46,7 +46,7 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="liF-rb-DUy">
                                 <rect key="frame" x="10" y="10" width="300" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -85,6 +85,7 @@
                 <outlet property="containerStackView" destination="Cfl-hF-NvP" id="leE-zy-kVT"/>
                 <outlet property="playBtn" destination="wsJ-wK-JzI" id="kaa-CE-JMN"/>
                 <outlet property="translationLabel" destination="liF-rb-DUy" id="UGi-4g-a5N"/>
+                <outlet property="translationViewHeightConstraint" destination="n1Z-pw-fI8" id="shU-w9-fHG"/>
             </connections>
             <point key="canvasLocation" x="-32.061068702290072" y="59.859154929577471"/>
         </tableViewCell>

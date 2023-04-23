@@ -25,7 +25,8 @@ class SurahVCTableViewCell: UITableViewCell {
         super.awakeFromNib()
         self.layer.cornerRadius = 15
     }
-
+    @IBOutlet weak var translationViewHeightConstraint: NSLayoutConstraint!
+    
     
     @IBAction func playBtnPressed(_ sender: Any) {
         self.delegate?.playBtnPressed(verseViewModel: verseModel)
@@ -49,6 +50,8 @@ class SurahVCTableViewCell: UITableViewCell {
             containerStackView.addArrangedSubview(line)
         }
         
+        let height = verseViewModel.getTranslationViewHeight(width: self.bounds.width - 20)
+        self.translationViewHeightConstraint.constant = height + 20
         let translation = verseViewModel.verse.getTranslation(for: SettingsData.shared.translationReciterId)
         
         self.translationLabel.text = translation?.text

@@ -87,4 +87,16 @@ class VerseViewModel: NSObject {
         }
         return lines
     }
+    
+    func getTranslationViewHeight(width: CGFloat) -> CGFloat{
+        WordViewModel.DUMMY_LABEL.frame = CGRect(origin: .zero, size: CGSize(width: width, height: CGFloat.greatestFiniteMagnitude))
+        WordViewModel.DUMMY_LABEL.numberOfLines = 0
+        WordViewModel.DUMMY_LABEL.font = UIFont.systemFont(ofSize: 12)
+        WordViewModel.DUMMY_LABEL.text = self.verse.getTranslation(for: SettingsData.shared.translationReciterId)?.text
+        WordViewModel.DUMMY_LABEL.lineBreakMode = .byWordWrapping
+        WordViewModel.DUMMY_LABEL.sizeToFit()
+        
+        let view = WordViewModel.DUMMY_LABEL
+        return WordViewModel.DUMMY_LABEL.frame.size.height
+    }
 }

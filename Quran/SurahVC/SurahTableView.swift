@@ -133,7 +133,8 @@ extension SurahTableView: UITableViewDataSource, UITableViewDelegate{
         if let viewModel = self.verseViewModels[indexPath.section]{
             messedUPSize[indexPath.section] = false
             let lineCount = viewModel.getLineCount(maxWidth: tableView.bounds.width, itemSpacing: SurahTableView.wordSpacing)
-            return CGFloat(lineCount * SurahTableView.lineHeight) + 100
+            let translationHeight = viewModel.getTranslationViewHeight(width: self.bounds.width - 40)
+            return CGFloat(lineCount * SurahTableView.lineHeight) + 50 + 20 + translationHeight + 20
         } else{
             messedUPSize[indexPath.section] = true
         }
@@ -241,7 +242,7 @@ extension SurahTableView: ContinouseReadingDelegate{
             self.currentverse = verse
             self.currentVerseViewModel = verseViewModels[Int(key[1])! - 1]
             if SettingsData.shared.shouldAutoScroll{
-                self.scrollToRow(at: IndexPath(row: Int(key[1])! - 1, section: 0), at: .top, animated: true)
+                self.scrollToRow(at: IndexPath(row: 0, section: Int(key[1])! - 1), at: .top, animated: true)
             }
         } else {
             self.currentverse = nil
