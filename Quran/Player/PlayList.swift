@@ -79,7 +79,7 @@ class PlayList: NSObject {
             return nil
         }
 
-        let verse = try! await chapter.loadVerse(idx: currentIndex)
+        let verse = try! await chapter.loadVerse(idx: currentIndex + fromAyah)
         currentIndex += 1
         
         if currentIndex == totalCount{

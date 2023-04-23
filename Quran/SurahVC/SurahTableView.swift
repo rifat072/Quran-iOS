@@ -14,7 +14,7 @@ protocol SurahTableViewDelegate: NSObject{
 
 class SurahTableView: UITableView {
 
-    static let lineHeight: Int = 70
+    static let lineHeight: Int = 50
     private static let wordSpacing: CGFloat = 15
     weak var viewControllerDelegate: SurahTableViewDelegate? = nil
 
@@ -134,7 +134,7 @@ extension SurahTableView: UITableViewDataSource, UITableViewDelegate{
             messedUPSize[indexPath.section] = false
             let lineCount = viewModel.getLineCount(maxWidth: tableView.bounds.width, itemSpacing: SurahTableView.wordSpacing)
             let translationHeight = viewModel.getTranslationViewHeight(width: self.bounds.width - 40)
-            return CGFloat(lineCount * SurahTableView.lineHeight) + 50 + 20 + translationHeight + 20
+            return CGFloat(lineCount * SurahTableView.lineHeight) + 30 + 20 + translationHeight + 20
         } else{
             messedUPSize[indexPath.section] = true
         }

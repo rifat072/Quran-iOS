@@ -38,9 +38,6 @@ class SurahVC: UIViewController {
     }
 
     @IBAction func playBtnPressed(_ sender: Any) {
-//        if self.playerManager.getPlayListCount() == 0{
-//            self.reconfigurePlayList()
-//        }
         self.reconfigurePlayList()
         self.playerManager.play()
     }
@@ -61,7 +58,12 @@ class SurahVC: UIViewController {
 
 extension SurahVC: SurahTableViewDelegate{
     func playButtonPressedFor(verse: Verse) {
-        
+        let index = verse.verse_key.split(separator: ":")[1]
+        self.fromSelectionAction?.title = String(index)
+        self.toSelectedAction?.title = String(index)
+        self.repeatSelectionAction?.title = RepeationType.getType(str: "1").getString()
+        self.reconfigurePlayList()
+        self.playerManager.play()
     }
 
     func loadDropDownMenus(){

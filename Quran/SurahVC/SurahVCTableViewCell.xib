@@ -19,13 +19,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mLm-9i-6WU">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wsJ-wK-JzI">
-                                <rect key="frame" x="10" y="8" width="34" height="34"/>
+                                <rect key="frame" x="10" y="5" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="wsJ-wK-JzI" secondAttribute="height" multiplier="1:1" id="0J0-zv-zc9"/>
-                                    <constraint firstAttribute="width" constant="34" id="eFY-aw-hZB"/>
+                                    <constraint firstAttribute="width" constant="20" id="eFY-aw-hZB"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Button" image="play"/>
@@ -37,7 +37,7 @@
                         <color key="backgroundColor" red="0.098039215686274508" green="0.098039215686274508" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="wsJ-wK-JzI" firstAttribute="centerY" secondItem="mLm-9i-6WU" secondAttribute="centerY" id="6CB-jq-IcJ"/>
-                            <constraint firstAttribute="height" constant="50" id="6f9-8z-L53"/>
+                            <constraint firstAttribute="height" constant="30" id="6f9-8z-L53"/>
                             <constraint firstItem="wsJ-wK-JzI" firstAttribute="leading" secondItem="mLm-9i-6WU" secondAttribute="leading" constant="10" id="Eif-VB-ulf"/>
                         </constraints>
                     </view>
@@ -61,7 +61,7 @@
                         </constraints>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="bottom" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Cfl-hF-NvP">
-                        <rect key="frame" x="0.0" y="50" width="320" height="150"/>
+                        <rect key="frame" x="0.0" y="30" width="320" height="170"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </stackView>
                 </subviews>

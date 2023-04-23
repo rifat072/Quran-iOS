@@ -36,6 +36,7 @@ protocol FloatingPanelContentVCDelegate: PlayerManager{
 class FloatingPanelContentVC: UIViewController {
     
     private static let reuseIdentifier = "FloatingPanelVerseTableViewCell"
+    private static let translationReuseIdentifer = "FloatingPanelVerseTableViewCellTranslation"
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var totalTimeLabel: UILabel!
@@ -166,26 +167,53 @@ class FloatingPanelContentVC: UIViewController {
 
 
 extension FloatingPanelContentVC: UITableViewDelegate, UITableViewDataSource{
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.verseViewModel?.getLineCount(maxWidth: tableView.bounds.width, itemSpacing: 15) ?? 0
+        if section == 0{
+            return self.verseViewModel?.getLineCount(maxWidth: tableView.bounds.width, itemSpacing: 15) ?? 0
+        } else {
+            return 1
+        }
+
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return tableView.dequeueReusableCell(withIdentifier: FloatingPanelContentVC.reuseIdentifier)!
+        if indexPath.section == 0{
+            return tableView.dequeueReusableCell(withIdentifier: FloatingPanelContentVC.reuseIdentifier)!
+        } else {
+            return tableView.dequeueReusableCell(withIdentifier: FloatingPanelContentVC.translationReuseIdentifer)!
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let line = lines[indexPath.row]
-        if let stackView = cell.viewWithTag(1) as? UIStackView{
-            for view in stackView.subviews{
-                view.removeFromSuperview()
+        if indexPath.section == 0{
+            let line = lines[indexPath.row]
+            if let stackView = cell.viewWithTag(1) as? UIStackView{
+                for view in stackView.subviews{
+                    view.removeFromSuperview()
+                }
+                stackView.addArrangedSubview(line)
             }
-            stackView.addArrangedSubview(line)
+        } else {
+            if let label = cell.viewWithTag(1) as? UILabel{
+                let translation = verse!.getTranslation(for: SettingsData.shared.translationReciterId)
+                label.text = translation?.text
+            }
         }
+
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        if indexPath.section == 0{
+            return 50
+        } else {
+            return verseViewModel!.getTranslationViewHeight(width: tableView.bounds.width - 20) + 20 + 20
+        }
+        
     }
 }
 
