@@ -44,11 +44,10 @@ class SurahVC: UIViewController {
     
     func reconfigurePlayList(){
         self.playerManager.pause()
-        let fromAyah = Int(self.fromSelectionAction?.title ?? "1")! - 1
-        var toAyah = Int(self.toSelectedAction?.title ?? "1")! - 1
+        let fromAyah = Int(self.fromButton.titleLabel?.text ?? "1")! - 1
+        var toAyah = Int(self.toButton?.titleLabel?.text ?? "1")! - 1
         toAyah = max(fromAyah, toAyah)
-        let repeatationType = RepeationType.getType(str: self.repeatSelectionAction?.title ?? "1")
-        self.playerManager.pause()
+        let repeatationType = RepeationType.getType(str: self.repeatButton?.titleLabel?.text ?? "1")
         let playList = PlayList(chapter: chapter, from: fromAyah, to: toAyah, repeatationType: repeatationType)
         self.playerManager.setPlayList(playList: playList)
 
@@ -63,9 +62,9 @@ extension SurahVC: SurahCollectionViewDelegate{
     
     func playButtonPressedFor(verse: Verse) {
         let index = verse.verse_key.split(separator: ":")[1]
-        self.fromSelectionAction?.title = String(index)
-        self.toSelectedAction?.title = String(index)
-        self.repeatSelectionAction?.title = RepeationType.getType(str: "1").getString()
+        self.fromButton?.setTitle(String(index), for: .normal)
+        self.toButton?.setTitle(String(index), for: .normal)
+        self.repeatButton?.setTitle(RepeationType.getType(str: "1").getString(), for: .normal)
         self.reconfigurePlayList()
         self.playerManager.play()
     }
