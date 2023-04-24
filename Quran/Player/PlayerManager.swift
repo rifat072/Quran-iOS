@@ -240,22 +240,24 @@ extension PlayerManager{
         // Get the shared MPRemoteCommandCenter
         let commandCenter = MPRemoteCommandCenter.shared()
         
-        // Add handler for Play Command
         commandCenter.playCommand.addTarget { [unowned self] event in
-            if self.player.rate == 0.0 {
-                self.player.play()
-                return .success
-            }
-            return .commandFailed
+            self.play()
+            return .success
+        }
+
+        commandCenter.pauseCommand.addTarget { [unowned self] event in
+            self.pause()
+            return .success
         }
         
-        // Add handler for Pause Command
-        commandCenter.pauseCommand.addTarget { [unowned self] event in
-            if self.player.rate == 1.0 {
-                self.player.pause()
-                return .success
-            }
-            return .commandFailed
+        commandCenter.nextTrackCommand.addTarget { [unowned self] event in
+            self.nextButtonPressed()
+            return .success
+        }
+        
+        commandCenter.previousTrackCommand.addTarget { [unowned self]event in
+            self.prevBtnPressed()
+            return .success
         }
     }
     

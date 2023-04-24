@@ -74,9 +74,9 @@ class PlayList: NSObject {
     }
     
     func prevPressed() async -> VersePlayerItem?{
-        currentIndex -= 1
+        currentIndex -= 2
         if currentIndex < 0{
-            currentIndex = totalCount - 1
+            currentIndex = totalCount - currentIndex
             currentLoopCount -= 1
         }
         return await getNextVersePlayerItem()
