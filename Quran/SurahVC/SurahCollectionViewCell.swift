@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol SurahCollectionViewCellDelegate: NSObject{
+    func playBtnPressed(verseViewModel: VerseViewModel)
+}
+
 class SurahCollectionViewCell: UICollectionViewCell {
 
     public static let reuseIdentifier = "SurahCollectionViewCell"
@@ -19,6 +23,13 @@ class SurahCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var titleLbl: UILabel!
     
+    @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var playBtn: UIButton!
+    
+    weak var verseModel: VerseViewModel!
+    weak var delegate: SurahCollectionViewCellDelegate? = nil
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.layer.cornerRadius = 15
@@ -26,6 +37,7 @@ class SurahCollectionViewCell: UICollectionViewCell {
 
     
     func updateAppearanceFor(verseViewModel: VerseViewModel,wordSpacing: CGFloat){
+        self.verseModel = verseViewModel
         let views = containerStackView.subviews
         for view in views{
             view.removeFromSuperview()
@@ -38,9 +50,16 @@ class SurahCollectionViewCell: UICollectionViewCell {
             containerStackView.addArrangedSubview(line)
         }
         
+        let height = verseViewModel.getTranslationViewHeight(width: self.bounds.width - 20)
+        self.bottomViewHeightConstraint.constant = height + 20
         let translation = verseViewModel.verse.getTranslation(for: SettingsData.shared.translationReciterId)
         
+        
         self.translationLabel.text = translation?.text
+    }
+    
+    @IBAction func playBtnPressed(_ sender: Any) {
+        self.delegate?.playBtnPressed(verseViewModel: verseModel)
     }
 
 }

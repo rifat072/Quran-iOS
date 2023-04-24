@@ -96,34 +96,38 @@ extension Chapter{
         return self.chapterInfo
     }
     
-//    func loadVerse(idx: Int) async throws -> Verse?{
-//        guard let verses_count = self.verses_count else {
-//            return nil
-//        }
-//        if(idx < 0 || idx >= verses_count){
-//            throw VerseParseError.outOfIndex
-//        }
-//
-//        if let verse = self.verses[idx] {
-//            return verse
-//        }
-//
-//        guard let id = self.id,
-//              var url = apiRootUrl?.appending(path: "verses").appending(path: "by_key").appending(path: "\(id):\(idx)") else {
-//            return nil
-//        }
-//
-//        url = url.appending(queryItems: [URLQueryItem(name: "words", value: "true"),
-//                                        URLQueryItem(name: "word_fields", value: "text_uthmani,text_indopak"),
-//                                        URLQueryItem(name: "audio", value: "\(recitationId)")])
-//
-//        let (data, _) = try await URLSession.shared.data(from: url)
-//        struct Root: Decodable{
-//            let verse: Verse?
-//        }
-//        self.verses[idx] = try JSONDecoder().decode(Root.self, from: data).verse
-//        return self.verses[idx]
-//    }
+    func loadVerse(idx: Int) async throws -> Verse?{
+        guard let verses_count = self.verses_count else {
+            return nil
+        }
+        if(idx < 0 || idx >= verses_count){
+            throw VerseParseError.outOfIndex
+        }
+
+        if let verse = self.verses[idx] {
+            return verse
+        }
+
+        guard let id = self.id,
+              var url = apiRootUrl?.appending(path: "verses").appending(path: "by_key").appending(path: "\(id):\(idx + 1)") else {
+            return nil
+        }
+
+        
+        url = url.appending(queryItems: [URLQueryItem(name: "words", value: "true"),
+                                                URLQueryItem(name: "word_fields", value: "text_uthmani,text_indopak,text_imlaei"),
+                                                URLQueryItem(name: "language", value: SettingsData.shared.wordByWordTranslationLanguageISO),
+                                                URLQueryItem(name: "audio", value: "\(SettingsData.shared.audioReciterId)"),
+                                                URLQueryItem(name: "translations", value: "\(SettingsData.shared.translationReciterId)")])
+
+        let (data, _) = try await URLSession.shared.data(from: url)
+        struct Root: Decodable{
+            let verse: Verse?
+        }
+        self.verses[idx] = try JSONDecoder().decode(Root.self, from: data).verse
+        return self.verses[idx]
+    }
+    
     
     func loadAllVerses() async throws{
         guard let id = self.id,
@@ -132,26 +136,33 @@ extension Chapter{
         }
         
         let totalPage = Int(ceil(Double(verses_count!) / 50.0))
-        for pageNumber in 1...totalPage{
-            let curUrl = url.appending(queryItems: [URLQueryItem(name: "words", value: "true"),
-                                                    URLQueryItem(name: "page", value: "\(pageNumber)"),
-                                                    URLQueryItem(name: "per_page", value: "\(50)"),
-                                                    URLQueryItem(name: "word_fields", value: "text_uthmani,text_indopak,text_imlaei"),
-                                                    URLQueryItem(name: "language", value: SettingsData.shared.wordByWordTranslationLanguageISO),
-                                                    URLQueryItem(name: "audio", value: "\(SettingsData.shared.audioReciterId)"),
-                                                    URLQueryItem(name: "translations", value: "\(SettingsData.shared.translationReciterId)")])
-            let (data, _) = try await URLSession.shared.data(from: curUrl)
-            struct Root: Decodable{
-                let verses: [Verse]
-                let pagination: Pagination?
-            }
-            let currentVerses = try JSONDecoder().decode(Root.self, from: data).verses
-            for curVerse in currentVerses{
-                if let id = Int(curVerse.verse_key.split(separator: ":")[1]){
-                    self.verses[id - 1] = curVerse
+        
+        await withThrowingTaskGroup(of: Void.self, body: { group in
+            for pageNumber in 1...totalPage{
+                group.addTask {
+                    let curUrl = url.appending(queryItems: [URLQueryItem(name: "words", value: "true"),
+                                                            URLQueryItem(name: "page", value: "\(pageNumber)"),
+                                                            URLQueryItem(name: "per_page", value: "\(50)"),
+                                                            URLQueryItem(name: "word_fields", value: "text_uthmani,text_indopak,text_imlaei"),
+                                                            URLQueryItem(name: "language", value: SettingsData.shared.wordByWordTranslationLanguageISO),
+                                                            URLQueryItem(name: "audio", value: "\(SettingsData.shared.audioReciterId)"),
+                                                            URLQueryItem(name: "translations", value: "\(SettingsData.shared.translationReciterId)")])
+                    let (data, _) = try await URLSession.shared.data(from: curUrl)
+                    struct Root: Decodable{
+                        let verses: [Verse]
+                        let pagination: Pagination?
+                    }
+                    let currentVerses = try JSONDecoder().decode(Root.self, from: data).verses
+                    for curVerse in currentVerses{
+                        if let id = Int(curVerse.verse_key.split(separator: ":")[1]){
+                            self.verses[id - 1] = curVerse
+                        }
+                    }
                 }
+                
             }
-        }
+        })
+
     }
     
     func getVerse(idx: Int) throws -> Verse?{

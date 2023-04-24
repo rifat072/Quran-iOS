@@ -19,24 +19,38 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jfu-tN-sgk">
-                        <rect key="frame" x="0.0" y="0.0" width="417" height="40"/>
+                        <rect key="frame" x="0.0" y="0.0" width="417" height="30"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ttH-8x-U8g">
-                                <rect key="frame" x="10" y="9.6666666666666643" width="42" height="21"/>
+                                <rect key="frame" x="40" y="4.6666666666666679" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rMQ-Cs-rRw">
+                                <rect key="frame" x="10" y="5" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="rMQ-Cs-rRw" secondAttribute="height" id="nZm-vd-Jwh"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Button" image="play"/>
+                                <connections>
+                                    <action selector="playBtnPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="1D7-26-0X5"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.098039215686274508" green="0.10196078431372549" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="40" id="UOZ-wY-0AC"/>
-                            <constraint firstItem="ttH-8x-U8g" firstAttribute="leading" secondItem="jfu-tN-sgk" secondAttribute="leading" constant="10" id="aUi-Ca-A4C"/>
+                            <constraint firstAttribute="height" constant="30" id="UOZ-wY-0AC"/>
+                            <constraint firstAttribute="bottom" secondItem="rMQ-Cs-rRw" secondAttribute="bottom" constant="5" id="VOM-Ou-LhH"/>
+                            <constraint firstItem="ttH-8x-U8g" firstAttribute="leading" secondItem="rMQ-Cs-rRw" secondAttribute="trailing" constant="10" id="VbP-Mk-kHX"/>
                             <constraint firstItem="ttH-8x-U8g" firstAttribute="centerY" secondItem="jfu-tN-sgk" secondAttribute="centerY" id="fBa-nU-ZkZ"/>
+                            <constraint firstItem="rMQ-Cs-rRw" firstAttribute="top" secondItem="jfu-tN-sgk" secondAttribute="top" constant="5" id="lr2-yr-Npy"/>
+                            <constraint firstItem="rMQ-Cs-rRw" firstAttribute="leading" secondItem="jfu-tN-sgk" secondAttribute="leading" constant="10" id="srE-B6-Tob"/>
                         </constraints>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="bottom" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="ae1-8F-ROT">
-                        <rect key="frame" x="0.0" y="40" width="417" height="197"/>
+                        <rect key="frame" x="0.0" y="30" width="417" height="207"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kpm-LH-zl7">
@@ -76,8 +90,10 @@
             </constraints>
             <size key="customSize" width="417" height="337"/>
             <connections>
+                <outlet property="bottomViewHeightConstraint" destination="sCR-ih-cRz" id="vrf-8f-hb4"/>
                 <outlet property="containerStackView" destination="ae1-8F-ROT" id="sNg-0U-BYU"/>
                 <outlet property="controlView" destination="jfu-tN-sgk" id="cqV-Cy-HSi"/>
+                <outlet property="playBtn" destination="rMQ-Cs-rRw" id="KGC-FT-H9D"/>
                 <outlet property="titleLbl" destination="ttH-8x-U8g" id="6Vi-YN-wB9"/>
                 <outlet property="translationLabel" destination="asP-BL-dfB" id="09W-ea-1Zs"/>
             </connections>
@@ -85,6 +101,7 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="play" width="320" height="320"/>
         <namedColor name="cellDeselectedColor">
             <color red="0.14900000393390656" green="0.14900000393390656" blue="0.14900000393390656" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -9,11 +9,12 @@ import UIKit
 
 protocol SurahCollectionViewDelegate: NSObject{
     func isReadyForStream()
+    func playButtonPressedFor(verse: Verse)
 }
 
 class SurahCollectionView: UICollectionView {
     
-    static let lineHeight: Int = 70
+    static let lineHeight: Int = 50
     private static let wordSpacing: CGFloat = 15
     weak var viewControllerDelegate: SurahCollectionViewDelegate? = nil
     private var verseViewModels: [VerseViewModel?] = []
@@ -71,6 +72,7 @@ extension SurahCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cell = cell as? SurahCollectionViewCell else { return }
         if let verseViewModel = self.verseViewModels[indexPath.row]{
+            cell.delegate = self
             cell.updateAppearanceFor(verseViewModel: verseViewModel, wordSpacing: SurahCollectionView.wordSpacing)
         }
     }
@@ -159,5 +161,12 @@ extension SurahCollectionView: ContinouseReadingDelegate{
             self.currentVerseViewModel = nil
             self.markView(newView: nil)
         }
+    }
+}
+
+
+extension SurahCollectionView: SurahCollectionViewCellDelegate{
+    func playBtnPressed(verseViewModel: VerseViewModel) {
+        self.viewControllerDelegate?.playButtonPressedFor(verse: verseViewModel.verse)
     }
 }

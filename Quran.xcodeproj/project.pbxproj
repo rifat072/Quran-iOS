@@ -10,6 +10,7 @@
 		3511018B29F0721F00D8986D /* PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3511018A29F0721F00D8986D /* PlayerManager.swift */; };
 		35564C7029F294AC004F05A4 /* WordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35564C6F29F294AC004F05A4 /* WordViewModel.swift */; };
 		35564C7229F29932004F05A4 /* VerseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35564C7129F29932004F05A4 /* VerseViewModel.swift */; };
+		3561342929F65AAD000B5C2B /* PlayList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3561342829F65AAD000B5C2B /* PlayList.swift */; };
 		3567115929F12E0B008427B1 /* CachingPlayerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567115829F12E0B008427B1 /* CachingPlayerItem.swift */; };
 		3567115D29F17A7E008427B1 /* FloatingPanelContentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567115C29F17A7E008427B1 /* FloatingPanelContentVC.swift */; };
 		35B1FB2A29EED228009047F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B1FB2929EED228009047F2 /* AppDelegate.swift */; };
@@ -55,6 +56,7 @@
 		3511018A29F0721F00D8986D /* PlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerManager.swift; sourceTree = "<group>"; };
 		35564C6F29F294AC004F05A4 /* WordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordViewModel.swift; sourceTree = "<group>"; };
 		35564C7129F29932004F05A4 /* VerseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerseViewModel.swift; sourceTree = "<group>"; };
+		3561342829F65AAD000B5C2B /* PlayList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayList.swift; sourceTree = "<group>"; };
 		3567115829F12E0B008427B1 /* CachingPlayerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachingPlayerItem.swift; sourceTree = "<group>"; };
 		3567115C29F17A7E008427B1 /* FloatingPanelContentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanelContentVC.swift; sourceTree = "<group>"; };
 		35B1FB2629EED228009047F2 /* Quran.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quran.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,6 +113,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3561342729F65AA7000B5C2B /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				3567115829F12E0B008427B1 /* CachingPlayerItem.swift */,
+				3511018A29F0721F00D8986D /* PlayerManager.swift */,
+				3561342829F65AAD000B5C2B /* PlayList.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
 		35B1FB1D29EED228009047F2 = {
 			isa = PBXGroup;
 			children = (
@@ -135,10 +147,8 @@
 		35B1FB2829EED228009047F2 /* Quran */ = {
 			isa = PBXGroup;
 			children = (
+				3561342729F65AA7000B5C2B /* Player */,
 				35C8F7BD29F2F0C700ADA531 /* Settings */,
-				35564C6F29F294AC004F05A4 /* WordViewModel.swift */,
-				3567115829F12E0B008427B1 /* CachingPlayerItem.swift */,
-				3511018A29F0721F00D8986D /* PlayerManager.swift */,
 				3567115C29F17A7E008427B1 /* FloatingPanelContentVC.swift */,
 				35B1FB7F29EF1375009047F2 /* SurahVC */,
 				35B1FB7629EF0B4D009047F2 /* SurahListVC */,
@@ -168,6 +178,7 @@
 		35B1FB6929EEDAAC009047F2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				35564C6F29F294AC004F05A4 /* WordViewModel.swift */,
 				35B1FB3D29EED362009047F2 /* QuranSharedItem.swift */,
 				35B1FB6C29EEDB66009047F2 /* Chapter.swift */,
 				35B1FB7229EEFDD0009047F2 /* Verse.swift */,
@@ -418,6 +429,7 @@
 				3567115929F12E0B008427B1 /* CachingPlayerItem.swift in Sources */,
 				3511018B29F0721F00D8986D /* PlayerManager.swift in Sources */,
 				35B1FB7529EEFF1C009047F2 /* Word.swift in Sources */,
+				3561342929F65AAD000B5C2B /* PlayList.swift in Sources */,
 				35C8F7BC29F2F0C000ADA531 /* SettingsVC.swift in Sources */,
 				35B1FB2E29EED228009047F2 /* ViewController.swift in Sources */,
 				35564C7229F29932004F05A4 /* VerseViewModel.swift in Sources */,

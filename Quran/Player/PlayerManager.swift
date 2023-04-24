@@ -10,43 +10,6 @@ import MediaPlayer
 import UIKit
 import FloatingPanel
 
-enum RepeationType: CaseIterable{
-    case _1
-    case _2
-    case _4
-    case _8
-    case _infinite
-    
-    func getString() -> String{
-        if self == ._1 {return "1"}
-        else if self == ._2{return "2"}
-        else if self == ._4{return "4"}
-        else if self == ._8{return "8"}
-        else {return "infinte"}
-    }
-    
-    static func getType(str: String) -> RepeationType{
-        if str == "1" {return ._1}
-        else if str == "2"{return ._2}
-        else if str == "4"{return ._4}
-        else if str == "8"{return ._8}
-        else {return ._infinite}
-    }
-    
-    func getIntValue() -> Int{
-        if self == ._1{
-            return 1
-        } else if self == ._2{
-            return 2
-        } else if self == ._4{
-            return 4
-        } else if self == ._8{
-            return 8
-        } else {
-            return 100000000
-        }
-    }
-}
 
 protocol ContinouseReadingDelegate: NSObject{
     func currentProgress(value: Float)
@@ -59,12 +22,9 @@ class PlayerManager: NSObject {
     //TODO: Need to maintain Queue for downloading But downloading is fast enough
     static let shared = PlayerManager()
     
-    private var currentlyPlayingIndex: Int? = nil
-    private var playList: [Verse] = []
+    private var playList: PlayList? = nil
     private let player: AVQueuePlayer  = AVQueuePlayer()
     private var isPlaying: Bool = false
-    private var repeationType: RepeationType = ._1
-    private var currentLoopCount: Int = 1
     weak var navigationController: UINavigationController? = nil
     private let floatingPanel: FloatingPanelController = FloatingPanelController()
     private let floatingPanelContentVC: FloatingPanelContentVC
@@ -114,9 +74,11 @@ class PlayerManager: NSObject {
                             func updateUI(){
                                 self.setupNowPlaying(title: title, currentTime: currenTime, duraion: Float(duration), rate: rate)
                                 self.floatingPanelContentVC.setTitle(title: title)
-                                self.floatingPanelContentVC.setVerse(verse: self.playList[self.currentlyPlayingIndex!])
-                                
-                                self.continousReadingDelegate?.setVerse(verse: self.playList[self.currentlyPlayingIndex!])
+                                if let verse = (self.player.currentItem as? VersePlayerItem)?.verse{
+                                    self.floatingPanelContentVC.setVerse(verse: verse)
+                                    self.continousReadingDelegate?.setVerse(verse: verse)
+                                }
+
                             }
                             if Thread.isMainThread{
                                 updateUI()
@@ -133,13 +95,13 @@ class PlayerManager: NSObject {
         }
     }
     
-    private func showFloatingPanel(){
+    @MainActor private func showFloatingPanel(){
         if self.navigationController?.visibleViewController != self.floatingPanel{
             self.navigationController?.visibleViewController?.present(self.floatingPanel, animated: true)
         }
     }
     
-    private func dismisFloatingPanel(){
+    @MainActor private func dismisFloatingPanel(){
         if self.navigationController?.visibleViewController == self.floatingPanel{
             self.floatingPanel.dismiss(animated: true)
         }
@@ -162,9 +124,6 @@ class PlayerManager: NSObject {
     private func makePlayerActive(){
         self.player.play()
         self.isPlaying = true
-        if self.currentlyPlayingIndex == nil{
-            self.currentlyPlayingIndex = 0
-        }
     }
     
     private func makePlayerDeactive(){
@@ -181,36 +140,32 @@ class PlayerManager: NSObject {
     }
     
     func play(){
-        self.showFloatingPanel()
-        self.floatingPanelContentVC.playerPlay()
-        self.makePlayerActive()
+        Task(priority: .high) {
+            self.prevStatus = .unknown
+            if let versePlayerItem = await self.playList?.getNextVersePlayerItem(){
+                self.player.replaceCurrentItem(with: versePlayerItem)
+                await self.showFloatingPanel()
+                await self.floatingPanelContentVC.playerPlay()
+                self.makePlayerActive()
+            } else {
+                self.player.replaceCurrentItem(with: nil)
+                await self.dismisFloatingPanel()
+                await self.floatingPanelContentVC.playerStopped()
+                self.makePlayerDeactive()
+            }
+            
+        }
     }
     func pause(){
         self.floatingPanelContentVC.playerStopped()
         self.makePlayerDeactive()
     }
     
-    func setRepationType(type: RepeationType){
-        self.repeationType = type
-        self.currentLoopCount = 1
+    func setPlayList(playList: PlayList?){
+        self.pause()
+        self.playList = playList
     }
     
-    func addVerseToPlayList(verse: Verse){
-        let playerItem = VersePlayerItem(verse: verse)
-        self.player.insert(playerItem, after: nil)
-        print("Audio Url", verse.audio?.url)
-        self.playList.append(verse)
-    }
-    
-    func clearPlayList(){
-        self.player.removeAllItems()
-        self.playList = []
-        self.currentLoopCount = 1
-    }
-    
-    func getPlayListCount() -> Int{
-        return self.playList.count
-    }
 }
 
 extension PlayerManager: FloatingPanelContentVCDelegate{
@@ -244,7 +199,7 @@ extension PlayerManager: FloatingPanelControllerDelegate{
     /// Called when a panel is removed from the parent view controller.
     func floatingPanelDidRemove(_ fpc: FloatingPanelController){
         self.pause()
-        self.clearPlayList()
+        self.playList = nil
     }
 
 }
@@ -298,39 +253,16 @@ extension PlayerManager{
 extension PlayerManager{
 
     @objc private func playerItemDidFinishPlaying(sender: Notification){
-        if self.currentlyPlayingIndex! + 1 == self.playList.count{
-            self.currentlyPlayingIndex = 0
-            self.player.removeAllItems()
-            
-            func addVerses(){
-                for verse in self.playList{
-                    let playerItem = VersePlayerItem(verse: verse)
-                    self.player.insert(playerItem, after: nil)
-                }
-            }
-
-            if self.repeationType == ._1{
-                self.clearPlayList()
-                self.dismisFloatingPanel()
-            } else if self.repeationType == ._infinite{
-                addVerses()
-            } else {
-                self.currentLoopCount += 1
-                let loopCount = self.repeationType.getIntValue()
-                if self.currentLoopCount <= loopCount{
-                    addVerses()
-                } else {
-                    self.clearPlayList()
-                    self.dismisFloatingPanel()
-                }
-            }
- 
-        } else {
-            self.currentlyPlayingIndex! += 1
-            self.currentlyPlayingIndex! %= self.playList.count
-        }
         
-        self.prevStatus = .unknown
+        Task(priority: .high) {
+            self.prevStatus = .unknown
+            if let versePlayerItem = await self.playList?.getNextVersePlayerItem(){
+                self.player.replaceCurrentItem(with: versePlayerItem)
+            } else {
+                self.player.replaceCurrentItem(with: nil)
+                await self.dismisFloatingPanel()
+            }
+        }
         
     }
 }

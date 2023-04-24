@@ -9,7 +9,7 @@ import UIKit
 
 class WordViewModel: NSObject {
     
-    private static let DUMMY_LABEL: UILabel = UILabel()
+    static let DUMMY_LABEL: UILabel = UILabel()
     
     let word: Word
     
