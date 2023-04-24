@@ -82,7 +82,8 @@ extension SurahCollectionView: UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if let viewModel = self.verseViewModels[indexPath.row]{
             let lineCount = viewModel.getLineCount(maxWidth: collectionView.bounds.width, itemSpacing: SurahCollectionView.wordSpacing)
-            return CGSize(width: collectionView.bounds.width, height: CGFloat(lineCount * SurahCollectionView.lineHeight + 40 + 100))
+            let translationHeight = viewModel.getTranslationViewHeight(width: self.bounds.width - 40) + 40
+            return CGSize(width: collectionView.bounds.width, height: CGFloat(lineCount * SurahCollectionView.lineHeight + 30) + translationHeight)
         }
         return .zero
         
@@ -124,18 +125,36 @@ extension SurahCollectionView: ContinouseReadingDelegate{
         if value.isNaN {
             return
         }
-        if self.currentMarkingIndex < self.currentverse?.audio?.segments.count ?? 0{
-            let segement = self.currentverse!.audio!.segments[currentMarkingIndex]
-            let segmetntTotalDuration = self.currentverse!.audio!.segments.last![3]
-            
-            let currentSegmentTime = (value * Float(segmetntTotalDuration)) / totalDuration
-            
-            if Int(currentSegmentTime) >= segement[2] && Int(currentSegmentTime) <= segement[3]{
-                self.markView(newView: self.currentVerseViewModel?.wordViewModels[self.currentMarkingIndex].lastGeneratedView as? UIStackView)
-                currentMarkingIndex += 1
+        if let audio = self.currentverse?.audio{
+            for i in 0..<self.currentverse!.audio!.segments.count{
+                let segement = self.currentverse!.audio!.segments[i]
+                let segmetntTotalDuration = self.currentverse!.audio!.segments.last![3]
+                
+                let currentSegmentTime = (value * Float(segmetntTotalDuration)) / totalDuration
+                
+                if Int(currentSegmentTime) >= segement[2] && Int(currentSegmentTime) <= segement[3]{
+                    self.markView(newView: self.currentVerseViewModel?.wordViewModels[self.currentMarkingIndex].lastGeneratedView as? UIStackView)
+                    currentMarkingIndex = i
+                    break
+                }
+                
             }
-            
         }
+
+//
+//        return
+//        if self.currentMarkingIndex < self.currentverse?.audio?.segments.count ?? 0{
+//            let segement = self.currentverse!.audio!.segments[currentMarkingIndex]
+//            let segmetntTotalDuration = self.currentverse!.audio!.segments.last![3]
+//
+//            let currentSegmentTime = (value * Float(segmetntTotalDuration)) / totalDuration
+//
+//            if Int(currentSegmentTime) >= segement[2] && Int(currentSegmentTime) <= segement[3]{
+//                self.markView(newView: self.currentVerseViewModel?.wordViewModels[self.currentMarkingIndex].lastGeneratedView as? UIStackView)
+//                currentMarkingIndex += 1
+//            }
+//
+//        }
     }
     
     func setTotalDuration(value: Float) {

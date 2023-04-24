@@ -110,9 +110,9 @@ struct AudioFile: Decodable{
     let format: String?
     var segments: [[Int]]{
         didSet{
-            segments.sort { a, b in
-                a[1] < b[1]
-            }
+//            segments.sort { a, b in
+//                a[1] < b[1]
+//            }
         }
     }
 }

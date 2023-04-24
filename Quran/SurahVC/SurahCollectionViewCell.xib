@@ -57,17 +57,17 @@
                         <rect key="frame" x="0.0" y="237" width="417" height="100"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="asP-BL-dfB">
-                                <rect key="frame" x="20" y="10" width="377" height="80"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <rect key="frame" x="10" y="10" width="397" height="80"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="0.098039215686274508" green="0.098039215686274508" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="asP-BL-dfB" firstAttribute="leading" secondItem="Kpm-LH-zl7" secondAttribute="leading" constant="20" id="3Lf-bg-x46"/>
+                            <constraint firstItem="asP-BL-dfB" firstAttribute="leading" secondItem="Kpm-LH-zl7" secondAttribute="leading" constant="10" id="3Lf-bg-x46"/>
                             <constraint firstItem="asP-BL-dfB" firstAttribute="top" secondItem="Kpm-LH-zl7" secondAttribute="top" constant="10" id="ULj-sZ-kBt"/>
-                            <constraint firstAttribute="trailing" secondItem="asP-BL-dfB" secondAttribute="trailing" constant="20" id="eqf-UJ-vqx"/>
+                            <constraint firstAttribute="trailing" secondItem="asP-BL-dfB" secondAttribute="trailing" constant="10" id="eqf-UJ-vqx"/>
                             <constraint firstAttribute="height" constant="100" id="sCR-ih-cRz"/>
                             <constraint firstAttribute="bottom" secondItem="asP-BL-dfB" secondAttribute="bottom" constant="10" id="y87-VN-VLg"/>
                         </constraints>

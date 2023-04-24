@@ -73,6 +73,18 @@ class PlayList: NSObject {
         super.init()
     }
     
+    func prevPressed() async -> VersePlayerItem?{
+        currentIndex -= 1
+        if currentIndex < 0{
+            currentIndex = totalCount - 1
+            currentLoopCount -= 1
+        }
+        return await getNextVersePlayerItem()
+    }
+    
+    func nextPressed() async -> VersePlayerItem? {
+        return await getNextVersePlayerItem()
+    }
     
     func getNextVersePlayerItem() async -> VersePlayerItem? {
         if currentIndex >=  totalCount{

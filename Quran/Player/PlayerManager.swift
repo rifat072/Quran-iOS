@@ -140,21 +140,26 @@ class PlayerManager: NSObject {
     }
     
     func play(){
-        Task(priority: .high) {
-            self.prevStatus = .unknown
-            if let versePlayerItem = await self.playList?.getNextVersePlayerItem(){
-                self.player.replaceCurrentItem(with: versePlayerItem)
-                await self.showFloatingPanel()
-                await self.floatingPanelContentVC.playerPlay()
-                self.makePlayerActive()
-            } else {
-                self.player.replaceCurrentItem(with: nil)
-                await self.dismisFloatingPanel()
-                await self.floatingPanelContentVC.playerStopped()
-                self.makePlayerDeactive()
+        if player.currentItem == nil{
+            Task(priority: .high) {
+                self.prevStatus = .unknown
+                if let versePlayerItem = await self.playList?.getNextVersePlayerItem(){
+                    self.player.replaceCurrentItem(with: versePlayerItem)
+                    await self.showFloatingPanel()
+                    await self.floatingPanelContentVC.playerPlay()
+                    self.makePlayerActive()
+                } else {
+                    self.player.replaceCurrentItem(with: nil)
+                    await self.dismisFloatingPanel()
+                    await self.floatingPanelContentVC.playerStopped()
+                    self.makePlayerDeactive()
+                }
+                
             }
-            
+        } else {
+            self.makePlayerActive()
         }
+
     }
     func pause(){
         self.floatingPanelContentVC.playerStopped()
@@ -163,26 +168,50 @@ class PlayerManager: NSObject {
     
     func setPlayList(playList: PlayList?){
         self.pause()
+        self.player.replaceCurrentItem(with: nil)
         self.playList = playList
     }
     
 }
 
 extension PlayerManager: FloatingPanelContentVCDelegate{
-    func prevBtnPressed() {
-        //TODO: Need to Implement
-    }
+
     
     func playButtonPressed() {
         self.togglePlayPause()
     }
     
+    func prevBtnPressed() {
+        Task(priority: .high) {
+            self.prevStatus = .unknown
+            if let versePlayerItem = await self.playList?.prevPressed(){
+                self.player.replaceCurrentItem(with: versePlayerItem)
+                self.play()
+            } else {
+                self.player.replaceCurrentItem(with: nil)
+                await self.dismisFloatingPanel()
+            }
+        }
+    }
+    
     func nextButtonPressed() {
-        //TODO: Need to Implement
+        Task(priority: .high) {
+            self.prevStatus = .unknown
+            if let versePlayerItem = await self.playList?.nextPressed(){
+                self.player.replaceCurrentItem(with: versePlayerItem)
+                self.play()
+            } else {
+                self.player.replaceCurrentItem(with: nil)
+                await self.dismisFloatingPanel()
+            }
+        }
     }
     
     func progressSliderChanged(value: Float) {
-        //TODO: Need to Implement
+        self.pause()
+        self.player.seek(to: CMTime(seconds: Double(value), preferredTimescale: 600), toleranceBefore: .zero, toleranceAfter: .zero) { bool in
+            
+        }
     }
 }
 
@@ -253,7 +282,6 @@ extension PlayerManager{
 extension PlayerManager{
 
     @objc private func playerItemDidFinishPlaying(sender: Notification){
-        
         Task(priority: .high) {
             self.prevStatus = .unknown
             if let versePlayerItem = await self.playList?.getNextVersePlayerItem(){
@@ -263,6 +291,5 @@ extension PlayerManager{
                 await self.dismisFloatingPanel()
             }
         }
-        
     }
 }

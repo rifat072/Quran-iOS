@@ -211,7 +211,7 @@ extension FloatingPanelContentVC: UITableViewDelegate, UITableViewDataSource{
         if indexPath.section == 0{
             return 50
         } else {
-            return verseViewModel!.getTranslationViewHeight(width: tableView.bounds.width - 20) + 20 + 20
+            return (verseViewModel?.getTranslationViewHeight(width: tableView.bounds.width - 20) ?? 0) + 20 + 40
         }
         
     }
